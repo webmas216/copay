@@ -1,7 +1,7 @@
 'use strict';
 var logs = [];
 angular.module('copayApp.services')
-  .factory('historicLog', function historicLog(lodash) {
+  .service('historicLog', function historicLog(lodash) {
     var root = {};
 
     var levels = [
