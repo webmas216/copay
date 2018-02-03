@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txFormatService', function($filter, bwcService, rateService, configService, bitcoreCash, lodash) {
+angular.module('copayApp.services').service('txFormatService', function($filter, bwcService, rateService, configService, bitcoreCash, lodash) {
   var root = {};
 
   root.Utils = bwcService.getUtils();
