@@ -43,17 +43,17 @@ angular.module('copayApp.controllers').controller('amountController', function (
       }
 
 
-      var hasBCHWallets = profileService.getWallets({
-        coin: 'bch'
+      var hasBTCWallets = profileService.getWallets({
+        coin: 'btc'
       }).length;
 
 
 
-      if (hasBCHWallets) {
+      if (hasBTCWallets) {
         availableUnits.push({
           name: 'Bitcoin Cash',
-          id: 'bch',
-          shortName: 'BCH',
+          id: 'btc',
+          shortName: 'BTC',
         });
       };
 

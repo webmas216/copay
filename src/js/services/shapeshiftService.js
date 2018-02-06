@@ -154,7 +154,7 @@ angular.module('copayApp.services').service('shapeshiftService', function($http,
       if (ss) {
         homeIntegrationsService.register(homeItem);
       } else {
-        nextStepsService.register(homeItem);
+        // nextStepsService.register(homeItem);
       }
     });
   };

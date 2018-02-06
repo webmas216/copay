@@ -173,7 +173,7 @@ angular.module('copayApp.services').service('mercadoLibreService', function($htt
       if (giftCards) {
         homeIntegrationsService.register(homeItem);
       } else {
-        nextStepsService.register(nextStepItem);
+        // nextStepsService.register(nextStepItem);
       }
     });
   };
