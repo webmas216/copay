@@ -23,9 +23,9 @@ angular.module('copayApp.services').service('buyAndSellService', function($log, 
 
     if (linkedServices.length == 0) {
       nextStepsService.register({
-        title: 'Buy or Sell Bitcoin',
+        title: 'Buy or Sell Polis',
         name: 'buyandsell',
-        icon: 'icon-buy-bitcoin',
+        icon: 'icon-buy-polis',
         sref: 'tabs.buyandsell',
       });
     } else {

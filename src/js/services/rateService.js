@@ -64,7 +64,7 @@ RateService.prototype.updateRates = function() {
           rate: currency.rate
         });
       });
-
+      
       return cb();
     }).error(function() {
       //log.debug('Error fetching exchange rates', err);
