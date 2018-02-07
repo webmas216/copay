@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('amountController', function ($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService) {
+angular.module('copayApp.controllers').controller('amountController', function ($scope, $filter, $timeout, $ionicScrollDelegate, $ionicHistory, gettextCatalog, platformInfo, lodash, configService, rateService, $stateParams, $window, $state, $log, txFormatService, ongoingProcess, popupService, bwcError, payproService, profileService, bitcore, amazonService, nodeWebkitService, $http) {
   var _id;
   var unitToSatoshi;
   var satToUnit;
@@ -16,6 +16,15 @@ angular.module('copayApp.controllers').controller('amountController', function (
   var fiatCode;
 
   var fixedUnit;
+
+  var polis_to_btc;
+
+  $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+    var value_object = response.data[0];
+    polis_to_btc = parseFloat(value_object.price_btc);
+  },function (err) {
+    conosle.log(err);
+  });
 
   $scope.isChromeApp = platformInfo.isChromeApp;
 
@@ -315,7 +324,7 @@ angular.module('copayApp.controllers').controller('amountController', function (
 
         var a = fromFiat(result);
         if (a) {
-          $scope.alternativeAmount = txFormatService.formatAmount(a * unitToSatoshi, true);
+          $scope.alternativeAmount = (parseFloat(txFormatService.formatAmount(a * unitToSatoshi, true)) / polis_to_btc).toFixed(8);
         } else {
           if (result) {
             $scope.alternativeAmount = 'N/A';
@@ -325,7 +334,8 @@ angular.module('copayApp.controllers').controller('amountController', function (
           $scope.allowSend = false;
         }
       } else {
-        $scope.alternativeAmount = $filter('formatFiatAmount')(toFiat(result));
+        console.log('b');
+        $scope.alternativeAmount = (parseFloat($filter('formatFiatAmount')(toFiat(result))) / polis_to_btc).toFixed(8);
       }
     }
   };
