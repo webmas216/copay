@@ -70,7 +70,7 @@ angular.module('copayApp.services').service('configService', function(storageSer
     },
 
     rates: {
-      url: 'https://insight.bitpay.com:443/api/rates',
+      url: 'https://insight.polispay.org/api/rates',
     },
 
     release: {
