@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('buyandsellController', function($scope, $ionicHistory, buyAndSellService, lodash) {
+angular.module('copayApp.controllers').controller('buyandsellController', function($scope, $ionicHistory, buyAndSellService, lodash, $window) {
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     // $scope.services = buyAndSellService.get();
@@ -23,4 +23,9 @@ angular.module('copayApp.controllers').controller('buyandsellController', functi
       }
     ]
   });
+
+  $scope.openMarket = function (url) {
+    $window.open(url, '_self');
+  };
+
 });

@@ -22,10 +22,15 @@
         </div>
       </div> -->
       <div ng-repeat="service in services">
-        <a class="item item-icon-right" href="{{service.url}}" target="_blank" style="text-decoration: none;">
+        <!-- <a class="item item-icon-right" ng-href="{{service.url}}" style="text-decoration: none;">
           <span>{{ service.caption }}</span>
           <i class="icon bp-arrow-right"></i>
-        </a>
+        </a> -->
+
+        <div class="item item-icon-right" ng-click="openMarket(service.url)"">
+          <span>{{ service.caption }}</span>
+          <i class="icon bp-arrow-right"></i>
+        </div>
       </div>
   </ion-content>
 </ion-view>
