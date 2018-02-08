@@ -3,7 +3,7 @@
   "packageDescription": "Copay Polis Wallet",
   "packageNameId": "com.polispay.copay",
   "statusBarColor": "#192c3a",
-  "userVisibleName": "Copay",
+  "userVisibleName": "Polispay",
   "purposeLine": "Polispay Wallet",
   "bundleName": "copay",
   "appUri": "polispay",
