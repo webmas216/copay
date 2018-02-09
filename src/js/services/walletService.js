@@ -1297,7 +1297,8 @@ angular.module('copayApp.services').service('walletService', function($log, $tim
     if (wallet.coin== 'bch') {
       return 'bitcoincash';
     } else {
-      return 'bitcoin';
+      // return 'bitcoin';
+      return 'polis';
     }
   }
 
