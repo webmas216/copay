@@ -380,10 +380,12 @@ angular.module('copayApp.controllers').controller('amountController', function (
 
     var unit = availableUnits[unitIndex];
     var _amount = evaluate(format($scope.amount));
-    var coin = unit.id;
-    if (unit.isFiat) {
-      coin = availableUnits[altUnitIndex].id;
-    }
+    // var coin = unit.id;
+    // if (unit.isFiat) {
+    //   coin = availableUnits[altUnitIndex].id;
+    // }
+
+    var coin = 'POLIS';
 
     if ($scope.nextStep) {
 
