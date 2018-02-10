@@ -65,8 +65,13 @@ interface Config {
     enabled: boolean;
   };
 
-  showNextSteps: {
-    enabled: boolean;
+  showIntegration: {
+    coinbase: boolean,
+    glidera: boolean,
+    debitcard: boolean,
+    amazon: boolean,
+    mercadoLibre: boolean,
+    shapeshift: boolean
   };
 
   rates: {
@@ -89,8 +94,13 @@ interface Config {
   };
 
   log: {
-    filter: string;
+    weight: number;
   };
+
+  blockExplorerUrl: {
+    btc: string;
+    bch: string;
+  }
 };
 
 const configDefault: Config = {
@@ -158,8 +168,13 @@ const configDefault: Config = {
     enabled: true
   },
 
-  showNextSteps: {
-    enabled: true
+  showIntegration: {
+    coinbase: true,
+    glidera: true,
+    debitcard: true,
+    amazon: true,
+    mercadoLibre: true,
+    shapeshift: true
   },
 
   rates: {
@@ -182,7 +197,12 @@ const configDefault: Config = {
   },
 
   log: {
-    filter: 'debug'
+    weight: 3
+  },
+
+  blockExplorerUrl: {
+    btc: 'insight.bitpay.com',
+    bch: 'bch-insight.bitpay.com'
   }
 };
 
@@ -248,8 +268,8 @@ export class ConfigProvider {
       this.configCache.wallet.settings.unitCode = configDefault.wallet.settings.unitCode;
     }
 
-    if (!this.configCache.showNextSteps) {
-      this.configCache.showNextSteps = configDefault.showNextSteps;
+    if (!this.configCache.showIntegration) {
+      this.configCache.showIntegration = configDefault.showIntegration;
     }
 
     if (!this.configCache.recentTransactions) {

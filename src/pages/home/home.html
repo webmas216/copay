@@ -52,7 +52,7 @@
         <img src="assets/img/check-white.svg" class="bg green" />
       </ion-icon>
       <div class="title" translate>
-        Your wallets are ready!
+        Your bitcoin wallet is ready!
       </div>
       <div class="subtitle" translate>
         On this screen you can see all your wallets, accounts, and assets.
@@ -62,33 +62,29 @@
 
   <ion-list *ngIf="txps && txps[0]">
     <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Payment Proposals</span>
-        </ion-col>
-        <ion-col text-right (click)="openProposalsPage()">
-          <ion-badge *ngIf="txpsN>3" item-end>{{txpsN}}</ion-badge>
-        </ion-col>
-      </ion-row>
+      <div item-start>
+        <span translate>Payment Proposals</span>
+      </div>
+      <button ion-button item-end (click)="openProposalsPage()" *ngIf="txpsN>3">
+        <ion-badge>{{txpsN}}</ion-badge>
+      </button>
     </ion-item-divider>
     <page-txp *ngFor="let txp of txps" [tx]="txp" [addressbook]="addressbook"></page-txp>
   </ion-list>
 
   <ion-list *ngIf="notifications && notifications[0] && recentTransactionsEnabled">
     <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Recent Transactions</span>
-        </ion-col>
-        <ion-col text-right (click)="openActivityPage()">
-          <ion-badge *ngIf="notificationsN>3" item-end>{{notificationsN}}</ion-badge>
-        </ion-col>
-      </ion-row>
+      <div item-start>
+        <span translate>Recent Transactions</span>
+      </div>
+      <button ion-button item-end (click)="openActivityPage()" *ngIf="notificationsN>3">
+        <ion-badge>{{notificationsN}}</ion-badge>
+      </button>
     </ion-item-divider>
 
-    <button ion-item *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
+    <span *ngFor="let notification of notifications" (click)="openNotificationModal(notification)">
       <page-wallet-activity [notification]="notification"></page-wallet-activity>
-    </button>
+    </span>
 
   </ion-list>
 
@@ -98,25 +94,25 @@
     </button>
   </div>
 
-  <ion-list *ngIf="walletsBtc && walletsBtc[0]">
+  <div *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
-          <span translate>Bitcoin Wallets</span>
-        </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="!showReorderBtc">
-          <div class="reorder-icon" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </div>
-          <div class="add-icon" (click)="goToAddView()">
-            <ion-icon name="add"></ion-icon>
-          </div>
-        </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBtc" (click)="reorderBtc()">
+      <div class="title" item-start>
+        <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
+        <span translate>Bitcoin Wallets</span>
+      </div>
+      <div item-end *ngIf="!showReorderBtc">
+        <button ion-button clear icon-only color="grey" (click)="goToAddView()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+        <button ion-button clear icon-only color="grey" (click)="reorderBtc()" *ngIf="walletsBtc.length > 1">
+          <ion-icon name="reorder"></ion-icon>
+        </button>
+      </div>
+      <div item-end *ngIf="showReorderBtc">
+        <button ion-button clear color="secondary" (click)="reorderBtc()">
           {{'Done'|translate}}
-        </ion-col>
-      </ion-row>
+        </button>
+      </div>
     </ion-item-divider>
 
     <ion-list reorder="{{showReorderBtc}}" (ionItemReorder)="reorderWalletsBtc($event)">
@@ -148,27 +144,27 @@
         </p>
       </button>
     </ion-list>
-  </ion-list>
+  </div>
 
-  <ion-list *ngIf="walletsBch && walletsBch[0]">
+  <div *ngIf="walletsBch && walletsBch[0]">
     <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
-          <span translate>Bitcoin Cash Wallets</span>
-        </ion-col>
-        <ion-col class="icons-add-reorder" *ngIf="!showReorderBch" text-right>
-          <div class="reorder-icon" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
-            <ion-icon name="reorder"></ion-icon>
-          </div>
-          <div class="add-icon" (click)="goToAddView('bch')">
-            <ion-icon name="add"></ion-icon>
-          </div>
-        </ion-col>
-        <ion-col text-right class="icons-add-reorder" *ngIf="showReorderBch" (click)="reorderBch()">
+      <div class="title" item-start>
+        <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
+        <span translate>Bitcoin Cash Wallets</span>
+      </div>
+      <div item-end *ngIf="!showReorderBch">
+        <button ion-button clear icon-only color="grey" (click)="goToAddView('bch')">
+          <ion-icon name="add"></ion-icon>
+        </button>
+        <button ion-button clear icon-only color="grey" (click)="reorderBch()" *ngIf="walletsBch.length > 1">
+          <ion-icon name="reorder"></ion-icon>
+        </button>
+      </div>
+      <div item-end *ngIf="showReorderBch">
+        <button ion-button clear color="secondary" (click)="reorderBch()">
           {{'Done'|translate}}
-        </ion-col>
-      </ion-row>
+        </button>
+      </div>
     </ion-item-divider>
 
     <ion-list reorder="{{showReorderBch}}" (ionItemReorder)="reorderWalletsBch($event)">
@@ -200,40 +196,39 @@
         </p>
       </button>
     </ion-list>
-  </ion-list>
+  </div>
 
-  <ion-list *ngIf="wallets && wallets[0] && buyAndSellItems && buyAndSellItems.length>0">
+  <div *ngIf="bitpayCardItems && bitpayCardItems[0]">
     <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Buy &amp; Sell Bitcoin</span>
-        </ion-col>
-        <ion-col text-right (click)="hideBuyAndSellItems = !hideBuyAndSellItems">
-          <ion-icon *ngIf="hideBuyAndSellItems" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="!hideBuyAndSellItems" name="arrow-up"></ion-icon>
-        </ion-col>
-      </ion-row>
+      <div class="title" item-start>
+        <span translate>BitPay Visa<sup>&reg;</sup> Card</span>
+      </div>
+      <div item-end>
+        <button ion-button clear icon-only color="grey" (click)="goTo('BitPayCardIntroPage')">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </div>
     </ion-item-divider>
-    <div *ngIf="!hideBuyAndSellItems">
-      <button ion-item *ngFor="let service of buyAndSellItems" (click)="goTo(service.page)">
+    <ion-list>
+      <button ion-item *ngFor="let card of bitpayCardItems" (click)="goToCard(card.id)">
         <ion-icon item-start>
-          <img src="{{service.logo}}" class="logo-services" />
+          <img src="assets/img/icon-card.svg" class="icon-card" />
         </ion-icon>
+        <h2>BitPay Visa&reg; Card ({{card.lastFourDigits}})</h2>
+        <p>{{card.balance ? (card.balance | currency:card.currencySymbol:2) : 'Add funds to get started'|translate}} {{card.updatedOn ? (' &middot; ' + (card.updatedOn  * 1000 | amTimeAgo)) : ''}}</p>
       </button>
-    </div>
-  </ion-list>
+    </ion-list>
+  </div>
 
   <ion-list *ngIf="homeIntegrations && homeIntegrations.length>0">
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Services</span>
-        </ion-col>
-        <ion-col text-right (click)="hideHomeIntegrations = !hideHomeIntegrations">
-          <ion-icon *ngIf="hideHomeIntegrations" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-up"></ion-icon>
-        </ion-col>
-      </ion-row>
+    <ion-item-divider (click)="hideHomeIntegrations = !hideHomeIntegrations">
+      <div item-start translate>Services</div>
+      <div item-end>
+        <button ion-button clear color="grey" icon-only>
+          <ion-icon *ngIf="hideHomeIntegrations" name="arrow-dropdown"></ion-icon>
+          <ion-icon *ngIf="!hideHomeIntegrations" name="arrow-dropup"></ion-icon>
+        </button>
+      </div>
     </ion-item-divider>
     <div *ngIf="!hideHomeIntegrations">
       <button ion-item *ngFor="let service of homeIntegrations" (click)="goTo(service.page)">
@@ -243,27 +238,6 @@
         <span>{{service.title || service.name}}</span>
       </button>
     </div>
-  </ion-list>
-
-  <ion-list *ngIf="nextStepsItems && nextStepsItems.length>0">
-    <ion-item-divider>
-      <ion-row>
-        <ion-col class="title">
-          <span translate>Next steps</span>
-        </ion-col>
-        <ion-col text-right (click)="hideNextSteps = !hideNextSteps">
-          <ion-icon *ngIf="hideNextSteps" name="arrow-down"></ion-icon>
-          <ion-icon *ngIf="!hideNextSteps" name="arrow-up"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-item-divider>
-    <div *ngIf="!hideNextSteps">
-      <button ion-item *ngFor="let nextStepsItem of nextStepsItems" (click)="goTo(nextStepsItem.page)">
-        <ion-icon item-start>
-          <img src="{{nextStepsItem.icon}}" class="icon-services" />
-        </ion-icon>
-        <span>{{nextStepsItem.title || nextStepsItem.name}}</span>
-      </button>
-    </div>
+    <ion-item-divider></ion-item-divider>
   </ion-list>
 </ion-content>

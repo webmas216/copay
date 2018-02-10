@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { AppProvider } from '../../providers/app/app';
@@ -9,6 +10,7 @@ import { LanguageProvider } from '../../providers/language/language';
 import { ExternalLinkProvider } from '../../providers/external-link/external-link';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { PlatformProvider } from '../../providers/platform/platform';
+import { HomeIntegrationsProvider } from '../../providers/home-integrations/home-integrations';
 
 //pages
 import { AltCurrencyPage } from './alt-currency/alt-currency';
@@ -23,6 +25,10 @@ import { FeePolicyPage } from './fee-policy/fee-policy';
 import { LanguagePage } from './language/language';
 import { FeedbackCompletePage } from '../feedback/feedback-complete/feedback-complete';
 import { SendFeedbackPage } from '../feedback/send-feedback/send-feedback';
+import { GlideraSettingsPage } from '../integrations/glidera/glidera-settings/glidera-settings';
+import { CoinbaseSettingsPage } from '../integrations/coinbase/coinbase-settings/coinbase-settings';
+import { EnabledServicesPage } from './enabled-services/enabled-services';
+import { BitPaySettingsPage } from '../integrations/bitpay-card/bitpay-settings/bitpay-settings';
 
 @Component({
   selector: 'page-settings',
@@ -39,6 +45,8 @@ export class SettingsPage {
   public isCordova: boolean;
   public isWindowsPhoneApp: boolean;
   public lockMethod: string;
+  public exchangeServices: Array<any> = [];
+  public bitpayCardEnabled: boolean = false;
 
   constructor(
     private navCtrl: NavController,
@@ -48,7 +56,9 @@ export class SettingsPage {
     private profileProvider: ProfileProvider,
     private configProvider: ConfigProvider,
     private logger: Logger,
-    private platformProvider: PlatformProvider
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
+    private platformProvider: PlatformProvider,
+    private translate: TranslateService
   ) {
     this.appName = this.app.info.nameCase;
     this.currentLanguageName = this.language.getName(this.language.getCurrent());
@@ -75,6 +85,11 @@ export class SettingsPage {
       isoCode: this.config.wallet.settings.alternativeIsoCode
     }
     this.lockMethod = this.config.lock.method;
+    this.exchangeServices = this.homeIntegrationsProvider.getAvailableExchange();
+
+    if (this.app.info._enabledExtensions.debitcard) {
+      this.bitpayCardEnabled = true;
+    }
   }
 
   public openBitcoinCashPage(): void {
@@ -125,13 +140,32 @@ export class SettingsPage {
     this.navCtrl.push(FeedbackCompletePage, { score: 4, skipped: true, fromSettings: true });
   }
 
+  public openEnabledServicesPage(): void {
+    this.navCtrl.push(EnabledServicesPage);
+  }
+
+  public openBitPaySettings(): void {
+    this.navCtrl.push(BitPaySettingsPage);
+  }
+
+  public openIntegrationSettings(name: string): void {
+    switch (name) {
+      case 'coinbase':
+        this.navCtrl.push(CoinbaseSettingsPage);
+        break;
+      case 'glidera':
+        this.navCtrl.push(GlideraSettingsPage);
+        break;
+    }
+  }
+
   public openHelpExternalLink(): void {
-    var url = this.appName == 'Copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
-    var optIn = true;
-    var title = null;
-    var message = 'Help and support information is available at the website.'; // TODO gettextCatalog
-    var okText = 'Open'; // TODO gettextCatalog
-    var cancelText = 'Go Back'; // TODO gettextCatalog
+    let url = this.appName == 'Copay' ? 'https://github.com/bitpay/copay/issues' : 'https://help.bitpay.com/bitpay-app';
+    let optIn = true;
+    let title = null;
+    let message = this.translate.instant('Help and support information is available at the website.');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 }

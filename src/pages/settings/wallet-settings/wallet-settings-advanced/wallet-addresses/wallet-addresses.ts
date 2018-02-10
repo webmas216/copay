@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { ProfileProvider } from '../../../../../providers/profile/profile';
@@ -12,7 +13,6 @@ import { TxFormatProvider } from '../../../../../providers/tx-format/tx-format';
 
 //pages
 import { AllAddressesPage } from './all-addresses/all-addresses';
-import { SettingsPage } from '../../../settings';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
 import * as _ from 'lodash';
@@ -51,7 +51,8 @@ export class WalletAddressesPage {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private modalCtrl: ModalController,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private translate: TranslateService
   ) {
     this.UNUSED_ADDRESS_LIMIT = 5;
     this.BALANCE_ADDRESS_LIMIT = 5;
@@ -82,12 +83,12 @@ export class WalletAddressesPage {
       }).catch((err: any) => {
         this.logger.error(err);
         this.loading = false;
-        this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
+        this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, this.translate.instant('Could not update wallet')));
       });
     }).catch((err: any) => {
       this.logger.error(err);
       this.loading = false;
-      this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, 'Could not update wallet')); //TODO gettextcatalog
+      this.popupProvider.ionicAlert(this.bwcErrorProvider.msg(err, this.translate.instant('Could not update wallet')));
     });
 
     this.walletProvider.getLowUtxos(this.wallet).then((resp) => {
@@ -125,7 +126,7 @@ export class WalletAddressesPage {
       this.walletProvider.getMainAddresses(this.wallet, { limit: 1 }).then((_addr: any) => {
         this.onGoingProcessProvider.set('generatingNewAddress', false);
         if (addr != _addr[0].address) {
-          this.popupProvider.ionicAlert('Error', 'New address could not be generated. Please try again.'); //TODO gettextcatalog
+          this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('New address could not be generated. Please try again.'));
           return;
         }
         this.noBalance = [_addr[0]].concat(this.noBalance);
@@ -134,7 +135,7 @@ export class WalletAddressesPage {
       }).catch((err) => {
         this.logger.error(err);
         this.onGoingProcessProvider.set('generatingNewAddress', false);
-        this.popupProvider.ionicAlert('Error', err); //TODO getextcatalog
+        this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
       });
     }).catch((err) => {
       this.logger.error(err);
@@ -154,7 +155,6 @@ export class WalletAddressesPage {
 
   public scan(): void {
     this.walletProvider.startScan(this.wallet);
-    this.navCtrl.setRoot(SettingsPage);
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId })

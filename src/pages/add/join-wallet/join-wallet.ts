@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
-import { HomePage } from '../../../pages/home/home';
 import { CopayersPage } from '../copayers/copayers';
 
 // Providers
@@ -19,7 +19,7 @@ import { WalletProvider } from '../../../providers/wallet/wallet';
   selector: 'page-join-wallet',
   templateUrl: 'join-wallet.html'
 })
-export class JoinWalletPage implements OnInit {
+export class JoinWalletPage {
 
   private defaults: any;
   public showAdvOpts: boolean;
@@ -39,7 +39,8 @@ export class JoinWalletPage implements OnInit {
     private popupProvider: PopupProvider,
     private profileProvider: ProfileProvider,
     private walletProvider: WalletProvider,
-    private logger: Logger
+    private logger: Logger,
+    private translate: TranslateService
   ) {
     this.defaults = this.configProvider.getDefaults();
 
@@ -54,12 +55,8 @@ export class JoinWalletPage implements OnInit {
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
-      addPassword: [false],
-      password: [null],
-      confirmPassword: [null],
-      recoveryPhraseBackedUp: [null],
       derivationPath: [this.derivationPathByDefault],
-      coin: [this.navParams.data.coin]
+      coin: [this.navParams.data.coin ? this.navParams.data.coin : 'btc']
     });
 
     this.seedOptions = [{
@@ -71,45 +68,22 @@ export class JoinWalletPage implements OnInit {
       label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
+  }
 
+  ionViewDidLoad() {
+    this.logger.info('ionViewDidLoad JoinWalletPage');
+  }
+
+  ionViewWillEnter() {
     if (this.navParams.data.url) {
-      let data = this.navParams.data.url;
+      let data: string = this.navParams.data.url;
       data = data.replace('copay:', '');
       this.onQrCodeScannedJoin(data);
     }
   }
 
-  ionViewDidLoad() {
-    this.logger.info('ionViewDidLoad JoinWalletPage');
-    this.resetFormFields();
-  }
-
-  ngOnInit() {
-    this.joinForm.get('addPassword').valueChanges.subscribe((addPassword: boolean) => {
-      if (addPassword) {
-        this.joinForm.get('password').setValidators([Validators.required]);
-        this.joinForm.get('confirmPassword').setValidators([Validators.required]);
-      } else {
-        this.joinForm.get('password').clearValidators();
-        this.joinForm.get('confirmPassword').clearValidators();
-      }
-      this.joinForm.get('password').updateValueAndValidity();
-      this.joinForm.get('confirmPassword').updateValueAndValidity();
-    })
-  }
-
-  public validatePasswords(): boolean {
-    if (this.joinForm.value.addPassword) {
-      if (this.joinForm.value.password == this.joinForm.value.confirmPassword) {
-        if (this.joinForm.value.recoveryPhraseBackedUp) return false;
-      }
-      return true;
-    }
-    return false;
-  }
-
   public onQrCodeScannedJoin(data: string): void { // TODO
-    this.joinForm.value.invitationCode = data;
+    this.joinForm.controls['invitationCode'].setValue(data);
   }
 
   public seedOptionsChange(seed: any): void {
@@ -118,21 +92,14 @@ export class JoinWalletPage implements OnInit {
     } else {
       this.joinForm.get('recoveryPhrase').setValidators(null);
     }
-    this.joinForm.value.selectedSeed = seed;
-    this.joinForm.value.testnet = false;
-    this.joinForm.value.derivationPath = this.derivationPathByDefault;
-    this.resetFormFields();
-  }
-
-  public resetFormFields(): void {
-    this.joinForm.value.password = null;
-    this.joinForm.value.confirmPassword = null;
-    this.joinForm.value.recoveryPhraseBackedUp = null;
-    this.joinForm.value.recoveryPhrase = null;
+    this.joinForm.controls['selectedSeed'].setValue(seed);
+    this.joinForm.controls['testnet'].setValue(false);
+    this.joinForm.controls['derivationPath'].setValue(this.derivationPathByDefault);
   }
 
   setDerivationPath() {
-    this.joinForm.value.derivationPath = this.joinForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    let path: string = this.joinForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    this.joinForm.controls['derivationPath'].setValue(path);
   }
 
   public setOptsAndJoin(): void {
@@ -152,22 +119,23 @@ export class JoinWalletPage implements OnInit {
       } else {
         opts.mnemonic = words;
       }
-      opts.passphrase = this.joinForm.value.password;
 
       let pathData = this.derivationPathHelperProvider.parse(this.joinForm.value.derivationPath);
       if (!pathData) {
-        this.popupProvider.ionicAlert('Error', 'Invalid derivation path'); // TODO: GetTextCatalog
+        let title = this.translate.instant('Error');
+        let subtitle = this.translate.instant('Invalid derivation path');
+        this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
 
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
-    } else {
-      opts.passphrase = this.joinForm.value.password;
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      this.popupProvider.ionicAlert('Error', 'Please enter the wallet recovery phrase', 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      let subtitle = this.translate.instant('Please enter the wallet recovery phrase');
+      this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
 
@@ -182,18 +150,26 @@ export class JoinWalletPage implements OnInit {
       this.walletProvider.updateRemotePreferences(wallet);
 
       if (!wallet.isComplete()) {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
         this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       } else {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
       }
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('joiningWallet', false);
-      this.popupProvider.ionicAlert('Error', err, 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      this.popupProvider.ionicAlert(title, err);
       return;
     });
+  }
+
+  public openScanner(): void {
+    if (this.navParams.data.fromScan) {
+      this.navCtrl.popToRoot();
+    } else {
+      this.navCtrl.popToRoot();
+      this.navCtrl.parent.select(2);
+    }
   }
 
 }

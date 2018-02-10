@@ -5,18 +5,18 @@ page-wallet-details {
   .balance-header {
     position: relative;
     color: color($colors, light);
-    height: 15rem;
+    height: 14rem;
     text-align: center;
   }
   .balance-str {
     cursor: pointer;
     padding-top: 5rem;
-    font-size: 35px;
+    font-size: 32px;
     font-weight: 600;
   }
   .balance-alt-str {
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
   }
   .balance-hidden {
     cursor: pointer;
@@ -28,6 +28,8 @@ page-wallet-details {
     padding: 15% 1rem 0 1rem;
   }
   .balance-spendable {
+    margin-top: 5px;
+    font-size: 12.5px;
     cursor: pointer;
     ion-icon {
       vertical-align: middle;
@@ -35,13 +37,18 @@ page-wallet-details {
     }
   }
   .balance-scanning {
-    padding-top: 5rem;
+    font-size: 20px;
+    padding-top: 6rem;
   }
   .tx-history {
     img {
       width: 35px;
     }
     .action {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     ion-note {
       text-align: end;
@@ -67,45 +74,52 @@ page-wallet-details {
   }
 
   .wallet-info {
-    font-weight: 500;
+    font-weight: 400;
     color: color($colors, light);
-    height: 2.5rem;
-    padding-left: 0.5rem;
-    span {
-      margin: 0 3px;
-      padding-top: 2px;
-      float: left;
-    }
+    height: 30px;
+    padding: 0 5px;
     img {
       float: left;
+      margin-right: 4px;
     }
     .testnet {
-      height: 2.5rem;
-      width: 2.5rem;
+      height: 2rem;
+      width: 2rem;
+      margin-top: 5px;
     }
     .testnet-text {
-      height: 2.5rem;
-      width: 4.5rem;
-      margin-right: 5px;
+      color: color($colors, light);
+      height: 3rem;
+      width: 4rem;
     }
     .read-only {
-      height: 2.5rem;
-      width: 1.5rem;
-      margin-right: 5px;
+      height: 3rem;
+      width: 2rem;
     }
     .read-only-text {
-      height: 2.5rem;
+      height: 3rem;
       width: 5rem;
-      margin-right: 5px;
     }
     .auditable-text {
-      height: 2.5rem;
-      width: 5rem;
+      height: 3rem;
+      width: 4rem;
+    }
+    .custom-bws {
+      height: 3rem;
+      width: 3rem;
+    }
+    .wallet-type {
+      display: block;
+      float: left;
+      margin: 0 5px;
+      padding-top: 9px;
+      font-size: 11px;
     }
     ion-spinner {
       float: right;
       width: 20px;
       height: 20px;
+      margin: 5px 5px 0 0;
       * {
         stroke: color($colors, light);
       }
@@ -115,7 +129,7 @@ page-wallet-details {
   .total-locked-amount {
     color: color($colors, dark);
   }
-  .total-alt-locked-amount {
+  .total-alt-locked-amount, .double-spend {
     font-size: 12.5px;
   }
 }

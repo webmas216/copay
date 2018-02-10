@@ -29,7 +29,7 @@ export class CoinbasePage {
   public loading: boolean;
   public buyPrice: string;
   public sellPrice: string;
-  public pendingTransactions: any;
+  public pendingTransactions: object = { data: {} };
   public code: string;
   public showOauthForm: boolean;
   public oauthCodeForm: FormGroup;
@@ -70,14 +70,14 @@ export class CoinbasePage {
 
   private init(): void {
     this.currency = this.coinbaseProvider.getAvailableCurrency();
+    this.loading = true;
     this.coinbaseProvider.getStoredToken((at: string) => {
       this.accessToken = at;
 
       // Update Access Token if necessary
-      this.loading = true;
       this.coinbaseProvider.init((err: any, data: any) => {
-        this.loading = false;
         if (err || _.isEmpty(data)) {
+          this.loading = false;
           if (err) {
             this.logger.error(err);
             let errorId = err.errors ? err.errors[0].id : null;
@@ -95,9 +95,10 @@ export class CoinbasePage {
         // Show rates
         this.coinbaseProvider.buyPrice(data.accessToken, this.currency, (err, b: any) => {
           this.buyPrice = b.data || null;
-        });
-        this.coinbaseProvider.sellPrice(data.accessToken, this.currency, (err, s: any) => {
-          this.sellPrice = s.data || null;
+          this.coinbaseProvider.sellPrice(data.accessToken, this.currency, (err, s: any) => {
+            this.sellPrice = s.data || null;
+            this.loading = false;
+          });
         });
 
         // Updating accessToken and accountId
@@ -110,7 +111,6 @@ export class CoinbasePage {
 
   public updateTransactions(): void {
     this.logger.debug('Getting transactions...');
-    this.pendingTransactions = { data: {} };
     this.coinbaseProvider.getPendingTransactions(this.pendingTransactions);
   }
 
@@ -190,11 +190,11 @@ export class CoinbasePage {
     })
   }
 
-  public goToBuyGlideraPage(): void {
+  public goToBuyCoinbasePage(): void {
     this.navCtrl.push(AmountPage, { nextPage: 'BuyCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true });
   }
 
-  public goToSellGlideraPage(): void {
+  public goToSellCoinbasePage(): void {
     this.navCtrl.push(AmountPage, { nextPage: 'SellCoinbasePage', currency: this.currency, coin: 'btc', fixedUnit: true })
   }
 

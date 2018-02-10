@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Events, NavController, App } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { BwcProvider } from '../bwc/bwc';
@@ -15,6 +16,9 @@ import { ConfirmPage } from '../../pages/send/confirm/confirm';
 import { AmountPage } from '../../pages/send/amount/amount';
 import { JoinWalletPage } from '../../pages/add/join-wallet/join-wallet';
 import { ImportWalletPage } from '../../pages/add/import-wallet/import-wallet';
+import { GlideraPage } from '../../pages/integrations/glidera/glidera';
+import { CoinbasePage } from '../../pages/integrations/coinbase/coinbase';
+import { BitPayCardIntroPage } from '../../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
 
 @Injectable()
 export class IncomingDataProvider {
@@ -28,7 +32,8 @@ export class IncomingDataProvider {
     private popupProvider: PopupProvider,
     private logger: Logger,
     private appProvider: AppProvider,
-    private addressProvider: AddressProvider
+    private addressProvider: AddressProvider,
+    private translate: TranslateService
   ) {
     this.logger.info('IncomingDataProvider initialized.');
   }
@@ -37,7 +42,7 @@ export class IncomingDataProvider {
     this.events.publish('incomingDataMenu.showMenu', data);
   }
 
-  public redir(data: any): boolean {
+  public redir(data: string): boolean {
     //TODO Injecting NavController in constructor of service fails with no provider error
     this.navCtrl = this.app.getActiveNav();
     // data extensions for Payment Protocol with non-backwards-compatible request
@@ -68,7 +73,7 @@ export class IncomingDataProvider {
           this.handlePayPro(details, coin);
         }).catch((err: string) => {
           if (addr && amount) this.goSend(addr, amount, message, coin);
-          else this.popupProvider.ionicAlert('Error', err); //TODO gettextcatalog
+          else this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
         });
       } else {
         this.goSend(addr, amount, message, coin);
@@ -97,7 +102,7 @@ export class IncomingDataProvider {
           if (addr && amount)
             this.goSend(addr, amount, message, coin);
           else
-            this.popupProvider.ionicAlert('Error', err);//TODO gettextcatalog
+            this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
         });
       } else {
         this.goSend(addr, amount, message, coin);
@@ -120,7 +125,9 @@ export class IncomingDataProvider {
 
       // Translate address
       this.logger.debug('address transalated to:' + addr);
-      this.popupProvider.ionicConfirm('Bitcoin cash Payment', 'Payment address was translated to new Bitcoin Cash address format: ' + addr, 'OK', 'Cancel').then((res: boolean) => {
+      let title = this.translate.instant('Bitcoin cash Payment');
+      let msg = this.translate.instant('Payment address was translated to new Bitcoin Cash address format: {{addr}}', { addr: addr });
+      this.popupProvider.ionicConfirm(title, msg).then((res: boolean) => {
         if (!res) return false;
 
         message = parsed.message;
@@ -134,7 +141,7 @@ export class IncomingDataProvider {
             if (addr && amount)
               this.goSend(addr, amount, message, coin);
             else
-              this.popupProvider.ionicAlert('Error', err);//TODO gettextcatalog
+              this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
           });
         } else {
           this.goSend(addr, amount, message, coin);
@@ -184,13 +191,17 @@ export class IncomingDataProvider {
         this.goToAmountPage(data, coin, network);
       }
     } else if (data && data.indexOf(this.appProvider.info.name + '://glidera') === 0) {
-      //let code = this.getParameterByName('code', data);
-      //this.navCtrl.push(GlideraPage, {code: code}); //Glidera TODO
+
+      let code = this.getParameterByName('code', data);
+      this.navCtrl.push(GlideraPage, { code: code });
+
       this.logger.debug('Glidera TODO');
       return true;
     } else if (data && data.indexOf(this.appProvider.info.name + '://coinbase') === 0) {
-      //let code = this.getParameterByName('code', data);
-      //this.navCtrl.push(CoinbasePage, {code: code}); //Glidera TODO
+
+      let code = this.getParameterByName('code', data);
+      this.navCtrl.push(CoinbasePage, { code: code });
+
       this.logger.debug('Coinbase TODO');
       return true;
       // BitPayCard Authentication
@@ -199,30 +210,31 @@ export class IncomingDataProvider {
       // Disable BitPay Card
       if (!this.appProvider.info._enabledExtensions.debitcard) return false;
 
-      /* For BitPay card binding
+      // For BitPay card binding
       let secret = this.getParameterByName('secret', data);
       let email = this.getParameterByName('email', data);
-      let otp = this.getParameterByName('otp', data);*/
+      let otp = this.getParameterByName('otp', data);
       let reason = this.getParameterByName('r', data);
       switch (reason) {
         default:
         case '0':
           /* For BitPay card binding */
-          //this.navCtrl.push(BitPayCardPage,{ secret: secret, email: email, otp: otp}); //Glidera TODO
-          this.logger.debug('BitPay card TODO');
+          this.navCtrl.parent.select(0);
+          this.navCtrl.push(BitPayCardIntroPage, { secret: secret, email: email, otp: otp });
           break;
       }
       return true;
 
       // Join
     } else if (data && data.match(/^copay:[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data })
+      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
       return true;
       // Old join
     } else if (data && data.match(/^[0-9A-HJ-NP-Za-km-z]{70,80}$/)) {
-      this.navCtrl.push(JoinWalletPage, { url: data })
+      this.navCtrl.push(JoinWalletPage, { url: data, fromScan: true })
       return true;
     } else if (data && (data.substring(0, 2) == '6P' || this.checkPrivateKey(data))) {
+      this.logger.debug('Handling private key');
       this.showMenu({
         data: data,
         type: 'privateKey'
@@ -234,6 +246,7 @@ export class IncomingDataProvider {
     } else {
 
       if (this.navCtrl.getActive().name === 'ScanPage') {
+        this.logger.debug('Handling plain text');
         this.showMenu({
           data: data,
           type: 'text'

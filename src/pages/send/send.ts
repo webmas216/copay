@@ -51,6 +51,7 @@ export class SendPage {
   }
 
   ionViewWillEnter() {
+    this.search = '';
     this.walletsBtc = this.profileProvider.getWallets({ coin: 'btc' });
     this.walletsBch = this.profileProvider.getWallets({ coin: 'bch' });
     this.hasBtcWallets = !(_.isEmpty(this.walletsBtc));
@@ -140,10 +141,6 @@ export class SendPage {
       this.filteredContactsList = _.clone(shortContactsList);
       this.contactsShowMore = this.contactsList.length > shortContactsList.length;
     });
-  }
-
-  public openScanner(): void {
-    this.navCtrl.parent.select(2);
   }
 
   public showMore(): void {

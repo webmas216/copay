@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 import * as _ from "lodash";
+import { TranslateService } from '@ngx-translate/core';
 
 // Providers
 import { AddressBookProvider } from '../../providers/address-book/address-book';
@@ -50,26 +51,24 @@ export class TxDetailsPage {
     private profileProvider: ProfileProvider,
     private txConfirmNotificationProvider: TxConfirmNotificationProvider,
     private txFormatProvider: TxFormatProvider,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private translate: TranslateService
   ) {
     this.config = this.configProvider.get();
 
     this.txId = this.navParams.data.txid;
-    this.title = 'Transaction'; // Todo: gettextCatalog
+    this.title = this.translate.instant('Transaction');
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
     this.color = this.wallet.color;
     this.copayerId = this.wallet.credentials.copayerId;
     this.isShared = this.wallet.credentials.n > 1;
     this.txsUnsubscribedForNotifications = this.config.confirmedTxsNotifications ? !this.config.confirmedTxsNotifications.enabled : true;
 
+    let defaults = this.configProvider.getDefaults();
     if (this.wallet.coin == 'bch') {
-      if (this.walletProvider.useLegacyAddress()) {
-        this.blockexplorerUrl = 'bch-insight.bitpay.com';
-      } else {
-        this.blockexplorerUrl = 'blockdozer.com/insight';
-      }
+      this.blockexplorerUrl = defaults.blockExplorerUrl.bch;
     } else {
-      this.blockexplorerUrl = 'insight.bitpay.com';
+      this.blockexplorerUrl = defaults.blockExplorerUrl.btc;
     }
 
     this.txConfirmNotificationProvider.checkIfEnabled(this.txId).then((res: any) => {
@@ -95,15 +94,15 @@ export class TxDetailsPage {
     let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#amount-too-low-to-spend';
     let optIn = true;
     let title = null;
-    let message = 'Read more in our Wiki'; // Todo: gettextCatalog
-    let okText = 'Open'; // Todo: gettextCatalog
-    let cancelText = 'Go Back'; // Todo: gettextCatalog
+    let message = this.translate.instant('Read more in our Wiki');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   private updateMemo(): void {
-    this.walletProvider.getTxNote(this.wallet, this.btx.txid).then((note: string) => {
-      if (!note) return;
+    this.walletProvider.getTxNote(this.wallet, this.btx.txid).then((note: any) => {
+      if (!note || note.body == "") return;
       this.btx.note = note;
     }).catch((err: any) => {
       this.logger.warn('Could not fetch transaction note: ' + err);
@@ -116,10 +115,10 @@ export class TxDetailsPage {
     if (this.btx.action != 'sent' && this.btx.action != 'moved' || !this.isShared) return;
 
     let actionDescriptions = {
-      created: 'Proposal Created', // Todo: gettextCatalog
-      accept: 'Accepted', // Todo: gettextCatalog
-      reject: 'Rejected', // Todo: gettextCatalog
-      broadcasted: 'Broadcasted' // Todo: gettextCatalog
+      created: this.translate.instant('Proposal Created'),
+      accept: this.translate.instant('Accepted'),
+      reject: this.translate.instant('Rejected'),
+      broadcasted: this.translate.instant('Broadcasted')
     };
 
     this.actionList.push({
@@ -163,9 +162,9 @@ export class TxDetailsPage {
       this.btx.feeRateStr = (this.btx.fees / (this.btx.amount + this.btx.fees) * 100).toFixed(2) + '%';
 
       if (this.btx.action != 'invalid') {
-        if (this.btx.action == 'sent') this.title = 'Sent Funds'; // Todo: gettextCatalog
-        if (this.btx.action == 'received') this.title = 'Received Funds'; // Todo: gettextCatalog
-        if (this.btx.action == 'moved') this.title = 'Moved Funds'; // Todo: gettextCatalog
+        if (this.btx.action == 'sent') this.title = this.translate.instant('Sent Funds');
+        if (this.btx.action == 'received') this.title = this.translate.instant('Received Funds');
+        if (this.btx.action == 'moved') this.title = this.translate.instant('Moved Funds');
       }
 
       this.updateMemo();
@@ -183,7 +182,7 @@ export class TxDetailsPage {
       if (!opts.hideLoading) this.onGoingProcess.set('loadingTxInfo', false);
       this.logger.warn('Error getting transaction: ' + err);
       this.navCtrl.pop();
-      return this.popupProvider.ionicAlert('Error', 'Transaction not available at this time'); // Todo: gettextCatalog
+      return this.popupProvider.ionicAlert('Error', this.translate.instant('Transaction not available at this time'));
     });
   }
 
@@ -194,8 +193,8 @@ export class TxDetailsPage {
     }
     if (this.btx.note && this.btx.note.body) opts.defaultText = this.btx.note.body;
 
-    this.popupProvider.ionicPrompt(this.wallet.name, 'Memo', opts).then((text: string) => { // Todo: gettextCatalog
-      if (typeof text == "undefined") return;
+    this.popupProvider.ionicPrompt(this.wallet.name, this.translate.instant('Memo'), opts).then((text: string) => {
+      if (text == null) return;
 
       this.btx.note = {
         body: text
@@ -220,9 +219,9 @@ export class TxDetailsPage {
     let url = 'https://' + (this.getShortNetworkName() == 'test' ? 'test-' : '') + this.blockexplorerUrl + '/tx/' + btx.txid;
     let optIn = true;
     let title = null;
-    let message = 'View Transaction on Insight'; // Todo: gettextCatalog
-    let okText = 'Open Insight'; // Todo: gettextCatalog
-    let cancelText = 'Go Back'; // Todo: gettextCatalog
+    let message = this.translate.instant('View Transaction on Insight');
+    let okText = this.translate.instant('Open Insight');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 

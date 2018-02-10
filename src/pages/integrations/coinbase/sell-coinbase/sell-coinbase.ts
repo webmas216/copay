@@ -103,7 +103,7 @@ export class SellCoinbasePage {
   private publishAndSign(wallet: any, txp: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!wallet.canSign() && !wallet.isPrivKeyExternal()) {
-        let err = 'No signing proposal: No private key'; // TODO: gettextCatalog
+        let err = 'No signing proposal: No private key';
         this.logger.info(err);
         return reject(err);
       }
@@ -157,11 +157,12 @@ export class SellCoinbasePage {
           let msg = 'No payment method available to buy';
           let okText = 'More info';
           let cancelText = 'Go Back';
-          this.externalLinkProvider.open(url, true, null, msg, okText, cancelText).then(() => {
+          this.popupProvider.ionicConfirm(null, msg, okText, cancelText).then((res) => {
+            if (res) this.externalLinkProvider.open(url);
             this.navCtrl.remove(3, 1);
             this.navCtrl.pop();
-            return;
           });
+          return;
         }
         if (!hasPrimary) this.selectedPaymentMethodId = this.paymentMethods[0].id;
         this.sellRequest();

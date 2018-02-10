@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 //providers
 import { AppProvider } from '../app/app';
 import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
-import { NextStepsProvider } from '../next-steps/next-steps';
 import { PersistenceProvider } from '../persistence/persistence';
 
 @Injectable()
@@ -20,7 +19,6 @@ export class ShapeshiftProvider {
     private homeIntegrationsProvider: HomeIntegrationsProvider,
     private http: HttpClient,
     private logger: Logger,
-    private nextStepsProvider: NextStepsProvider,
     private persistenceProvider: PersistenceProvider
   ) {
     this.logger.info('Hello ShapeshiftProvider Provider');
@@ -36,7 +34,7 @@ export class ShapeshiftProvider {
     * Production: 'livenet'
     */
     this.credentials.NETWORK = 'livenet';
-    //credentials.NETWORK = 'testnet';
+    //this.credentials.NETWORK = 'testnet';
 
     if (this.credentials.NETWORK == 'testnet') {
       this.credentials.API_URL = "";
@@ -96,8 +94,6 @@ export class ShapeshiftProvider {
       inv = JSON.stringify(inv);
 
       this.persistenceProvider.setShapeshift(network, inv);
-      this.homeIntegrationsProvider.register(this.homeItem);
-      this.nextStepsProvider.unregister(this.homeItem.name);
       return cb(null);
     }).catch((err: any) => {
       return cb(err);
@@ -105,10 +101,9 @@ export class ShapeshiftProvider {
   }
 
   public getShapeshift(cb) {
-    var network = this.getNetwork();
+    let network = this.getNetwork();
     this.persistenceProvider.getShapeshift(network).then((ss: any) => {
-      var _gcds = ss ? JSON.parse(ss) : null;
-      return cb(null, _gcds);
+      return cb(null, ss);
     }).catch((err: any) => {
       return cb(err, null);
     });
@@ -155,13 +150,7 @@ export class ShapeshiftProvider {
   }
 
   public register(): void {
-    this.persistenceProvider.getShapeshift(this.getNetwork()).then((ss: any) => {
-      if (ss) {
-        this.homeIntegrationsProvider.register(this.homeItem);
-      } else {
-        this.nextStepsProvider.register(this.homeItem);
-      }
-    });
+    this.homeIntegrationsProvider.register(this.homeItem);
   }
 
 }

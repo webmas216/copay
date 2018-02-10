@@ -4,15 +4,17 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
-    <ion-segment-button value="words" translate>
-      Words
-    </ion-segment-button>
-    <ion-segment-button value="file" translate>
-      File
-    </ion-segment-button>
-  </ion-segment>
+<ion-content no-bounce>
+  <div [attr.padding]="isIOS ? '' : null">
+    <ion-segment [(ngModel)]="selectedTab" color="primary" (ionChange)="selectTab(selectedTab)">
+      <ion-segment-button value="words" translate>
+        Words
+      </ion-segment-button>
+      <ion-segment-button value="file" translate>
+        File
+      </ion-segment-button>
+    </ion-segment>
+  </div>
 
   <ion-card (click)="importErr = false">
     <ion-item *ngIf="importErr" class="assertive">
@@ -33,7 +35,7 @@
     <ion-item *ngIf="selectedTab == 'words'">
       <ion-label stacked>Type the recovery phrase (usually 12 words)</ion-label>
       <ion-textarea formControlName="words" [value]="importForm.value.words"></ion-textarea>
-      <ion-icon class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
+      <ion-icon *ngIf="!fromOnboarding" class="scanner-icon" name="qr-scanner" item-right (click)="openScanner()"></ion-icon>
     </ion-item>
 
     <div *ngIf="selectedTab == 'file'">
@@ -61,7 +63,7 @@
       </ion-select>
     </ion-item>
 
-    <ion-item-divider color="light"></ion-item-divider>
+    <ion-item-divider></ion-item-divider>
 
     <ion-item (click)="toggleShowAdvOpts()">
       <ion-label *ngIf="!showAdvOpts">Show advanced options</ion-label>

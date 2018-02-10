@@ -1,10 +1,10 @@
-<ion-header no-border>
+<ion-header>
   <ion-navbar>
     <ion-title>{{title | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
   <ion-card *ngIf="btx">
     <ion-card-content>
       <div class="sending-label" *ngIf="btx.confirmations > 0">
@@ -43,8 +43,8 @@
       <span class="payment-proposal-to">
         <img class="icon-bitcoin" *ngIf="!cardId" src="assets/img/icon-bitcoin-small.svg">
         <img class="icon-bitcoin" *ngIf="cardId" src="assets/img/icon-card.svg" width="34">
-        <div copy-to-clipboard="{{ btx.addressTo }}">
-          <span class="contact" *ngIf="!toName">{{ btx.addressTo }}"</span>
+        <div copy-to-clipboard="{{ btx.outputs[0].address }}">
+          <span class="contact" *ngIf="!toName">{{ btx.outputs[0].address }}"</span>
           <span *ngIf="toName">{{ toName }}</span>
         </div>
       </span>
@@ -80,8 +80,9 @@
 
     <button ion-item (click)="showCommentPopup()">
       <ion-label>{{'Memo' | translate}}</ion-label>
-      <ion-note item-end *ngIf="btx.note">
-        {{btx.note.body || btx.message}}
+      <ion-note item-end>
+        <span *ngIf="btx.note && btx.note.body">{{btx.note.body}}</span>
+        <span *ngIf="(!btx.note || !btx.note.body) && btx.message">{{btx.message}}</span>
       </ion-note>
     </button>
 
@@ -96,19 +97,19 @@
       </ion-note>
     </ion-item>
 
-    <div class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
+    <ion-item-divider text-wrap  class="low-fees" *ngIf="btx.action == 'received' && btx.lowFees">
       <img src="assets/img/icon-warning.png" width="20">
       <span translate>This transaction could take a long time to confirm or could be dropped due to the low fees set by the sender</span>
-    </div>
+    </ion-item-divider>
 
-    <div class="low-fees" *ngIf="btx.lowAmount">
+    <ion-item-divider text-wrap class="low-fees" *ngIf="btx.lowAmount">
       <img src="assets/img/icon-warning.png" width="20">
       <span translate>
         This transaction amount is too small compared to current Bitcoin network fees. Spending these funds will need a Bitcoin network
         fee cost comparable to the funds itself.
       </span>
       <a (click)="readMore()" translate>Learn more</a>
-    </div>
+    </ion-item-divider>
 
     <ion-item>
       <ion-label>{{'Confirmations' | translate}}</ion-label>
@@ -131,7 +132,7 @@
     </ion-item>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item-divider color="light">{{'Timeline' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
       <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
         *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
@@ -152,9 +153,9 @@
     </div>
 
     <div *ngIf="btx">
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
       <button ion-item class="btn-view" (click)="viewOnBlockchain()" translate>View on blockchain</button>
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
     </div>
 
   </ion-list>

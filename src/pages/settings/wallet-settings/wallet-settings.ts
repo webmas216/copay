@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { ProfileProvider } from '../../../providers/profile/profile';
@@ -28,6 +29,7 @@ export class WalletSettingsPage {
   public hiddenBalance: boolean;
   public encryptEnabled: boolean;
   public touchIdEnabled: boolean;
+  public touchIdPrevValue: boolean;
   public touchIdAvailable: boolean;
   public deleted: boolean = false;
   private config: any;
@@ -41,6 +43,7 @@ export class WalletSettingsPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private touchIdProvider: TouchIdProvider,
+    private translate: TranslateService
   ) {
   }
 
@@ -60,6 +63,7 @@ export class WalletSettingsPage {
     });
     this.config = this.configProvider.get();
     this.touchIdEnabled = this.config.touchIdFor ? this.config.touchIdFor[this.wallet.credentials.walletId] : null;
+    this.touchIdPrevValue = this.touchIdEnabled;
     if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic)
       this.deleted = true;
   }
@@ -96,18 +100,20 @@ export class WalletSettingsPage {
     let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#what-the-spending-password-does';
     let optIn = true;
     let title = null;
-    let message = 'Read more in our Wiki'; //TODO gettextcatalog
-    let okText = 'Open';//TODO gettextcatalog
-    let cancelText = 'Go Back';//TODO gettextcatalog
+    let message = this.translate.instant('Read more in our Wiki');
+    let okText = this.translate.instant('Open');
+    let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);
   }
 
   public touchIdChange(): void {
+    if (this.touchIdPrevValue == this.touchIdEnabled) return;
     let newStatus = this.touchIdEnabled;
-    this.walletProvider.setTouchId(this.wallet, !!newStatus).then(() => {
+    this.walletProvider.setTouchId(this.wallet, newStatus).then(() => {
+      this.touchIdPrevValue = this.touchIdEnabled;
       this.logger.debug('Touch Id status changed: ' + newStatus);
     }).catch((err: any) => {
-      this.touchIdEnabled = !newStatus;
+      this.touchIdEnabled = this.touchIdPrevValue;
     });
   }
 

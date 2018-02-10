@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { Logger } from '../../../../../providers/logger/logger';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 //native
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -15,9 +16,6 @@ import { PersistenceProvider } from '../../../../../providers/persistence/persis
 import { BackupProvider } from '../../../../../providers/backup/backup';
 import { PlatformProvider } from '../../../../../providers/platform/platform';
 import { AppProvider } from '../../../../../providers/app/app';
-
-//pages
-import { SettingsPage } from '../../../../../pages/settings/settings';
 
 @Component({
   selector: 'page-wallet-export',
@@ -37,6 +35,7 @@ export class WalletExportPage {
   public backupWalletPlainText: any;
   public isCordova: boolean;
   public isSafari: boolean;
+  public isIOS: boolean;
   public exportWalletInfo: any;
   public supported: boolean;
 
@@ -54,7 +53,8 @@ export class WalletExportPage {
     private socialSharing: SocialSharing,
     private appProvider: AppProvider,
     private clipboard: Clipboard,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private translate: TranslateService
   ) {
     this.exportWalletForm = this.formBuilder.group({
       password: ['', Validators.required],
@@ -73,6 +73,7 @@ export class WalletExportPage {
     this.canSign = this.wallet.canSign();
     this.isCordova = this.platformProvider.isCordova;
     this.isSafari = this.platformProvider.isSafari;
+    this.isIOS = this.platformProvider.isIOS;
   }
 
   private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
@@ -122,10 +123,10 @@ export class WalletExportPage {
 
         this.segments = 'qrCode';
       }).catch((err: string) => {
-        this.popupProvider.ionicAlert('Error', err);  //TODO gettextcatalog
+        this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
       });
     }).catch((err: string) => {
-      this.popupProvider.ionicAlert('Error', err); //TODO gettextcatalog
+      this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
     });
   };
 
@@ -156,17 +157,16 @@ export class WalletExportPage {
         };
 
         this.backupProvider.walletDownload(this.exportWalletForm.value.password, opts, this.navParams.data.walletId).then(() => {
-          this.navCtrl.setRoot(SettingsPage);
           this.navCtrl.popToRoot();
           this.navCtrl.parent.select(0);
         }).catch((err: string) => {
-          this.popupProvider.ionicAlert('Error', 'Failed to export');  //TODO gettextcatalog
+          this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Failed to export'));
         });
       }).catch(() => {
-        this.popupProvider.ionicAlert('Error', 'Failed to export');  //TODO gettextcatalog
+        this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Failed to export'));
       });
     }).catch((err: string) => {
-      this.popupProvider.ionicAlert('Error', err);
+      this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
     });
   }
 
@@ -199,15 +199,15 @@ export class WalletExportPage {
 
           var ew = this.backupProvider.walletExport(this.exportWalletForm.value.password, opts, this.navParams.data.walletId);
           if (!ew) {
-            this.popupProvider.ionicAlert('Error', 'Failed to export'); //TODO gettextcatalog
+            this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Failed to export'));
           }
           return resolve(ew);
         }).catch((err: string) => {
-          this.popupProvider.ionicAlert('Error', 'Failed to export');  //TODO gettextcatalog
+          this.popupProvider.ionicAlert(this.translate.instant('Error'), this.translate.instant('Failed to export'));
           return resolve();
         });
       }).catch((err: string) => {
-        this.popupProvider.ionicAlert('Error', err);  //TODO gettextcatalog
+        this.popupProvider.ionicAlert(this.translate.instant('Error'), err);
         return resolve();
       });;
     });
@@ -226,7 +226,7 @@ export class WalletExportPage {
       var ew = backup;
       if (!ew) return;
       this.clipboard.copy(ew);
-      let copyMessage = 'Copied to clipboard' //TODO gettextcatalog
+      let copyMessage = this.translate.instant('Copied to clipboard');
       let showSuccess = this.toastCtrl.create({
         message: copyMessage,
         duration: 1000,
@@ -236,7 +236,7 @@ export class WalletExportPage {
   };
 
   public sendWalletBackup(): void {
-    let preparingMessage = 'Preparing backup...' //TODO gettextcatalog
+    let preparingMessage = this.translate.instant('Preparing backup...');
     let showSuccess = this.toastCtrl.create({
       message: preparingMessage,
       duration: 1000,

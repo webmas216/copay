@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavParams, Events, ViewController } from 'ionic-angular';
+import { NavParams, Events, ViewController, ModalController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { PlatformProvider } from '../../providers/platform/platform';
@@ -11,6 +12,9 @@ import { OnGoingProcessProvider } from '../../providers/on-going-process/on-goin
 import { ConfigProvider } from '../../providers/config/config';
 import { ProfileProvider } from '../../providers/profile/profile';
 import { TxFormatProvider } from '../../providers/tx-format/tx-format';
+
+//pages
+import { SuccessModalPage } from '../success/success';
 
 import * as _ from 'lodash';
 
@@ -52,7 +56,9 @@ export class TxpDetailsPage {
     private viewCtrl: ViewController,
     private configProvider: ConfigProvider,
     private profileProvider: ProfileProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private translate: TranslateService,
+    private modalCtrl: ModalController
   ) {
     let config = this.configProvider.get().wallet;
     this.tx = this.navParams.data.tx;
@@ -118,18 +124,18 @@ export class TxpDetailsPage {
 
     if (lastSigner) {
       if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = 'Slide to send'; //TODO gettextcatalog
+        this.buttonText = this.translate.instant('Slide to send');
       } else {
-        this.buttonText = 'Click to send';//TODO gettextcatalog
+        this.buttonText = this.translate.instant('Click to send');
       }
-      this.successText = 'Payment Sent';//TODO gettextcatalog
+      this.successText = this.translate.instant('Payment Sent');
     } else {
       if (this.isCordova && !this.isWindowsPhoneApp) {
-        this.buttonText = 'Slide to accept';//TODO gettextcatalog
+        this.buttonText = this.translate.instant('Slide to accept');
       } else {
-        this.buttonText = 'Click to accept';//TODO gettextcatalog
+        this.buttonText = this.translate.instant('Click to accept');
       }
-      this.successText = 'Payment Accepted';//TODO gettextcatalog
+      this.successText = this.translate.instant('Payment Accepted');
     }
   }
 
@@ -139,10 +145,10 @@ export class TxpDetailsPage {
     if (!this.isShared) return;
 
     var actionDescriptions = {
-      created: 'Proposal Created', //TODO gettextcatalog
-      accept: 'Accepted', //TODO gettextcatalog
-      reject: 'Rejected', //TODO gettextcatalog
-      broadcasted: 'Broadcasted', //TODO gettextcatalog
+      created: this.translate.instant('Proposal Created'),
+      accept: this.translate.instant('Accepted'),
+      reject: this.translate.instant('Rejected'),
+      broadcasted: this.translate.instant('Broadcasted'),
     };
 
     this.actionList.push({
@@ -203,36 +209,36 @@ export class TxpDetailsPage {
 
   private setError(err: any, prefix: string): void {
     this.loading = false;
-    this.popupProvider.ionicAlert('Error', this.bwcError.msg(err, prefix)); //TODO gettextcatalog
+    this.popupProvider.ionicAlert(this.translate.instant('Error'), this.bwcError.msg(err, prefix));
   }
 
   public sign(): void {
     this.loading = true;
     this.walletProvider.publishAndSign(this.wallet, this.tx).then((txp: any) => {
       this.events.publish('UpdateTx');
-      //this.success(); TODO
+      this.openSuccessModal();
     }).catch((err: any) => {
-      this.setError(err, 'Could not send payment'); //TODO gettextcatalog
+      this.setError(err, ('Could not send payment'));
     });
   }
 
   public reject(txp: any): void {
-    let title = 'Warning!'; //TODO gettextcatalog
-    let msg = 'Are you sure you want to reject this transaction?'; //TODO gettextcatalog
+    let title = this.translate.instant('Warning!');
+    let msg = this.translate.instant('Are you sure you want to reject this transaction?');
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return
       this.loading = true;
       this.walletProvider.reject(this.wallet, this.tx).then((txpr) => {
         this.close();
       }).catch((err: any) => {
-        this.setError(err, 'Could not reject payment');  //TODO gettextcatalog
+        this.setError(err, this.translate.instant('Could not reject payment'));
       });
     });
   }
 
   public remove(): void {
-    let title = 'Warning!'; //TODO gettextcatalog
-    let msg = 'Are you sure you want to remove this transaction?'; //TODO gettextcatalog
+    let title = this.translate.instant('Warning!');
+    let msg = this.translate.instant('Are you sure you want to remove this transaction?');
     this.popupProvider.ionicConfirm(title, msg, null, null).then((res: boolean) => {
       if (!res) return;
       this.onGoingProcessProvider.set('removeTx', true);
@@ -240,9 +246,10 @@ export class TxpDetailsPage {
         this.onGoingProcessProvider.set('removeTx', false);
         this.close();
       }).catch((err: any) => {
+        this.onGoingProcessProvider.set('removeTx', false);
         if (err && !(err.message && err.message.match(/Unexpected/))) {
           this.events.publish('UpdateTx');
-          this.setError(err, 'Could not delete payment proposal'); //TODO gettextcatalog
+          this.setError(err, this.translate.instant('Could not delete payment proposal'));
         }
       });
     });
@@ -253,8 +260,9 @@ export class TxpDetailsPage {
     this.onGoingProcessProvider.set('broadcastingTx', true);
     this.walletProvider.broadcastTx(this.wallet, this.tx).then((txpb: any) => {
       this.onGoingProcessProvider.set('broadcastingTx', false);
-      this.close();
+      this.openSuccessModal();
     }).catch((err: any) => {
+      this.onGoingProcessProvider.set('broadcastingTx', false);
       this.setError(err, 'Could not broadcast payment');
     });
   }
@@ -299,14 +307,18 @@ export class TxpDetailsPage {
     this.sign();
   };
 
-  public onSuccessConfirm(): void {
-    this.close();
-  }
-
   public close(): void {
     this.events.unsubscribe('bwsEvent');
     this.loading = false;
     this.viewCtrl.dismiss();
+  }
+
+  public openSuccessModal() {
+    let modal = this.modalCtrl.create(SuccessModalPage, {}, { showBackdrop: true, enableBackdropDismiss: false });
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.close();
+    })
   }
 
 }

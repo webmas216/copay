@@ -7,7 +7,6 @@ import { ProfileProvider } from '../../../../../providers/profile/profile';
 import { ConfigProvider } from '../../../../../providers/config/config';
 
 //pages
-import { SettingsPage } from '../../../../../pages/settings/settings';
 import { WalletExtendedPrivateKeyPage } from './wallet-extended-private-key/wallet-extended-private-key';
 
 import * as _ from 'lodash';
@@ -90,7 +89,6 @@ export class WalletInformationPage {
     opts.colorFor[this.wallet.credentials.walletId] = color;
     this.configProvider.set(opts);
     this.events.publish('wallet:updated', this.wallet.credentials.walletId);
-    this.navCtrl.setRoot(SettingsPage);
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
   };

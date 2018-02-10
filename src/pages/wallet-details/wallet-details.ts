@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Events } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 //providers
 import { WalletProvider } from '../../providers/wallet/wallet';
@@ -13,6 +14,7 @@ import { TimeProvider } from '../../providers/time/time';
 import { TxDetailsPage } from '../../pages/tx-details/tx-details';
 import { BackupWarningPage } from '../../pages/backup/backup-warning/backup-warning';
 import { WalletAddressesPage } from '../../pages/settings/wallet-settings/wallet-settings-advanced/wallet-addresses/wallet-addresses';
+import { WalletBalancePage } from './wallet-balance/wallet-balance';
 
 import * as _ from 'lodash';
 
@@ -49,7 +51,8 @@ export class WalletDetailsPage {
     private bwcError: BwcErrorProvider,
     private events: Events,
     private logger: Logger,
-    private timeProvider: TimeProvider
+    private timeProvider: TimeProvider,
+    private translate: TranslateService
   ) {
     let clearCache = this.navParams.data.clearCache;
     this.wallet = this.profileProvider.getWallet(this.navParams.data.walletId);
@@ -133,7 +136,7 @@ export class WalletDetailsPage {
     this.updateTxHistoryError = false;
     this.updatingTxHistoryProgress = 0;
 
-    let progressFn = (function(txs, newTxs) {
+    let progressFn = (function (txs, newTxs) {
       if (newTxs > 5) this.thistory = null;
       this.updatingTxHistoryProgress = newTxs;
     }).bind(this);
@@ -192,7 +195,7 @@ export class WalletDetailsPage {
       if (err === 'WALLET_NOT_REGISTERED') {
         this.walletNotRegistered = true;
       } else {
-        this.updateStatusError = this.bwcError.msg(err, 'Could not update wallet'); // TODO: translate
+        this.updateStatusError = this.bwcError.msg(err, this.translate.instant('Could not update wallet'));
       }
       this.wallet.status = null;
     });
@@ -253,5 +256,9 @@ export class WalletDetailsPage {
   public isUnconfirmed(tx) {
     return !tx.confirmations || tx.confirmations === 0;
   };
+
+  public openBalanceDetails(): void {
+    this.navCtrl.push(WalletBalancePage, { status: this.wallet.status });
+  }
 
 }

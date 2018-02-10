@@ -12,7 +12,6 @@ export class AdvancedPage {
 
   public spendUnconfirmed: boolean;
   public recentTransactionsEnabled: boolean;
-  public showNextSteps: boolean;
   public useLegacyAddress: boolean;
 
   constructor(
@@ -26,11 +25,10 @@ export class AdvancedPage {
   }
 
   ionViewWillEnter() {
-    let config = this.configProvider.get();
+    let config: any = this.configProvider.get();
 
     this.spendUnconfirmed = config.wallet.spendUnconfirmed;
     this.recentTransactionsEnabled = config.recentTransactions.enabled;
-    this.showNextSteps = config.showNextSteps.enabled;
     this.useLegacyAddress = config.wallet.useLegacyAddress;
   }
 
@@ -60,14 +58,4 @@ export class AdvancedPage {
     };
     this.configProvider.set(opts);
   }
-
-  public nextStepsChange(): void {
-    let opts = {
-      showNextSteps: {
-        enabled: this.showNextSteps
-      },
-    };
-    this.configProvider.set(opts);
-  }
-
 }

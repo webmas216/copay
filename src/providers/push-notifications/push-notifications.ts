@@ -13,7 +13,6 @@ import { BwcProvider } from '../bwc/bwc';
 
 //pages
 import { WalletDetailsPage } from '../../pages/wallet-details/wallet-details';
-import { HomePage } from '../../pages/home/home';
 import { CopayersPage } from '../../pages/add/copayers/copayers';
 
 import * as _ from 'lodash';
@@ -59,8 +58,8 @@ export class PushNotificationsProvider {
           // Notification was received on device tray and tapped by the user.
           var walletIdHashed = data.walletId;
           if (!walletIdHashed) return;
-          this.navCtrl.setRoot(HomePage);
           this.navCtrl.popToRoot();
+          this.navCtrl.parent.select(0);
           this._openWallet(walletIdHashed);
         } else {
           // TODO

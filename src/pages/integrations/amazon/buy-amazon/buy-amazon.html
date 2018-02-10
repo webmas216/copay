@@ -26,15 +26,17 @@
       <button ion-item (click)="showWallets()" class="wallets-list">
         <div translate>From</div>
         <div class="wallet">
-          <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
-            class="icon-wallet" />
-          <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
-            class="icon-wallet" />
-          <span>{{wallet ? wallet.name : '...'}}</span>
+          <ion-icon item-start>
+            <img *ngIf="network == 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet-testnet.svg"
+              class="icon-wallet" />
+            <img *ngIf="network != 'testnet'" [ngStyle]="{'background-color': wallet && wallet.color}" src="assets/img/icon-wallet.svg"
+              class="icon-wallet" />
+          </ion-icon>
+          <div>{{wallet ? wallet.name : '...'}}</div>
         </div>
       </button>
       <div *ngIf="totalAmountStr">
-        <ion-item-divider color="light">
+        <ion-item-divider>
           Details
         </ion-item-divider>
         <ion-item>
@@ -68,7 +70,7 @@
           </ion-note>
         </ion-item>
       </div>
-      <ion-item-divider color="light"></ion-item-divider>
+      <ion-item-divider></ion-item-divider>
       <ion-item class="amazon-info">
         *
         <a (click)="openExternalLink('http://amazon.com')">Amazon.com</a> is not a sponsor of this promotion. Except as required by law,
@@ -84,5 +86,5 @@
 </ion-content>
 
 <ion-footer>
-  <button ion-button block class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>Confirm purchase</button>
+  <button ion-button full class="button-footer" (click)="buyConfirm()" [disabled]="!(wallet && totalAmountStr)" translate>Confirm purchase</button>
 </ion-footer>

@@ -62,7 +62,7 @@ export class FileStorage implements IStorage {
       try {
         parsed = JSON.parse(v);
       } catch (e) {
-        this.log.error(e);
+        //TODO parse is not necessary
       }
       return parsed || v;
     };
@@ -117,7 +117,6 @@ export class FileStorage implements IStorage {
               v = v.toString();
             }
 
-            this.log.debug('Writing:', k, v);
             fileWriter.write(v);
           }, err => {
             this.log.error('Could not create writer', err);

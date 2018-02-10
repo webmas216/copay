@@ -12,10 +12,13 @@ import { RateProvider } from '../../../providers/rate/rate';
 import { BuyAmazonPage } from '../../integrations/amazon/buy-amazon/buy-amazon';
 import { BuyGlideraPage } from '../../integrations/glidera/buy-glidera/buy-glidera';
 import { SellGlideraPage } from '../../integrations/glidera/sell-glidera/sell-glidera';
+import { BuyCoinbasePage } from '../../integrations/coinbase/buy-coinbase/buy-coinbase';
+import { SellCoinbasePage } from '../../integrations/coinbase/sell-coinbase/sell-coinbase';
 import { ConfirmPage } from '../confirm/confirm';
 import { CustomAmountPage } from '../../receive/custom-amount/custom-amount';
 import { BuyMercadoLibrePage } from '../../integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { ShapeshiftConfirmPage } from '../../integrations/shapeshift/shapeshift-confirm/shapeshift-confirm';
+import { BitPayCardTopUpPage } from '../../integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
 
 @Component({
   selector: 'page-amount',
@@ -29,6 +32,7 @@ export class AmountPage {
   private reOp: RegExp;
   private nextView: any;
   private fixedUnit: boolean;
+  private itemSelectorLabel: string;
 
   public isFiatAmount: boolean;
   public expression: any;
@@ -51,6 +55,7 @@ export class AmountPage {
   public config: any;
   public showRecipient: boolean;
   public toWalletId: string;
+  public cardId: string;
 
   private walletId: any;
 
@@ -85,11 +90,19 @@ export class AmountPage {
     this.reNr = /^[1234567890\.]$/;
     this.reOp = /^[\*\+\-\/]$/;
     this.nextView = this.getNextView();
+    this.itemSelectorLabel = 'Send Max amount';
+
+    // BitPay Card ID
+    this.cardId = this.navParams.data.id;
 
     // Use only with ShapeShift
     this.toWalletId = this.navParams.data.toWalletId;
     this.shiftMax = this.navParams.data.shiftMax;
     this.shiftMin = this.navParams.data.shiftMin;
+
+    if (this.shiftMax) {
+      this.itemSelectorLabel = 'Send ShapeShift Maximum: ' + this.shiftMax;
+    }
 
     let unit = this.navParams.data.currency ? this.navParams.data.currency : this.config.wallet.settings.alternativeIsoCode;
     this.availableUnits.push(this.coin.toUpperCase());
@@ -101,6 +114,11 @@ export class AmountPage {
       this.unit = this.availableUnits[0];
     }
     this.isFiatAmount = this.unit != 'BCH' && this.unit != 'BTC' ? true : false;
+  }
+
+  ionViewWillEnter() {
+    this.expression = '';
+    this.processAmount();
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent) {
@@ -128,6 +146,10 @@ export class AmountPage {
   private getNextView(): any {
     let nextPage;
     switch (this.navParams.data.nextPage) {
+      case 'BitPayCardTopUpPage':
+        this.showRecipient = false;
+        nextPage = BitPayCardTopUpPage;
+        break;
       case 'BuyAmazonPage':
         this.showRecipient = false;
         nextPage = BuyAmazonPage;
@@ -139,6 +161,14 @@ export class AmountPage {
       case 'SellGlideraPage':
         this.showRecipient = false;
         nextPage = SellGlideraPage;
+        break;
+      case 'BuyCoinbasePage':
+        this.showRecipient = false;
+        nextPage = BuyCoinbasePage;
+        break;
+      case 'SellCoinbasePage':
+        this.showRecipient = false;
+        nextPage = SellCoinbasePage;
         break;
       case 'CustomAmountPage':
         nextPage = CustomAmountPage;
@@ -172,7 +202,7 @@ export class AmountPage {
     let buttons: Array<any> = [];
 
     let sendMaxButton: Object = {
-      text: 'Send Max amount',
+      text: this.itemSelectorLabel,
       icon: 'speedometer',
       handler: () => {
         this.sendMax();
@@ -270,7 +300,7 @@ export class AmountPage {
       amount_ = parseInt(value);
       amountFiat = this.amount;
     } else
-      amount_ = this.amount * 1e8;
+      amount_ = +((this.amount * 1e8).toFixed(0));
 
     let data: any = {
       recipientType: this.recipientType,
@@ -285,7 +315,8 @@ export class AmountPage {
       network: this.network,
       useSendMax: this.useSendMax,
       walletId: this.walletId,
-      toWalletId: this.toWalletId ? this.toWalletId : null
+      toWalletId: this.toWalletId ? this.toWalletId : null,
+      id: this.cardId
     }
     this.navCtrl.push(this.nextView, data);
   }

@@ -19,7 +19,7 @@ import { FCM } from '@ionic-native/fcm';
 /* Modules */
 import { MomentModule } from 'angular2-moment';
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
-import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 
@@ -33,7 +33,6 @@ import { BitcoinCashPage } from '../pages/settings/bitcoin-cash/bitcoin-cash';
 import { BackupRequestPage } from '../pages/onboarding/backup-request/backup-request';
 import { BackupWarningPage } from '../pages/backup/backup-warning/backup-warning';
 import { BackupGamePage } from '../pages/backup/backup-game/backup-game';
-import { BuyAndSellPage } from '../pages/buy-and-sell/buy-and-sell';
 import { CreateWalletPage } from '../pages/add/create-wallet/create-wallet';
 import { CopayersPage } from '../pages/add/copayers/copayers';
 import { DisclaimerPage } from '../pages/onboarding/disclaimer/disclaimer';
@@ -49,6 +48,7 @@ import { FeedbackPage } from '../pages/feedback/feedback/feedback';
 import { FeedbackCompletePage } from '../pages/feedback/feedback-complete/feedback-complete';
 import { TourPage } from '../pages/onboarding/tour/tour';
 import { WalletDetailsPage } from '../pages/wallet-details/wallet-details';
+import { WalletBalancePage } from '../pages/wallet-details/wallet-balance/wallet-balance';
 import { TxDetailsPage } from '../pages/tx-details/tx-details';
 import { TxpDetailsPage } from '../pages/txp-details/txp-details';
 import { SendFeedbackPage } from '../pages/feedback/send-feedback/send-feedback';
@@ -56,7 +56,6 @@ import { SuccessModalPage } from '../pages/success/success';
 
 // Integrations: Amazon
 import { AmazonCardDetailsPage } from '../pages/integrations/amazon/amazon-card-details/amazon-card-details';
-import { AmazonCardsPage } from '../pages/integrations/amazon/amazon-cards/amazon-cards';
 import { AmazonPage } from '../pages/integrations/amazon/amazon';
 import { BuyAmazonPage } from '../pages/integrations/amazon/buy-amazon/buy-amazon';
 
@@ -65,17 +64,18 @@ import { BuyCoinbasePage } from '../pages/integrations/coinbase/buy-coinbase/buy
 import { CoinbasePage } from '../pages/integrations/coinbase/coinbase';
 import { CoinbaseTxDetailsPage } from '../pages/integrations/coinbase/coinbase-tx-details/coinbase-tx-details';
 import { SellCoinbasePage } from '../pages/integrations/coinbase/sell-coinbase/sell-coinbase';
+import { CoinbaseSettingsPage } from '../pages/integrations/coinbase/coinbase-settings/coinbase-settings';
 
 // Integrations: Glidera
 import { BuyGlideraPage } from '../pages/integrations/glidera/buy-glidera/buy-glidera';
 import { GlideraPage } from '../pages/integrations/glidera/glidera';
-import { GlideraTxDetailsPage } from '../pages/integrations/glidera/modal/glidera-tx-details';
+import { GlideraTxDetailsPage } from '../pages/integrations/glidera/glidera-tx-details/glidera-tx-details';
 import { SellGlideraPage } from '../pages/integrations/glidera/sell-glidera/sell-glidera';
+import { GlideraSettingsPage } from '../pages/integrations/glidera/glidera-settings/glidera-settings';
 
 // Integrations: Mercado Libre
 import { BuyMercadoLibrePage } from '../pages/integrations/mercado-libre/buy-mercado-libre/buy-mercado-libre';
 import { MercadoLibreCardDetailsPage } from '../pages/integrations/mercado-libre/mercado-libre-card-details/mercado-libre-card-details';
-import { MercadoLibreCardsPage } from '../pages/integrations/mercado-libre/mercado-libre-cards/mercado-libre-cards';
 import { MercadoLibrePage } from '../pages/integrations/mercado-libre/mercado-libre';
 
 // Integrations: ShapeShift
@@ -84,6 +84,12 @@ import { ShapeshiftDetailsPage } from '../pages/integrations/shapeshift/shapeshi
 import { ShapeshiftPage } from '../pages/integrations/shapeshift/shapeshift';
 import { ShapeshiftShiftPage } from '../pages/integrations/shapeshift/shapeshift-shift/shapeshift-shift';
 
+// Integrations: BitPayCard
+import { BitPayCardIntroPage } from '../pages/integrations/bitpay-card/bitpay-card-intro/bitpay-card-intro';
+import { BitPayCardPage } from '../pages/integrations/bitpay-card/bitpay-card';
+import { BitPaySettingsPage } from '../pages/integrations/bitpay-card/bitpay-settings/bitpay-settings';
+import { BitPayCardTopUpPage } from '../pages/integrations/bitpay-card/bitpay-card-topup/bitpay-card-topup';
+
 /*Includes */
 import { FeedbackCardPage } from '../pages/includes/feedback-card/feedback-card';
 import { GravatarPage } from '../pages/includes/gravatar/gravatar';
@@ -91,6 +97,7 @@ import { TxpPage } from '../pages/includes/txp/txp';
 import { WalletItemPage } from '../pages/includes/wallet-item/wallet-item';
 import { WalletActivityPage } from '../pages/includes/wallet-activity/wallet-activity';
 import { WalletSelectorPage } from '../pages/includes/wallet-selector/wallet-selector';
+import { CardItemPage } from '../pages/includes/card-item/card-item';
 
 /* Tabs */
 import { HomePage } from '../pages/home/home';
@@ -110,6 +117,7 @@ import { AddressbookAddPage } from '../pages/settings/addressbook/add/add';
 import { AddressbookViewPage } from '../pages/settings/addressbook/view/view';
 import { AdvancedPage } from '../pages/settings/advanced/advanced';
 import { AltCurrencyPage } from '../pages/settings/alt-currency/alt-currency';
+import { EnabledServicesPage } from '../pages/settings/enabled-services/enabled-services';
 import { FingerprintModalPage } from '../pages/fingerprint/fingerprint';
 import { LanguagePage } from '../pages/settings/language/language';
 import { LockPage } from '../pages/settings/lock/lock';
@@ -148,6 +156,7 @@ import { SatToUnitPipe } from '../pipes/satToUnit';
 import { SatToFiatPipe } from '../pipes/satToFiat';
 import { FiatToUnitPipe } from '../pipes/fiatToUnit';
 import { KeysPipe } from '../pipes/keys';
+import { OrderByPipe } from '../pipes/order-by';
 
 /* Providers */
 import { AddressProvider } from '../providers/address/address';
@@ -156,11 +165,11 @@ import { AppProvider } from '../providers/app/app';
 import { AppIdentityProvider } from '../providers/app-identity/app-identity';
 import { AmazonProvider } from '../providers/amazon/amazon';
 import { BackupProvider } from '../providers/backup/backup';
+import { BitPayAccountProvider } from '../providers/bitpay-account/bitpay-account';
 import { BitPayProvider } from '../providers/bitpay/bitpay';
 import { BitPayCardProvider } from '../providers/bitpay-card/bitpay-card';
 import { BwcProvider } from '../providers/bwc/bwc';
 import { BwcErrorProvider } from '../providers/bwc-error/bwc-error';
-import { BuyAndSellProvider } from '../providers/buy-and-sell/buy-and-sell';
 import { ConfigProvider } from '../providers/config/config';
 import { CoinbaseProvider } from '../providers/coinbase/coinbase';
 import { DerivationPathHelperProvider } from '../providers/derivation-path-helper/derivation-path-helper';
@@ -172,7 +181,6 @@ import { HomeIntegrationsProvider } from '../providers/home-integrations/home-in
 import { IncomingDataProvider } from '../providers/incoming-data/incoming-data';
 import { LanguageProvider } from '../providers/language/language';
 import { Logger } from '../providers/logger/logger';
-import { NextStepsProvider } from '../providers/next-steps/next-steps';
 import { MercadoLibreProvider } from '../providers/mercado-libre/mercado-libre';
 import { NodeWebkitProvider } from '../providers/node-webkit/node-webkit';
 import { OnGoingProcessProvider } from '../providers/on-going-process/on-going-process';
@@ -203,193 +211,116 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n', '.po');
 }
 
-let directives: any = [
-  CopyToClipboard,
-  LongPress,
-  NoLowFee
-];
-
-let pages: any = [
-  ActivityPage,
-  AddPage,
-  AmazonCardDetailsPage,
-  AmazonCardsPage,
-  AmazonPage,
-  AmountPage,
-  AddressbookPage,
-  AddressbookAddPage,
-  AddressbookViewPage,
-  AboutPage,
-  AdvancedPage,
-  AllAddressesPage,
-  AltCurrencyPage,
-  BackupRequestPage,
-  BitcoinCashPage,
-  BuyAmazonPage,
-  BuyAndSellPage,
-  BuyCoinbasePage,
-  BuyGlideraPage,
-  BuyMercadoLibrePage,
-  ChooseFeeLevelPage,
-  CreateWalletPage,
-  CoinbasePage,
-  CoinbaseTxDetailsPage,
-  CopayersPage,
-  FeedbackCardPage,
-  FeedbackPage,
-  FeedbackCompletePage,
-  IncomingDataMenuPage,
-  ImportWalletPage,
-  JoinWalletPage,
-  BackupWarningPage,
-  BackupGamePage,
-  ConfirmPage,
-  CustomAmountPage,
-  CopayApp,
-  DisclaimerPage,
-  CollectEmailPage,
-  FeeWarningPage,
-  GlideraPage,
-  GravatarPage,
-  FingerprintModalPage,
-  HomePage,
-  LanguagePage,
-  LockPage,
-  MercadoLibrePage,
-  OnboardingPage,
-  PaperWalletPage,
-  PayProPage,
-  GlideraTxDetailsPage,
-  PinModalPage,
-  ProposalsPage,
-  ReceivePage,
-  ScanPage,
-  SendPage,
-  SettingsPage,
-  SellCoinbasePage,
-  SellGlideraPage,
-  ShapeshiftConfirmPage,
-  ShapeshiftDetailsPage,
-  ShapeshiftPage,
-  ShapeshiftShiftPage,
-  TermsOfUsePage,
-  MercadoLibreCardDetailsPage,
-  MercadoLibreCardsPage,
-  NotificationsPage,
-  FeePolicyPage,
-  SessionLogPage,
-  SendFeedbackPage,
-  SuccessModalPage,
-  TourPage,
-  TabsPage,
-  TxpDetailsPage,
-  TxDetailsPage,
-  TxpPage,
-  WalletSettingsPage,
-  WalletSettingsAdvancedPage,
-  WalletNamePage,
-  WalletColorPage,
-  WalletInformationPage,
-  WalletAddressesPage,
-  WalletExportPage,
-  WalletServiceUrlPage,
-  WalletTransactionHistoryPage,
-  WalletDeletePage,
-  WalletExtendedPrivateKeyPage,
-  WalletDetailsPage,
-  WalletItemPage,
-  WalletActivityPage,
-  WalletSelectorPage
-];
-
-let providers: any = [
-  AddressProvider,
-  AddressBookProvider,
-  AndroidFingerprintAuth,
-  AppProvider,
-  AppIdentityProvider,
-  AmazonProvider,
-  BackupProvider,
-  BitPayProvider,
-  BitPayCardProvider,
-  BwcProvider,
-  BwcErrorProvider,
-  BuyAndSellProvider,
-  ConfigProvider,
-  CoinbaseProvider,
-  Clipboard,
-  DerivationPathHelperProvider,
-  ExternalLinkProvider,
-  FeedbackProvider,
-  FCM,
-  HomeIntegrationsProvider,
-  FeeProvider,
-  GlideraProvider,
-  IncomingDataProvider,
-  LanguageProvider,
-  Logger,
-  MercadoLibreProvider,
-  NextStepsProvider,
-  NodeWebkitProvider,
-  OnGoingProcessProvider,
-  PayproProvider,
-  PlatformProvider,
-  ProfileProvider,
-  PopupProvider,
-  QRScanner,
-  PushNotificationsProvider,
-  RateProvider,
-  ReleaseProvider,
-  ShapeshiftProvider,
-  StatusBar,
-  SplashScreen,
-  ScanProvider,
-  SocialSharing,
-  Toast,
-  TouchID,
-  TimeProvider,
-  TouchIdProvider,
-  TxConfirmNotificationProvider,
-  FilterProvider,
-  TxFormatProvider,
-  WalletProvider,
-  EmailNotificationsProvider,
-  DecimalPipe,
-  PersistenceProvider,
-  File,
-  {
-    provide: ErrorHandler,
-    useClass: IonicErrorHandler
-  }
-];
-
-let pipes = [
-  SatToUnitPipe,
-  SatToFiatPipe,
-  FiatToUnitPipe,
-  KeysPipe
-];
-
-export function declarationsComponents() {
-  let declarations = [];
-
-  declarations = declarations.concat(pages);
-  declarations = declarations.concat(directives);
-  declarations = declarations.concat(pipes);
-
-  return declarations;
-}
-
-export function entryComponents() {
-  return pages;
-}
-
-export function providersComponents() {
-  return providers;
-}
-
 @NgModule({
-  declarations: declarationsComponents(),
+  declarations: [
+    /* Pages */
+    ActivityPage,
+    AddPage,
+    AmazonCardDetailsPage,
+    AmazonPage,
+    AmountPage,
+    AddressbookPage,
+    AddressbookAddPage,
+    AddressbookViewPage,
+    AboutPage,
+    AdvancedPage,
+    AllAddressesPage,
+    AltCurrencyPage,
+    BackupRequestPage,
+    BitcoinCashPage,
+    BitPayCardIntroPage,
+    BitPayCardPage,
+    BitPaySettingsPage,
+    BitPayCardTopUpPage,
+    BuyAmazonPage,
+    BuyCoinbasePage,
+    BuyGlideraPage,
+    BuyMercadoLibrePage,
+    ChooseFeeLevelPage,
+    CreateWalletPage,
+    CoinbasePage,
+    CoinbaseTxDetailsPage,
+    CopayersPage,
+    EnabledServicesPage,
+    FeedbackCardPage,
+    FeedbackPage,
+    FeedbackCompletePage,
+    IncomingDataMenuPage,
+    ImportWalletPage,
+    JoinWalletPage,
+    BackupWarningPage,
+    BackupGamePage,
+    ConfirmPage,
+    CustomAmountPage,
+    CopayApp,
+    DisclaimerPage,
+    CollectEmailPage,
+    FeeWarningPage,
+    GlideraPage,
+    GravatarPage,
+    FingerprintModalPage,
+    HomePage,
+    LanguagePage,
+    LockPage,
+    MercadoLibrePage,
+    OnboardingPage,
+    PaperWalletPage,
+    PayProPage,
+    GlideraTxDetailsPage,
+    PinModalPage,
+    ProposalsPage,
+    ReceivePage,
+    ScanPage,
+    SendPage,
+    SettingsPage,
+    SellCoinbasePage,
+    SellGlideraPage,
+    GlideraSettingsPage,
+    CoinbaseSettingsPage,
+    ShapeshiftConfirmPage,
+    ShapeshiftDetailsPage,
+    ShapeshiftPage,
+    ShapeshiftShiftPage,
+    TermsOfUsePage,
+    MercadoLibreCardDetailsPage,
+    NotificationsPage,
+    FeePolicyPage,
+    SessionLogPage,
+    SendFeedbackPage,
+    SuccessModalPage,
+    TourPage,
+    TabsPage,
+    TxpDetailsPage,
+    TxDetailsPage,
+    TxpPage,
+    WalletSettingsPage,
+    WalletSettingsAdvancedPage,
+    WalletNamePage,
+    WalletColorPage,
+    WalletInformationPage,
+    WalletAddressesPage,
+    WalletExportPage,
+    WalletServiceUrlPage,
+    WalletTransactionHistoryPage,
+    WalletDeletePage,
+    WalletExtendedPrivateKeyPage,
+    WalletDetailsPage,
+    WalletBalancePage,
+    WalletItemPage,
+    WalletActivityPage,
+    WalletSelectorPage,
+    CardItemPage,
+    /* Directives */
+    CopyToClipboard,
+    LongPress,
+    NoLowFee,
+    /* Pipes */
+    SatToUnitPipe,
+    SatToFiatPipe,
+    FiatToUnitPipe,
+    KeysPipe,
+    OrderByPipe
+  ],
   imports: [
     IonicModule.forRoot(CopayApp, {
       tabsHideOnSubPages: true,
@@ -409,7 +340,163 @@ export function providersComponents() {
     }),
   ],
   bootstrap: [IonicApp],
-  entryComponents: entryComponents(),
-  providers: providersComponents()
+  entryComponents: [
+    /* Pages */
+    ActivityPage,
+    AddPage,
+    AmazonCardDetailsPage,
+    AmazonPage,
+    AmountPage,
+    AddressbookPage,
+    AddressbookAddPage,
+    AddressbookViewPage,
+    AboutPage,
+    AdvancedPage,
+    AllAddressesPage,
+    AltCurrencyPage,
+    BackupRequestPage,
+    BitcoinCashPage,
+    BitPayCardIntroPage,
+    BitPayCardPage,
+    BitPaySettingsPage,
+    BitPayCardTopUpPage,
+    BuyAmazonPage,
+    BuyCoinbasePage,
+    BuyGlideraPage,
+    BuyMercadoLibrePage,
+    ChooseFeeLevelPage,
+    CreateWalletPage,
+    CoinbasePage,
+    CoinbaseTxDetailsPage,
+    CopayersPage,
+    EnabledServicesPage,
+    FeedbackCardPage,
+    FeedbackPage,
+    FeedbackCompletePage,
+    IncomingDataMenuPage,
+    ImportWalletPage,
+    JoinWalletPage,
+    BackupWarningPage,
+    BackupGamePage,
+    ConfirmPage,
+    CustomAmountPage,
+    CopayApp,
+    DisclaimerPage,
+    CollectEmailPage,
+    FeeWarningPage,
+    GlideraPage,
+    GravatarPage,
+    FingerprintModalPage,
+    HomePage,
+    LanguagePage,
+    LockPage,
+    MercadoLibrePage,
+    OnboardingPage,
+    PaperWalletPage,
+    PayProPage,
+    GlideraTxDetailsPage,
+    PinModalPage,
+    ProposalsPage,
+    ReceivePage,
+    ScanPage,
+    SendPage,
+    SettingsPage,
+    SellCoinbasePage,
+    SellGlideraPage,
+    GlideraSettingsPage,
+    CoinbaseSettingsPage,
+    ShapeshiftConfirmPage,
+    ShapeshiftDetailsPage,
+    ShapeshiftPage,
+    ShapeshiftShiftPage,
+    TermsOfUsePage,
+    MercadoLibreCardDetailsPage,
+    NotificationsPage,
+    FeePolicyPage,
+    SessionLogPage,
+    SendFeedbackPage,
+    SuccessModalPage,
+    TourPage,
+    TabsPage,
+    TxpDetailsPage,
+    TxDetailsPage,
+    TxpPage,
+    WalletSettingsPage,
+    WalletSettingsAdvancedPage,
+    WalletNamePage,
+    WalletColorPage,
+    WalletInformationPage,
+    WalletAddressesPage,
+    WalletExportPage,
+    WalletServiceUrlPage,
+    WalletTransactionHistoryPage,
+    WalletDeletePage,
+    WalletExtendedPrivateKeyPage,
+    WalletDetailsPage,
+    WalletBalancePage,
+    WalletItemPage,
+    WalletActivityPage,
+    WalletSelectorPage,
+    CardItemPage
+  ],
+  providers: [
+    AddressProvider,
+    AddressBookProvider,
+    AndroidFingerprintAuth,
+    AppProvider,
+    AppIdentityProvider,
+    AmazonProvider,
+    BackupProvider,
+    BitPayProvider,
+    BitPayCardProvider,
+    BitPayAccountProvider,
+    BwcProvider,
+    BwcErrorProvider,
+    ConfigProvider,
+    CoinbaseProvider,
+    Clipboard,
+    DerivationPathHelperProvider,
+    ExternalLinkProvider,
+    FeedbackProvider,
+    FCM,
+    HomeIntegrationsProvider,
+    FeeProvider,
+    GlideraProvider,
+    IncomingDataProvider,
+    LanguageProvider,
+    Logger,
+    MercadoLibreProvider,
+    NodeWebkitProvider,
+    OnGoingProcessProvider,
+    PayproProvider,
+    PlatformProvider,
+    ProfileProvider,
+    PopupProvider,
+    QRScanner,
+    PushNotificationsProvider,
+    RateProvider,
+    ReleaseProvider,
+    ShapeshiftProvider,
+    StatusBar,
+    SplashScreen,
+    ScanProvider,
+    SocialSharing,
+    Toast,
+    TouchID,
+    TimeProvider,
+    TouchIdProvider,
+    TxConfirmNotificationProvider,
+    FilterProvider,
+    TxFormatProvider,
+    WalletProvider,
+    EmailNotificationsProvider,
+    DecimalPipe,
+    PersistenceProvider,
+    File,
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+    }
+  ]
 })
 export class AppModule { }

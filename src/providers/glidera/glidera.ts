@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 //providers
 import { PlatformProvider } from '../platform/platform';
 import { PersistenceProvider } from '../persistence/persistence';
-import { BuyAndSellProvider } from '../buy-and-sell/buy-and-sell';
+import { HomeIntegrationsProvider } from '../home-integrations/home-integrations';
 import { AppProvider } from '../app/app';
 
 import * as _ from 'lodash';
@@ -22,7 +22,7 @@ export class GlideraProvider {
     private http: HttpClient,
     private platformProvider: PlatformProvider,
     private persistenceProvider: PersistenceProvider,
-    private buyAndSellProvider: BuyAndSellProvider,
+    private homeIntegrationsProvider: HomeIntegrationsProvider,
     private appProvider: AppProvider
   ) {
     this.logger.info('GlideraProvider initialized');
@@ -94,7 +94,7 @@ export class GlideraProvider {
     this.persistenceProvider.removeGlideraPermissions(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraStatus(this.credentials.NETWORK);
     this.persistenceProvider.removeGlideraTxs(this.credentials.NETWORK);
-    this.buyAndSellProvider.updateLink('glidera', false);
+    this.homeIntegrationsProvider.update('glidera', null); // Name, Token
   }
 
   public getToken(code, cb) {
@@ -106,12 +106,9 @@ export class GlideraProvider {
       client_secret: this.credentials.CLIENT_SECRET,
       redirect_uri: this.credentials.REDIRECT_URI
     };
-    let headers: any = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+    const headers: any = new HttpHeaders({ 'Content-Type': 'application/json', 'Accept': 'application/json' });
 
-    this.http.post(url, data, headers).subscribe((data: any) => {
+    this.http.post(url, data, { headers }).subscribe((data: any) => {
       this.logger.info('Glidera Authorization Access Token: SUCCESS');
       return cb(null, data);
     }, (data) => {
@@ -133,6 +130,7 @@ export class GlideraProvider {
           this.persistenceProvider.setGlideraToken(this.credentials.NETWORK, accessToken);
           this.persistenceProvider.setGlideraPermissions(this.credentials.NETWORK, p);
           this.persistenceProvider.setGlideraStatus(this.credentials.NETWORK, status);
+          this.homeIntegrationsProvider.update('glidera', accessToken); // Name, Token
           return cb(null, {
             token: accessToken,
             permissions: p,
@@ -398,15 +396,14 @@ export class GlideraProvider {
         if (err) return cb(err);
 
         this.persistenceProvider.getGlideraStatus(this.credentials.NETWORK).then((status) => {
-          if (_.isString(status)) status = status;
+          if (_.isString(status)) status = JSON.parse(status);
           this.persistenceProvider.getGlideraTxs(this.credentials.NETWORK).then((txs) => {
-            if (_.isString(txs)) txs = txs;
-            this.buyAndSellProvider.updateLink('glidera', true);
+            if (_.isString(txs)) txs = JSON.parse(txs);
             return cb(null, {
-              token: accessToken,
-              permissions: permissions,
-              status: status,
-              txs: txs
+              'token': accessToken,
+              'permissions': permissions,
+              'status': status,
+              'txs': txs
             });
           });
         });
@@ -470,9 +467,10 @@ export class GlideraProvider {
 
   public register() {
     this.persistenceProvider.getGlideraToken(this.credentials.NETWORK).then((token) => {
-      this.buyAndSellProvider.register({
+      this.homeIntegrationsProvider.register({
         name: 'glidera',
-        logo: 'assets/img/glidera/glidera-logo.png',
+        title: 'Glidera',
+        icon: 'assets/img/glidera/glidera-icon.png',
         location: 'US Only',
         page: 'GlideraPage',
         linked: !!token,

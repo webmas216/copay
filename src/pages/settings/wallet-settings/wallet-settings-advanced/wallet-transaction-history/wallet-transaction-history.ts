@@ -12,7 +12,6 @@ import { AppProvider } from '../../../../../providers/app/app';
 import { WalletProvider } from '../../../../../providers/wallet/wallet';
 
 // Pages
-import { SettingsPage } from '../../../../../pages/settings/settings';
 import { WalletDetailsPage } from '../../../../../pages/wallet-details/wallet-details';
 
 @Component({
@@ -171,7 +170,6 @@ export class WalletTransactionHistoryPage {
 
     this.logger.info('Transaction history cleared for :' + this.wallet.id);
 
-    this.navCtrl.setRoot(SettingsPage);
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
     this.navCtrl.push(WalletDetailsPage, { walletId: this.wallet.credentials.walletId, clearCache: true });

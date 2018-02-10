@@ -11,7 +11,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content no-bounce>
 
   <ion-card>
     <ion-card-content>
@@ -147,7 +147,7 @@
     </ion-item>
 
     <div *ngIf="tx && tx.paypro">
-      <ion-item-divider color="light">{{'Payment details' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Payment details' | translate}}</ion-item-divider>
       <ion-item>
         <ion-label>
           {{'To'|translate}}
@@ -187,7 +187,7 @@
     </div>
 
     <div *ngIf="actionList && actionList[0]">
-      <ion-item-divider color="light">{{'Timeline' | translate}}</ion-item-divider>
+      <ion-item-divider>{{'Timeline' | translate}}</ion-item-divider>
       <div class="timeline-item" [ngClass]="{'action-created' : a.type == 'created' || a.type == 'accept', 'action-rejected' : a.type == 'reject'}"
         *ngFor="let a of actionList; let i = index">
         <div class="timeline-content">
@@ -211,25 +211,26 @@
         * A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed
         since the proposal was created.
       </div>
-      <ion-item-divider color="light"></ion-item-divider>
-      <button ion-item class="btn-remove" (click)="remove()" [disabled]="loading">
+      <ion-item-divider></ion-item-divider>
+      <button ion-item icon-left class="btn-remove" (click)="remove()" [disabled]="loading">
+        <ion-icon name="trash"></ion-icon>
         <span translate>Delete Payment Proposal</span>
       </button>
-      <ion-item-divider color="light"></ion-item-divider>
     </div>
+    <ion-item-divider></ion-item-divider>
   </ion-list>
 </ion-content>
 
 <ion-footer *ngIf="(isShared && tx.pendingForUs) || (tx.pendingForUs && canSign && !paymentExpired)">
   <ion-toolbar>
     <ion-buttons left>
-      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="danger" *ngIf="isShared && tx.pendingForUs">
-        <ion-icon name="trash"></ion-icon>
+      <button ion-button icon-left (click)="reject()" [disabled]="loading" color="warning" *ngIf="isShared && tx.pendingForUs">
+        <ion-icon name="close"></ion-icon>
         {{'Reject'| translate}}
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button *ngIf="tx.pendingForUs && canSign && !paymentExpired" ion-button icon-right color="primary" (click)="onConfirm()">
+      <button *ngIf="tx.pendingForUs && canSign && !paymentExpired" color="blank" ion-button icon-right (click)="onConfirm()">
         {{buttonText}}
         <ion-icon name="send"></ion-icon>
       </button>

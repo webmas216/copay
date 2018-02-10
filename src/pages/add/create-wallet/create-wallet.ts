@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Logger } from '../../../providers/logger/logger';
+import { TranslateService } from '@ngx-translate/core';
 
 // Pages
-import { HomePage } from '../../../pages/home/home';
 import { CopayersPage } from '../copayers/copayers';
 
 // Providers
@@ -62,7 +62,8 @@ export class CreateWalletPage implements OnInit {
     private popupProvider: PopupProvider,
     private onGoingProcessProvider: OnGoingProcessProvider,
     private logger: Logger,
-    private walletProvider: WalletProvider
+    private walletProvider: WalletProvider,
+    private translate: TranslateService
   ) {
 
     this.isShared = this.navParams.get('isShared');
@@ -83,10 +84,6 @@ export class CreateWalletPage implements OnInit {
       bwsURL: [this.defaults.bws.url],
       selectedSeed: ['new'],
       recoveryPhrase: [null],
-      addPassword: [false],
-      password: [null],
-      confirmPassword: [null],
-      recoveryPhraseBackedUp: [null],
       derivationPath: [this.derivationPathByDefault],
       testnetEnabled: [false],
       singleAddress: [false],
@@ -95,52 +92,26 @@ export class CreateWalletPage implements OnInit {
 
     this.setTotalCopayers(this.tc);
     this.updateRCSelect(this.tc);
-    this.resetPasswordFields();
   }
 
   ngOnInit() {
     if (this.isShared) {
       this.createForm.get('myName').setValidators([Validators.required]);
     }
-
-    this.createForm.get('addPassword').valueChanges.subscribe((addPassword: boolean) => {
-      if (addPassword) {
-        this.createForm.get('password').setValidators([Validators.required]);
-        this.createForm.get('confirmPassword').setValidators([Validators.required]);
-      } else {
-        this.createForm.get('password').clearValidators();
-        this.createForm.get('confirmPassword').clearValidators();
-      }
-      this.createForm.get('password').updateValueAndValidity();
-      this.createForm.get('confirmPassword').updateValueAndValidity();
-    });
-  }
-
-  public validatePasswords(): boolean {
-    if (this.createForm.value.addPassword) {
-      if (this.createForm.value.password == this.createForm.value.confirmPassword) {
-        if (this.createForm.value.recoveryPhraseBackedUp) return false;
-      }
-      return true;
-    }
-    return false;
   }
 
   public setTotalCopayers(n: number): void {
-    this.createForm.value.totalCopayers = n;
+    this.createForm.controls['totalCopayers'].setValue(n);
     this.updateRCSelect(n);
     this.updateSeedSourceSelect();
   };
 
   private updateRCSelect(n: number): void {
-    this.createForm.value.totalCopayers = n;
+    this.createForm.controls['totalCopayers'].setValue(n);
     var maxReq = this.COPAYER_PAIR_LIMITS[n];
     this.signatures = _.range(1, maxReq + 1);
-    this.createForm.value.requiredCopayers = Math.min(Math.trunc(n / 2 + 1), maxReq);
-  };
+    this.createForm.controls['requiredCopayers'].setValue(Math.min(Math.trunc(n / 2 + 1), maxReq));
 
-  private resetPasswordFields(): void {
-    this.createForm.value.password = this.createForm.value.confirmPassword = this.createForm.value.recoveryPhraseBackedUp = null;
   };
 
   private updateSeedSourceSelect(): void {
@@ -153,7 +124,7 @@ export class CreateWalletPage implements OnInit {
       label: 'Specify Recovery Phrase',
       supportsTestnet: false
     }];
-    this.createForm.value.selectedSeed = this.seedOptions[0].id;
+    this.createForm.controls['selectedSeed'].setValue(this.seedOptions[0].id); // new or set    
   };
 
   public seedOptionsChange(seed: any): void {
@@ -162,21 +133,15 @@ export class CreateWalletPage implements OnInit {
     } else {
       this.createForm.get('recoveryPhrase').setValidators(null);
     }
-    this.createForm.value.selectedSeed = seed; // new or set
-    this.createForm.value.testnet = false;
-    this.createForm.value.derivationPath = this.derivationPathByDefault;
-    this.resetFormFields();
-  }
-
-  public resetFormFields(): void {
-    this.createForm.value.password = null;
-    this.createForm.value.confirmPassword = null;
-    this.createForm.value.recoveryPhraseBackedUp = null;
-    this.createForm.value.recoveryPhrase = null;
+    this.createForm.controls['selectedSeed'].setValue(seed); // new or set
+    this.createForm.controls['testnet'].setValue(false);
+    this.createForm.controls['derivationPath'].setValue(this.derivationPathByDefault);
+    this.createForm.controls['recoveryPhrase'].setValue(null);
   }
 
   public setDerivationPath(): void {
-    this.createForm.value.derivationPath = this.createForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    let path: string = this.createForm.value.testnet ? this.derivationPathForTestnet : this.derivationPathByDefault;
+    this.createForm.controls['derivationPath'].setValue(path);
   }
 
   public setOptsAndCreate(): void {
@@ -201,23 +166,24 @@ export class CreateWalletPage implements OnInit {
       } else {
         opts.mnemonic = words;
       }
-      opts.passphrase = this.createForm.value.password;
 
       let pathData = this.derivationPathHelperProvider.parse(this.createForm.value.derivationPath);
       if (!pathData) {
-        this.popupProvider.ionicAlert('Error', 'Invalid derivation path', 'Ok'); // TODO: GetTextCatalog
+        let title = this.translate.instant('Error');
+        let subtitle = this.translate.instant('Invalid derivation path');
+        this.popupProvider.ionicAlert(title, subtitle);
         return;
       }
 
       opts.networkName = pathData.networkName;
       opts.derivationStrategy = pathData.derivationStrategy;
 
-    } else {
-      opts.passphrase = this.createForm.value.password;
     }
 
     if (setSeed && !opts.mnemonic && !opts.extendedPrivateKey) {
-      this.popupProvider.ionicAlert('Error', 'Please enter the wallet recovery phrase', 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      let subtitle = this.translate.instant('Please enter the wallet recovery phrase');
+      this.popupProvider.ionicAlert(title, subtitle);
       return;
     }
 
@@ -237,17 +203,16 @@ export class CreateWalletPage implements OnInit {
       }
 
       if (!wallet.isComplete()) {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
         this.navCtrl.push(CopayersPage, { walletId: wallet.credentials.walletId });
       } else {
-        this.navCtrl.setRoot(HomePage);
         this.navCtrl.popToRoot();
       }
     }).catch((err: any) => {
       this.onGoingProcessProvider.set('creatingWallet', false);
       this.logger.warn(err);
-      this.popupProvider.ionicAlert('Error', err, 'Ok'); // TODO: GetTextCatalog
+      let title = this.translate.instant('Error');
+      this.popupProvider.ionicAlert(title, err);
       return;
     });
   }
