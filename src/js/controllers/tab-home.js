@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('tabHomeController',
-  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService) {
+  function($rootScope, $timeout, $scope, $state, $stateParams, $ionicModal, $ionicScrollDelegate, $window, gettextCatalog, lodash, popupService, ongoingProcess, externalLinkService, latestReleaseService, profileService, walletService, configService, $log, platformInfo, storageService, txpModalService, appConfigService, startupService, addressbookService, feedbackService, bwcError, nextStepsService, buyAndSellService, homeIntegrationsService, bitpayCardService, pushNotificationsService, timeService, $http) {
     var wallet;
     var listeners = [];
     var notifications = [];
@@ -211,15 +211,53 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       })
     };
 
+    var convertBtcToPolis = function (btc, ratio) {
+      var value = btc.split(" ")[0];
+      value = parseFloat(value);
+      var result = (value / ratio).toFixed(4);
+      result = result + ' polis';
+      return result;
+    };
+
     var updateAllWallets = function() {
       var wallets = [];
       $scope.walletsBtc = profileService.getWallets({coin: 'btc'});
+      var polis_to_btc ;
+
+      if($scope.walletsBtc.length > 0) {
+
+        $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+          var value_object = response.data[0];
+          polis_to_btc = parseFloat(value_object.price_btc);
+
+          for(var i = 0 ; i < $scope.walletsBtc.length ; i++) {
+            if($scope.walletsBtc[i].status){
+              if($scope.walletsBtc[i].status.totalBalanceStr) {
+                $scope.walletsBtc[i].status.totalBalanceStr = convertBtcToPolis($scope.walletsBtc[i].status.totalBalanceStr, polis_to_btc);
+              } 
+            } else {
+              if($scope.walletsBtc[i].cachedBalance) {
+                $scope.walletsBtc[i].cachedBalance = convertBtcToPolis($scope.walletsBtc[i].cachedBalance, polis_to_btc);
+              }
+            }
+
+            $scope.walletsBtc[i].converted = true;
+          }
+          
+          $scope.convertedWallets = angular.copy($scope.walletsBtc);
+
+          lodash.each($scope.convertedWallets, function(wBtc) {
+            wallets.push(wBtc);
+          });
+        },function (err) {
+          conosle.log(err);
+        });
+      }
+      // lodash.each($scope.walletsBtc, function(wBtc) {
+      //   wallets.push(wBtc);
+      // });
+
       $scope.walletsBch = profileService.getWallets({coin: 'bch'});
-
-      lodash.each($scope.walletsBtc, function(wBtc) {
-        wallets.push(wBtc);
-      });
-
       lodash.each($scope.walletsBch, function(wBch) {
         wallets.push(wBch);
       });

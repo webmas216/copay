@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, $ionicPopover, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError, bitcoreCash) {
+angular.module('copayApp.controllers').controller('tabReceiveController', function($rootScope, $scope, $timeout, $log, $ionicModal, $state, $ionicHistory, $ionicPopover, storageService, platformInfo, walletService, profileService, configService, lodash, gettextCatalog, popupService, bwcError, bitcoreCash, $http) {
 
   var listeners = [];
   $scope.isCordova = platformInfo.isCordova;
@@ -90,15 +90,58 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
   };
 
+  var convertBtcToPolis = function (btc, ratio) {
+    var value = btc.split(" ")[0];
+    value = parseFloat(value);
+    var result = (value / ratio).toFixed(4);
+    result = result + ' polis';
+    return result;
+  };
+
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
+
     $scope.singleWallet = $scope.wallets.length == 1;
 
     if (!$scope.wallets[0]) return;
 
+    // Conver current wallets to polis wallets
+    if($scope.wallets.length > 0) {
+
+      $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+        var value_object = response.data[0];
+        var polis_to_btc = parseFloat(value_object.price_btc);
+
+        for(var i = 0 ; i < $scope.wallets.length ; i++) {
+          if($scope.wallets[i].status){
+            if($scope.wallets[i].status.totalBalanceStr) {
+              $scope.wallets[i].status.totalBalanceStr = convertBtcToPolis($scope.wallets[i].status.totalBalanceStr, polis_to_btc);
+            } 
+          } else {
+            if($scope.wallets[i].cachedBalance) {
+              $scope.wallets[i].cachedBalance = convertBtcToPolis($scope.wallets[i].cachedBalance, polis_to_btc);
+            }
+          }
+
+          $scope.wallets[i].converted = true;
+        }
+        
+        $scope.convertedWallets = angular.copy($scope.wallets);
+
+        // select first wallet if no wallet selected previously
+        var selectedWallet = checkSelectedWallet($scope.wallet, $scope.convertedWallets);
+        $scope.onWalletSelect(selectedWallet);
+        
+      },function (err) {
+        conosle.log(err);
+      });
+    }
+    
     // select first wallet if no wallet selected previously
-    var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
-    $scope.onWalletSelect(selectedWallet);
+
+    // var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
+
+
 
     $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;
 
