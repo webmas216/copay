@@ -67,7 +67,8 @@
           {{wallet.name || wallet.id}}
         </span>
         <p>
-        <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span>
+        <!-- <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span> -->
+        <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : wallet.cachedBalance }} </span>
 
         <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
         <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">

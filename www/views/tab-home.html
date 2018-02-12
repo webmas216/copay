@@ -94,12 +94,13 @@
 
     <div class="list card" ng-if="walletsBtc[0]">
       <div class="item item-icon-right item-heading">
-        <img class="wallet-coin-logo" src="img/icon-bitcoin.svg" width="18">
+        <!-- <img class="wallet-coin-logo" src="img/icon-bitcoin.svg" width="18"> -->
+        <img class="wallet-coin-logo" src="img/app/coin-icon.png" width="18">
         <span translate>Polis Wallets</span>
         <a ui-sref="tabs.add"><i class="icon ion-ios-plus-empty list-add-button"></i></a>
       </div>
       <div>
-        <a ng-repeat="wallet in walletsBtc track by $index"
+        <a ng-repeat="wallet in convertedWallets track by $index"
            class="item item-sub item-icon-left item-big-icon-left item-icon-right wallet"
            ng-click="openWallet(wallet)">
           <span ng-include="'views/includes/walletList.html'"></span>
