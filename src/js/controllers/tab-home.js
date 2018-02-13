@@ -221,7 +221,7 @@ angular.module('copayApp.controllers').controller('tabHomeController',
 
     var updateAllWallets = function() {
       var wallets = [];
-      $scope.walletsBtc = profileService.getWallets({coin: 'btc'});
+      $scope.walletsBtc = profileService.getWallets({coin: 'btc'});     
       var polis_to_btc ;
 
       if($scope.walletsBtc.length > 0) {
