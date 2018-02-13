@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService, feeService, appConfigService) {
+angular.module('copayApp.controllers').controller('walletDetailsController', function($scope, $rootScope, $interval, $timeout, $filter, $log, $ionicModal, $ionicPopover, $state, $stateParams, $ionicHistory, profileService, lodash, configService, platformInfo, walletService, txpModalService, externalLinkService, popupService, addressbookService, storageService, $ionicScrollDelegate, $window, bwcError, gettextCatalog, timeService, feeService, appConfigService, $http) {
 
   var HISTORY_SHOW_LIMIT = 10;
   var currentTxHistoryPage = 0;
@@ -59,6 +59,18 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
     });
   };
 
+  var convertBtcToPolis = function (btc, ratio) {
+    if(btc.split(" ")[1] == 'polis') {
+      return btc;
+    } else {
+      var value = btc.split(" ")[0];
+      value = parseFloat(value);
+      var result = (value / ratio).toFixed(4);
+      result = result + ' polis';
+      return result;
+    }
+  };
+
   var updateStatus = function(force) {
     $scope.updatingStatus = true;
     $scope.updateStatusError = null;
@@ -78,6 +90,44 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
       } else {
         setPendingTxps(status.pendingTxps);
         $scope.status = status;
+
+        if($scope.status) {
+
+          $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+            var value_object = response.data[0];
+            var polis_to_btc = parseFloat(value_object.price_btc);
+
+            // Available Balance
+            if($scope.status.availableBalanceStr) {
+              $scope.status.availableBalanceStr = convertBtcToPolis($scope.status.availableBalanceStr, polis_to_btc);
+            }
+
+            // Total Balance
+            if($scope.status.totalBalanceStr) {
+              $scope.status.totalBalanceStr = convertBtcToPolis($scope.status.totalBalanceStr, polis_to_btc);
+            }
+
+            // Locked Balance
+            if($scope.status.lockedBalanceStr) {
+              $scope.status.lockedBalanceStr = convertBtcToPolis($scope.status.lockedBalanceStr, polis_to_btc);
+            }
+
+            // Pending Balance
+            if($scope.status.pendingBalanceStr) {
+              $scope.status.pendingBalanceStr = convertBtcToPolis($scope.status.pendingBalanceStr, polis_to_btc);
+            }
+
+            // Spendable Balance
+            if($scope.status.spendableBalanceStr) {
+              $scope.status.spendableBalanceStr = convertBtcToPolis($scope.status.spendableBalanceStr, polis_to_btc);
+            }
+
+            $scope.status.converted = true;
+            $scope.convertedStatus = angular.copy($scope.status);
+          },function (err) {
+            conosle.log(err);
+          });
+        }
       }
       refreshAmountSection();
       $timeout(function() {
@@ -190,10 +240,24 @@ angular.module('copayApp.controllers').controller('walletDetailsController', fun
   };
 
   $scope.showHistory = function() {
-    if ($scope.completeTxHistory) {
-      $scope.txHistory = $scope.completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT);
-      $scope.txHistoryShowMore = $scope.completeTxHistory.length > $scope.txHistory.length;
-    }
+    $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+      var value_object = response.data[0];
+      var polis_to_btc = parseFloat(value_object.price_btc);
+
+      if ($scope.completeTxHistory) {
+        $scope.txHistory = $scope.completeTxHistory.slice(0, (currentTxHistoryPage + 1) * HISTORY_SHOW_LIMIT);
+        $scope.txHistoryShowMore = $scope.completeTxHistory.length > $scope.txHistory.length;
+
+        for(var i = 0 ; i < $scope.txHistory.length; i++) {
+          $scope.txHistory[i].amountStr = convertBtcToPolis($scope.txHistory[i].amountStr, polis_to_btc);
+        }
+
+        $scope.convertedTxHistory = angular.copy($scope.txHistory);
+      }
+
+    }, function (error) {
+      console.log(error);
+    });
   };
 
   $scope.getDate = function(txCreated) {
