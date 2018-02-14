@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService) {
+angular.module('copayApp.controllers').controller('txDetailsController', function($rootScope, $log, $ionicHistory, $scope, $timeout, walletService, lodash, gettextCatalog, profileService, externalLinkService, popupService, ongoingProcess, txFormatService, txConfirmNotification, feeService, configService, $http) {
 
   var txId;
   var listeners = [];
@@ -112,6 +112,18 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     }, 10);
   }
 
+  var convertBtcToPolis = function (btc, ratio) {
+    if(btc.split(" ")[1] == 'polis') {
+      return btc;
+    } else {
+      var value = btc.split(" ")[0];
+      value = parseFloat(value);
+      var result = (value / ratio).toFixed(4);
+      result = result + ' polis';
+      return result;
+    }
+  };
+
   var updateTx = function(opts) {
     opts = opts || {};
     if (!opts.hideLoading) ongoingProcess.set('loadingTxInfo', true);
@@ -136,6 +148,21 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         if ($scope.btx.action == 'received') $scope.title = gettextCatalog.getString('Received Funds');
         if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
       }
+
+      $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+        var value_object = response.data[0];
+        var polis_to_btc = parseFloat(value_object.price_btc);
+
+        $scope.btx.amountStr = convertBtcToPolis($scope.btx.amountStr , polis_to_btc);
+        $scope.btx.amountValueStr = $scope.btx.amountStr.split(" ")[0];
+        $scope.btx.amountUnitStr = $scope.btx.amountStr.split(" ")[1];
+        $scope.btx.feeStr = convertBtcToPolis($scope.btx.feeStr , polis_to_btc);
+
+        $scope.convertedBTX = angular.copy($scope.btx);
+
+      }, function (error) {
+        console.log(error);
+      });
 
       updateMemo();
       initActionList();
@@ -206,7 +233,9 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
   };
 
   var getFiatRate = function() {
-    $scope.alternativeIsoCode = $scope.wallet.status.alternativeIsoCode;
+    if($scope.wallet.status) {
+      $scope.alternativeIsoCode = $scope.wallet.status.alternativeIsoCode;  
+    }
     $scope.wallet.getFiatRate({
       code: $scope.alternativeIsoCode,
       ts: $scope.btx.time * 1000

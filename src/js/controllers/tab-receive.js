@@ -91,11 +91,15 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
   };
 
   var convertBtcToPolis = function (btc, ratio) {
-    var value = btc.split(" ")[0];
-    value = parseFloat(value);
-    var result = (value / ratio).toFixed(4);
-    result = result + ' polis';
-    return result;
+    if(btc.split(" ")[1] == 'polis') {
+      return btc;
+    } else {
+      var value = btc.split(" ")[0];
+      value = parseFloat(value);
+      var result = (value / ratio).toFixed(4);
+      result = result + ' polis';
+      return result;
+    }
   };
 
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -116,7 +120,12 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
           if($scope.wallets[i].status){
             if($scope.wallets[i].status.totalBalanceStr) {
               $scope.wallets[i].status.totalBalanceStr = convertBtcToPolis($scope.wallets[i].status.totalBalanceStr, polis_to_btc);
-            } 
+            }
+
+            if($scope.wallets[i].status.availableBalanceStr) {
+              $scope.wallets[i].status.availableBalanceStr = convertBtcToPolis($scope.wallets[i].status.availableBalanceStr, polis_to_btc);
+            }
+
           } else {
             if($scope.wallets[i].cachedBalance) {
               $scope.wallets[i].cachedBalance = convertBtcToPolis($scope.wallets[i].cachedBalance, polis_to_btc);
