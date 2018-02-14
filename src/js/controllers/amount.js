@@ -385,7 +385,7 @@ angular.module('copayApp.controllers').controller('amountController', function (
     //   coin = availableUnits[altUnitIndex].id;
     // }
 
-    var coin = 'POLIS';
+    var coin = '';
 
     if ($scope.nextStep) {
 

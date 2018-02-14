@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('customAmountController', func
           amountUnit = parseFloat(amountUnit / polis_to_btc);
 
           // var btcParsedAmount = txFormatService.parseAmount($scope.wallet.coin, amountUnit, $scope.wallet.coin);
-          var btcParsedAmount = txFormatService.parseAmount($scope.coin, amountUnit, data.stateParams.coin);
+          var btcParsedAmount = txFormatService.parseAmount($scope.coin, amountUnit, 'POLIS');
 
           $scope.amountBtc = btcParsedAmount.amount;
           $scope.altAmountStr = btcParsedAmount.amountUnitStr;
