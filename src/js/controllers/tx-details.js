@@ -23,7 +23,8 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         blockexplorerUrl = 'blockdozer.com/insight';
       }
     } else {
-      blockexplorerUrl = 'insight.bitpay.com';
+      // blockexplorerUrl = 'insight.bitpay.com';
+      blockexplorerUrl = 'insight.polispay.org';
     }
 
     txConfirmNotification.checkIfEnabled(txId, function(res) {
