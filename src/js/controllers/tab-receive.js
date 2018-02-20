@@ -90,18 +90,6 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
     }
   };
 
-  var convertBtcToPolis = function (btc, ratio) {
-    if(btc.split(" ")[1] == 'polis') {
-      return btc;
-    } else {
-      var value = btc.split(" ")[0];
-      value = parseFloat(value);
-      var result = (value / ratio).toFixed(4);
-      result = result + ' polis';
-      return result;
-    }
-  };
-
   $scope.$on("$ionicView.beforeEnter", function(event, data) {
     $scope.wallets = profileService.getWallets();
 
@@ -109,47 +97,10 @@ angular.module('copayApp.controllers').controller('tabReceiveController', functi
 
     if (!$scope.wallets[0]) return;
 
-    // Conver current wallets to polis wallets
-    if($scope.wallets.length > 0) {
-
-      $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
-        var value_object = response.data[0];
-        var polis_to_btc = parseFloat(value_object.price_btc);
-
-        for(var i = 0 ; i < $scope.wallets.length ; i++) {
-          if($scope.wallets[i].status){
-            if($scope.wallets[i].status.totalBalanceStr) {
-              $scope.wallets[i].status.totalBalanceStr = convertBtcToPolis($scope.wallets[i].status.totalBalanceStr, polis_to_btc);
-            }
-
-            if($scope.wallets[i].status.availableBalanceStr) {
-              $scope.wallets[i].status.availableBalanceStr = convertBtcToPolis($scope.wallets[i].status.availableBalanceStr, polis_to_btc);
-            }
-
-          } else {
-            if($scope.wallets[i].cachedBalance) {
-              $scope.wallets[i].cachedBalance = convertBtcToPolis($scope.wallets[i].cachedBalance, polis_to_btc);
-            }
-          }
-
-          $scope.wallets[i].converted = true;
-        }
-        
-        $scope.convertedWallets = angular.copy($scope.wallets);
-
-        // select first wallet if no wallet selected previously
-        var selectedWallet = checkSelectedWallet($scope.wallet, $scope.convertedWallets);
-        $scope.onWalletSelect(selectedWallet);
-        
-      },function (err) {
-        conosle.log(err);
-      });
-    }
-    
     // select first wallet if no wallet selected previously
 
-    // var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
-
+    var selectedWallet = checkSelectedWallet($scope.wallet, $scope.wallets);
+    $scope.onWalletSelect(selectedWallet);
 
 
     $scope.showShareButton = platformInfo.isCordova ? (platformInfo.isIOS ? 'iOS' : 'Android') : null;

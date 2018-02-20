@@ -939,8 +939,9 @@ angular.module('copayApp.services')
           x.txid = x.data ? x.data.txid : null;
           x.types = [x.type];
 
-          if (x.data && x.data.amount)
+          if (x.data && x.data.amount){
             x.amountStr = txFormatService.formatAmountStr(x.wallet.coin, x.data.amount);
+          }
 
           x.action = function() {
             // TODO?

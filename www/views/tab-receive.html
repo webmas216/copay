@@ -68,7 +68,7 @@
         </span>
         <p>
         <!-- <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr}} </span> -->
-        <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr ? wallet.status.totalBalanceStr : wallet.cachedBalance }} </span>
+        <span ng-if="!wallet.balanceHidden"> {{wallet.status.totalBalanceStr.replace('btc','polis') ? wallet.status.totalBalanceStr.replace('btc','polis') : wallet.cachedBalance.replace('btc','polis') }} </span>
 
         <span ng-if="wallet.balanceHidden" translate>[Balance Hidden]</span>
         <span class="tab-home__wallet__multisig-number" ng-if="wallet.n > 1">
@@ -82,9 +82,16 @@
     </div>
 
   </ion-content>
-  <wallet-selector
+  <!-- <wallet-selector
     wallet-selector-title="walletSelectorTitle"
     wallet-selector-wallets="convertedWallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="showWallets"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector> -->
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
     wallet-selector-selected-wallet="wallet"
     wallet-selector-show="showWallets"
     wallet-selector-on-select="onWalletSelect">

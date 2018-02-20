@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').service('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, bitcoreCash, popupService, feeService) {
+angular.module('copayApp.services').service('walletService', function($log, $timeout, lodash, trezor, ledger, intelTEE, storageService, configService, rateService, uxLanguage, $filter, gettextCatalog, bwcError, $ionicPopup, fingerprintService, ongoingProcess, gettext, $rootScope, txFormatService, $ionicModal, $state, bwcService, bitcore, bitcoreCash, popupService, feeService, $http) {
 
   // Ratio low amount warning (fee/amount) in incoming TX
   var LOW_AMOUNT_RATIO = 0.15;
@@ -9,6 +9,16 @@ angular.module('copayApp.services').service('walletService', function($log, $tim
   var TOTAL_LOW_WARNING_RATIO = .3;
 
   var root = {};
+  var polis_to_usd;
+  var polis_to_btc;
+  
+  $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+    var value_object = response.data[0];
+    polis_to_usd = parseFloat(value_object.price_usd);
+    polis_to_btc = parseFloat(value_object.price_btc);
+  },function (err) {
+    conosle.log(err);
+  });
 
   root.externalSource = {
     ledger: ledger.description,
@@ -237,11 +247,11 @@ angular.module('copayApp.services').service('walletService', function($log, $tim
 
       rateService.whenAvailable(function() {
 
-        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
-        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
-        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
-        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
-        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
+        var totalBalanceAlternative = rateService.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin)* polis_to_btc;
+        var pendingBalanceAlternative = rateService.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin)* polis_to_btc;
+        var lockedBalanceAlternative = rateService.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin)* polis_to_btc;
+        var spendableBalanceAlternative = rateService.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin)* polis_to_btc;
+        var alternativeConversionRate = rateService.toFiat(100000000, cache.alternativeIsoCode, wallet.coin)* polis_to_btc;
 
         cache.totalBalanceAlternative = $filter('formatFiatAmount')(totalBalanceAlternative);
         cache.pendingBalanceAlternative = $filter('formatFiatAmount')(pendingBalanceAlternative);

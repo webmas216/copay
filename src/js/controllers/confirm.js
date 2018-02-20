@@ -49,18 +49,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     $ionicConfig.views.swipeBackEnabled(false);
   });
 
-  var convertBtcToPolis = function (btc, ratio) {
-    if(btc.split(" ")[1] == 'polis') {
-      return btc;
-    } else {
-      var value = btc.split(" ")[0];
-      value = parseFloat(value);
-      var result = (value / ratio).toFixed(4);
-      result = result + ' polis';
-      return result;
-    }
-  };
-
   function exitWithError(err) {
     $log.info('Error setting wallet selector:' + err);
     popupService.showAlert(gettextCatalog.getString(), bwcError.msg(err), function() {
@@ -100,22 +88,6 @@ angular.module('copayApp.controllers').controller('confirmController', function(
         setNoWallet(gettextCatalog.getString('No wallets available'), true);
         return cb();
       }
-
-      $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
-
-        var value_object = response.data[0];
-        var polis_to_btc = parseFloat(value_object.price_btc);
-
-        $scope.convertedWallets = angular.copy($scope.wallets);
-
-        if($scope.convertedWallets.length > 0) {
-          for(var i = 0 ; i < $scope.convertedWallets.length ; i++) {
-            $scope.convertedWallets[i].status.availableBalanceStr = convertBtcToPolis($scope.convertedWallets[i].status.availableBalanceStr, polis_to_btc);
-          }
-        }
-      }, function (error) {
-        console.log(error);
-      });
 
       var filteredWallets = [];
       var index = 0;
@@ -301,28 +273,11 @@ angular.module('copayApp.controllers').controller('confirmController', function(
     function updateAmount() {
       if (!tx.toAmount) return;
 
-      $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
-        // Amount
-        tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.toAmount);
-
-        var value_object = response.data[0];
-        var polis_to_btc = parseFloat(value_object.price_btc);
-
-        tx.amountStr = convertBtcToPolis(tx.amountStr, polis_to_btc);
-
-        tx.amountValueStr = tx.amountStr.split(' ')[0];
-        tx.amountUnitStr = tx.amountStr.split(' ')[1];
-        txFormatService.formatAlternativeStr(wallet.coin, tx.toAmount, function(v) {
-          tx.alternativeAmountStr = v;
-        });
-
-        $timeout(function() {
-          $scope.convertedTx = $scope.tx;
-          $scope.convertedTx.txp[$scope.wallet.id].feeStr = convertBtcToPolis($scope.convertedTx.txp[$scope.wallet.id].feeStr, polis_to_btc);
-
-        }, 1000);
-      }, function (error) {
-        console.log(error);
+      tx.amountStr = txFormatService.formatAmountStr(wallet.coin, tx.toAmount);
+      tx.amountValueStr = tx.amountStr.split(' ')[0];
+      tx.amountUnitStr = tx.amountStr.split(' ')[1];
+      txFormatService.formatAlternativeStr(wallet.coin, tx.toAmount, function(v) {
+        tx.alternativeAmountStr = v;
       });
     }
 

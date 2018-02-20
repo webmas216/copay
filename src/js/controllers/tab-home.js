@@ -211,55 +211,13 @@ angular.module('copayApp.controllers').controller('tabHomeController',
       })
     };
 
-    var convertBtcToPolis = function (btc, ratio) {
-      if(btc.split(" ")[1] == 'polis') {
-        return btc;
-      } else {
-        var value = btc.split(" ")[0];
-        value = parseFloat(value);
-        var result = (value / ratio).toFixed(4);
-        result = result + ' polis';
-        return result;
-      }
-    };
-
     var updateAllWallets = function() {
       var wallets = [];
-      $scope.walletsBtc = profileService.getWallets({coin: 'btc'});     
-      var polis_to_btc ;
+      $scope.walletsBtc = profileService.getWallets({coin: 'btc'});
 
-      if($scope.walletsBtc.length > 0) {
-
-        $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
-          var value_object = response.data[0];
-          polis_to_btc = parseFloat(value_object.price_btc);
-
-          for(var i = 0 ; i < $scope.walletsBtc.length ; i++) {
-            if($scope.walletsBtc[i].status){
-              if($scope.walletsBtc[i].status.totalBalanceStr) {
-                $scope.walletsBtc[i].status.totalBalanceStr = convertBtcToPolis($scope.walletsBtc[i].status.totalBalanceStr, polis_to_btc);
-              } 
-            } else {
-              if($scope.walletsBtc[i].cachedBalance) {
-                $scope.walletsBtc[i].cachedBalance = convertBtcToPolis($scope.walletsBtc[i].cachedBalance, polis_to_btc);
-              }
-            }
-
-            $scope.walletsBtc[i].converted = true;
-          }
-          
-          $scope.convertedWallets = angular.copy($scope.walletsBtc);
-
-          lodash.each($scope.convertedWallets, function(wBtc) {
-            wallets.push(wBtc);
-          });
-        },function (err) {
-          conosle.log(err);
-        });
-      }
-      // lodash.each($scope.walletsBtc, function(wBtc) {
-      //   wallets.push(wBtc);
-      // });
+      lodash.each($scope.walletsBtc, function(wBtc) {
+        wallets.push(wBtc);
+      });
 
       $scope.walletsBch = profileService.getWallets({coin: 'bch'});
       lodash.each($scope.walletsBch, function(wBch) {
@@ -320,25 +278,6 @@ angular.module('copayApp.controllers').controller('tabHomeController',
           return;
         }
         $scope.notifications = notifications;
-
-        if($scope.notifications.length > 0) {
-
-          $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
-            var value_object = response.data[0];
-            var polis_to_btc = parseFloat(value_object.price_btc);
-
-            for(var i = 0 ; i < $scope.notifications.length ; i++) {
-              if($scope.notifications[i].amountStr) {
-                $scope.notifications[i].amountStr = convertBtcToPolis($scope.notifications[i].amountStr, polis_to_btc);
-              }
-            }
-            
-            $scope.convertedNotifications = angular.copy($scope.notifications);
-          },function (err) {
-            conosle.log(err);
-          });
-        }
-
         $scope.notificationsN = total;
         $timeout(function() {
           $ionicScrollDelegate.resize();

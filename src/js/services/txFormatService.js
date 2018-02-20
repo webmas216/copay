@@ -1,6 +1,17 @@
 'use strict';
 
-angular.module('copayApp.services').service('txFormatService', function($filter, bwcService, rateService, configService, bitcoreCash, lodash) {
+angular.module('copayApp.services').service('txFormatService', function($filter, bwcService, rateService, configService, bitcoreCash, lodash, $http) {
+
+  var polis_to_usd;
+  var polis_to_btc;
+  
+  $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
+    var value_object = response.data[0];
+    polis_to_usd = parseFloat(value_object.price_usd);
+    polis_to_btc = parseFloat(value_object.price_btc);
+  },function (err) {
+    conosle.log(err);
+  });
   var root = {};
 
   root.Utils = bwcService.getUtils();
@@ -78,7 +89,8 @@ angular.module('copayApp.services').service('txFormatService', function($filter,
     var config = configService.getSync().wallet.settings;
 
     var val = function() {
-      var v1 = parseFloat((rateService.toFiat(satoshis, config.alternativeIsoCode, coin)).toFixed(2));
+      // var v1 = parseFloat((rateService.toFiat(satoshis, config.alternativeIsoCode, coin)).toFixed(2));
+      var v1 = parseFloat((rateService.toFiat(satoshis, config.alternativeIsoCode, coin) * polis_to_btc).toFixed(8));
       v1 = $filter('formatFiatAmount')(v1);
       if (!v1) return null;
 

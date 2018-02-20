@@ -113,18 +113,6 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
     }, 10);
   }
 
-  var convertBtcToPolis = function (btc, ratio) {
-    if(btc.split(" ")[1] == 'polis') {
-      return btc;
-    } else {
-      var value = btc.split(" ")[0];
-      value = parseFloat(value);
-      var result = (value / ratio).toFixed(4);
-      result = result + ' polis';
-      return result;
-    }
-  };
-
   var updateTx = function(opts) {
     opts = opts || {};
     if (!opts.hideLoading) ongoingProcess.set('loadingTxInfo', true);
@@ -150,20 +138,10 @@ angular.module('copayApp.controllers').controller('txDetailsController', functio
         if ($scope.btx.action == 'moved') $scope.title = gettextCatalog.getString('Moved Funds');
       }
 
-      $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
-        var value_object = response.data[0];
-        var polis_to_btc = parseFloat(value_object.price_btc);
-
-        $scope.btx.amountStr = convertBtcToPolis($scope.btx.amountStr , polis_to_btc);
+        $scope.btx.amountStr = $scope.btx.amountStr.replace('btc','polis');
         $scope.btx.amountValueStr = $scope.btx.amountStr.split(" ")[0];
         $scope.btx.amountUnitStr = $scope.btx.amountStr.split(" ")[1];
-        $scope.btx.feeStr = convertBtcToPolis($scope.btx.feeStr , polis_to_btc);
-
-        $scope.convertedBTX = angular.copy($scope.btx);
-
-      }, function (error) {
-        console.log(error);
-      });
+        $scope.btx.feeStr = $scope.btx.feeStr.replace('btc','polis');
 
       updateMemo();
       initActionList();

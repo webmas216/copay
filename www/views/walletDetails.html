@@ -35,12 +35,12 @@
         on-hold="hideToggle()"
         ng-style="{'transform': amountScale}"
         ng-class="{amount__balance: amountIsCollapsible}">
-        <strong class="size-36">{{convertedStatus.totalBalanceStr}}</strong>
+        <strong class="size-36">{{status.totalBalanceStr}}</strong>
         <div
           class="size-14 amount-alternative"
           ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'"
           ng-style="{opacity: altAmountOpacity}">
-          {{convertedStatus.totalBalanceAlternative}} {{convertedStatus.alternativeIsoCode}}
+          {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
         </div>
       </div>
 
@@ -69,11 +69,11 @@
         <button class="button button-standard button-primary amount__button-balance size-14" ng-click="openBalanceModal()">
           <i class="icon ion-ios-checkmark-outline"></i>
           <strong>
-            {{convertedStatus.spendableBalanceStr}}
+            {{status.spendableBalanceStr}}
           </strong>
           &nbsp;
           <span>
-            {{convertedStatus.spendableBalanceAlternative}} {{convertedStatus.alternativeIsoCode}}
+            {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
           </span>
         </button>
       </div>
@@ -115,12 +115,12 @@
         on-hold="hideToggle()"
         ng-style="{'transform': amountScale}"
         ng-class="{amount__balance: amountIsCollapsible}">
-        <strong class="size-36">{{convertedStatus.totalBalanceStr}}</strong>
+        <strong class="size-36">{{status.totalBalanceStr}}</strong>
         <div
           class="size-14 amount-alternative"
           ng-if="status.totalBalanceAlternative && wallet.network == 'livenet'"
           ng-style="{opacity: altAmountOpacity}">
-          {{convertedStatus.totalBalanceAlternative}} {{convertedStatus.alternativeIsoCode}}
+          {{status.totalBalanceAlternative}} {{status.alternativeIsoCode}}
         </div>
       </div>
 
@@ -149,11 +149,11 @@
         <button class="button button-standard button-primary amount__button-balance size-14" ng-click="openBalanceModal()">
           <i class="icon ion-ios-checkmark-outline"></i>
           <strong>
-            {{convertedStatus.spendableBalanceStr}}
+            {{status.spendableBalanceStr}}
           </strong>
           &nbsp;
           <span>
-            {{convertedStatus.spendableBalanceAlternative}} {{convertedStatus.alternativeIsoCode}}
+            {{status.spendableBalanceAlternative}} {{status.alternativeIsoCode}}
           </span>
         </button>
       </div>
@@ -194,8 +194,8 @@
         </div>
         <div class="item item-footer description" ng-show="status.lockedBalanceSat" style="background: white;">
           <span translate>Total Locked Balance</span>:
-          <b>{{convertedStatus.lockedBalanceStr}} </b>
-          <span> {{convertedStatus.lockedBalanceAlternative}} {{convertedStatus.alternativeIsoCode}} </span>
+          <b>{{status.lockedBalanceStr}} </b>
+          <span> {{status.lockedBalanceAlternative}} {{status.alternativeIsoCode}} </span>
         </div>
       </div>
 
@@ -219,7 +219,8 @@
       </div>
 
       <div class="wallet-details__list" ng-show="txHistory[0]">
-        <div ng-repeat="btx in convertedTxHistory track by $index" ng-click="openTxModal(btx)">
+        <!-- <div ng-repeat="btx in convertedTxHistory track by $index" ng-click="openTxModal(btx)"> -->
+        <div ng-repeat="btx in txHistory track by $index" ng-click="openTxModal(btx)">
           <span ng-include="'views/includes/walletHistory.html'"></span>
         </div>
       </div>
