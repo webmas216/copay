@@ -16,7 +16,7 @@
           <span translate ng-if="tx.sendMax">Sending maximum amount</span>
         </div>
         <div class="amount-label">
-          <div class="amount">{{convertedTx.amountValueStr || '...'}} <span class="unit">{{convertedTx.amountUnitStr}}</span></div>
+          <div class="amount">{{tx.amountValueStr || '...'}} <span class="unit">{{tx.amountUnitStr.replace('btc','polis')}}</span></div>
           <div class="alternative">{{tx.alternativeAmountStr || '...'}}</div>
         </div>
       </div>
@@ -24,7 +24,7 @@
       <div class="info">
         <div class="item item-icon-right" ng-if="wallet" ng-click="chooseFeeLevel(tx, wallet)">
           <span class="label">{{'Polis miner fee:' | translate}} {{tx.feeLevelName | translate}}</span>
-            <span class="m10l">{{convertedTx.txp[wallet.id].feeStr || '...'}}</span>
+            <span class="m10l">{{tx.txp[wallet.id].feeStr.replace('btc', 'polis') || '...'}}</span>
             <span class="item-note m10l">
               <span>{{tx.txp[wallet.id].alternativeFeeStr || '...'}}&nbsp;
               <span class="fee-rate" ng-if="tx.txp[wallet.id].feeRatePerStr"> &middot;
@@ -133,9 +133,16 @@
     <span ng-show="!wallet.canSign() && !wallet.isPrivKeyExternal()" translate>Transaction Created</span>
   </slide-to-accept-success>
 
-  <wallet-selector
+  <!-- <wallet-selector
     wallet-selector-title="walletSelectorTitle"
     wallet-selector-wallets="convertedWallets"
+    wallet-selector-selected-wallet="wallet"
+    wallet-selector-show="walletSelector"
+    wallet-selector-on-select="onWalletSelect">
+  </wallet-selector> -->
+  <wallet-selector
+    wallet-selector-title="walletSelectorTitle"
+    wallet-selector-wallets="wallets"
     wallet-selector-selected-wallet="wallet"
     wallet-selector-show="walletSelector"
     wallet-selector-on-select="onWalletSelect">

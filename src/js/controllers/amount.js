@@ -17,10 +17,11 @@ angular.module('copayApp.controllers').controller('amountController', function (
 
   var fixedUnit;
 
+  var polis_to_usd;
   var polis_to_btc;
-
   $http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/').then(function (response) {
     var value_object = response.data[0];
+    polis_to_usd = parseFloat(value_object.price_usd);
     polis_to_btc = parseFloat(value_object.price_btc);
   },function (err) {
     conosle.log(err);
@@ -44,10 +45,15 @@ angular.module('copayApp.controllers').controller('amountController', function (
       }).length;
 
       if (hasBTCWallets) {
+        // availableUnits.push({
+        //   name: 'Bitcoin',
+        //   id: 'btc',
+        //   shortName: 'BTC',
+        // });
         availableUnits.push({
           name: 'Bitcoin',
           id: 'btc',
-          shortName: 'BTC',
+          shortName: 'POLIS',
         });
       }
 
@@ -319,12 +325,12 @@ angular.module('copayApp.controllers').controller('amountController', function (
     $scope.allowSend = lodash.isNumber(result) && +result > 0;
     if (lodash.isNumber(result)) {
       $scope.globalResult = isExpression($scope.amount) ? '= ' + processResult(result) : '';
-
       if (availableUnits[unitIndex].isFiat) {
 
         var a = fromFiat(result);
         if (a) {
-          $scope.alternativeAmount = (parseFloat(txFormatService.formatAmount(a * unitToSatoshi, true)) / polis_to_btc).toFixed(8);
+          // $scope.alternativeAmount = (parseFloat(txFormatService.formatAmount(a * unitToSatoshi, true)) * polis_to_usd).toFixed(8);
+          $scope.alternativeAmount = (a / polis_to_btc).toFixed(4);
         } else {
           if (result) {
             $scope.alternativeAmount = 'N/A';
@@ -335,7 +341,8 @@ angular.module('copayApp.controllers').controller('amountController', function (
         }
       } else {
         console.log('b');
-        $scope.alternativeAmount = (parseFloat($filter('formatFiatAmount')(toFiat(result))) / polis_to_btc).toFixed(8);
+        // $scope.alternativeAmount = (parseFloat($filter('formatFiatAmount')(toFiat(result))) * polis_to_usd).toFixed(8);
+        $scope.alternativeAmount = (result * polis_to_usd).toFixed(4);
       }
     }
   };
@@ -401,7 +408,7 @@ angular.module('copayApp.controllers').controller('amountController', function (
       var amount = _amount;
 
       if (unit.isFiat) {
-        amount = (fromFiat(amount) * unitToSatoshi).toFixed(0);
+        amount = (fromFiat(amount) * unitToSatoshi / polis_to_btc).toFixed(0);
       } else {
         amount = (amount * unitToSatoshi).toFixed(0);
       }
