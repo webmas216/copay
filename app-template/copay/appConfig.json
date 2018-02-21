@@ -2,6 +2,7 @@
   "packageName": "polispay",
   "packageDescription": "Copay Polis Wallet",
   "packageNameId": "com.polispay.copay",
+  "themeColor": "#192c3a",
   "statusBarColor": "#192c3a",
   "userVisibleName": "Polispay",
   "purposeLine": "Polispay Wallet",
