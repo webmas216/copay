@@ -132,7 +132,8 @@ const configDefault: Config = {
 
   // Bitcore wallet service URL
   bws: {
-    url: 'https://bws.bitpay.com/bws/api'
+    // url: 'https://bws.bitpay.com/bws/api'
+    url: 'https://bws.polispay.org/bws/api'
   },
 
   download: {

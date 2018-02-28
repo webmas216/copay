@@ -367,7 +367,6 @@ export class WalletProvider {
   private createAddress(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Creating address for wallet:', wallet.id);
-
       wallet.createAddress({}, (err, addr) => {
         if (err) {
           let prefix = this.translate.instant('Could not create address');
