@@ -10,7 +10,7 @@ page-onboarding {
     margin-top: calc(5vh + 5vw);
     text-align: center;
     img {
-      max-width: 200px;
+      max-width: 150px;
       margin: 5rem 0;
     }
     p {
@@ -26,8 +26,9 @@ page-onboarding {
 
 %onboarding {
   .content {
-    background: $onboarding-gradient-top-color;
+    // background: $onboarding-gradient-top-color;
+    background: #2d3f4f;
     color: $onboarding-color;
-    background-image: $onboarding-background-image;
+    // background-image: $onboarding-background-image;
   }
 }
