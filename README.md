@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/polispay/copay/master/resources/copay/android/icon/drawable-xxxhdpi-icon.png" alt="Copay" width="79">
+<img src="https://raw.githubusercontent.com/polispay/copay/master/resources/polispay/android/icon/drawable-xxxhdpi-icon.png" alt="Copay" width="79">
 
 [![CircleCI](https://img.shields.io/circleci/project/github/bitpay/copay.svg)](https://circleci.com/gh/bitpay/copay/)
 [![Codecov](https://img.shields.io/codecov/c/github/bitpay/copay.svg)](https://codecov.io/gh/bitpay/copay/)
