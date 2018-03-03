@@ -18,4 +18,9 @@ page-send {
     text-align: center;
       padding: 30px;
   }
+  .wallet-warning {
+    ion-label {
+      white-space: inherit;
+    }
+  }
 }
