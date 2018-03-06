@@ -113,13 +113,16 @@ ion-alert.alert-top{
 .icon-services {
   background-color: none;
   border-radius: $icon-border-radius;
-  padding: 3px;
-  width: 35px;
-  height: 35px;
+  width: 32px;
+  height: 32px;
   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
   background-repeat: no-repeat;
   background-clip: padding-box;
   background-size: 103%;
+}
+
+.custom-icon {
+  color: rgb(169, 169, 169);
 }
 
 .icon-contact {
@@ -256,3 +259,32 @@ ion-content.content{
     }
   }
 
+  ion-icon {
+    &[class*="tab-"] {
+        // Instead of using the font-based icons
+        // We're applying SVG masks
+        mask-size: contain;
+        mask-position: 50% 50%;
+        mask-repeat: no-repeat;
+        background: currentColor;
+        width: 2rem;
+        height: 2rem;
+    }
+    // custom icons
+    &[class*="tab-home"] {
+        mask-image: url(../assets/img/tab-icons/ico-home.svg);
+    }
+    &[class*="tab-receive"] {
+        mask-image: url(../assets/img/tab-icons/ico-receive.svg);
+    }
+    &[class*="tab-scan"] {
+        mask-image: url(../assets/img/tab-icons/ico-scan.svg);
+        width: 3rem;
+    }
+    &[class*="tab-send"] {
+      mask-image: url(../assets/img/tab-icons/ico-send.svg);
+  }
+    &[class*="tab-settings"] {
+      mask-image: url(../assets/img/tab-icons/ico-settings.svg);
+  }
+}
