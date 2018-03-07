@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Http } from '@angular/http';
+
+import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as lodash from 'lodash';
 import { Logger } from '../../providers/logger/logger';
@@ -224,10 +225,10 @@ export class WalletProvider {
 
         this.rateProvider.whenRatesAvailable().then(() => {
 
-          let totalBalanceAlternative = (this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4);
-          let pendingBalanceAlternative = (this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4);
-          let lockedBalanceAlternative = (this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4);
-          let spendableBalanceAlternative = (this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4);
+          let totalBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
+          let pendingBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
+          let lockedBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
+          let spendableBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
           let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
           cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
