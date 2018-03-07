@@ -10,7 +10,7 @@
     <div class="balance-header">
       <div (longPress)="toggleBalance()">
         <div (tap)="updateAll(true)" *ngIf="!updateStatusError && !wallet.balanceHidden && !wallet.scanning && wallet.status">
-          <div class="balance-str">{{wallet.status.totalBalanceStr}}</div>
+          <div class="balance-str">{{wallet.status.totalBalanceStr.replace('BTC', 'POLIS')}}</div>
           <div class="balance-alt-str" *ngIf="wallet.network != 'testnet'">
             {{wallet.status.totalBalanceAlternative}} {{wallet.status.alternativeIsoCode}}
           </div>
@@ -31,7 +31,7 @@
       <div class="balance-spendable" (click)="openBalanceDetails()" *ngIf="!wallet.balanceHidden && !wallet.scanning && showBalanceButton && wallet.status">
         <ion-icon ios="ios-timer-outline" md="md-timer"></ion-icon>
         <strong>
-          {{wallet.status.spendableBalanceStr}}
+          {{wallet.status.spendableBalanceStr.replace('BTC', 'POLIS')}}
         </strong>
         &nbsp;
         <span>
@@ -175,7 +175,7 @@
 
         <ion-note item-end text-end>
           <div class="amount">
-            <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{tx.amount | satToUnit: wallet.coin}}</span>
+            <span [ngClass]="{'received': tx.action == 'received'}" *ngIf="tx.action != 'invalid'">{{(tx.amount | satToUnit: wallet.coin).replace('BTC','POLIS')}}</span>
             <span class="double-spend" *ngIf="tx.action == 'invalid'" translate>(possible double spend)</span>
           </div>
           <div class="date">

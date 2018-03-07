@@ -21,7 +21,7 @@
     </div>
     <div class="amount-label">
       <div class="amount">{{btx.amountValueStr}}
-        <span class="unit">{{btx.amountUnitStr}}</span>
+        <span class="unit">{{btx.amountUnitStr.replace('BTC', 'POLIS')}}</span>
       </div>
       <div class="alternative" (click)="showRate = !showRate">
         <span *ngIf="!showRate">{{btx.alternativeAmountStr}}</span>
@@ -79,10 +79,10 @@
         <div class="item-title">{{'Fee' | translate}}</div>
       </ion-label>
       <ion-note item-end>
-        <span>{{btx.feeStr}}</span>
+        <span>{{btx.feeStr.replace('BTC', 'POLIS')}}</span>
         <div>
-          {{btx.feeFiatStr}}
-          <span *ngIf="btx.feeRateStr">({{btx.feeRateStr}})</span>
+          {{btx.feeFiatStr.replace('BTC', 'POLIS')}}
+          <span *ngIf="btx.feeRateStr">({{btx.feeRateStr.replace('BTC', 'POLIS')}})</span>
         </div>
       </ion-note>
     </ion-item> 

@@ -551,6 +551,16 @@ export class ConfirmPage {
     this.setWallet(wallet);
   }
 
+  public parseToPolis(amount: string): string {
+    let price = amount.split(' ')[0];
+    let unit = amount.split(' ')[1];
+    price = price.replace(/,/g , "");
+    let new_price = parseFloat(price);
+    new_price = new_price * this.walletProvider.polis_to_btc;
+
+    return new_price.toFixed(4) + ' ' + unit;
+  }
+
   public showDescriptionPopup(tx) {
     let message = this.translate.instant('Add description');
     let opts = {

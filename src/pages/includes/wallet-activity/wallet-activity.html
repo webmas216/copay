@@ -48,7 +48,7 @@
   <ion-note item-right>
     <!-- {{notification.types}} -->
     <div class="amount">
-      {{notification.data.amount | satToUnit: notification.wallet.coin}}
+      {{ (notification.data.amount | satToUnit: notification.wallet.coin).replace('BTC','POLIS') }}
     </div>
     <time class="date">{{ notification.createdOn * 1000 | amTimeAgo}}</time>
   </ion-note>

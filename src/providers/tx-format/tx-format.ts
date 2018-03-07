@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 import { Logger } from '../../providers/logger/logger';
 import { BwcProvider } from '../bwc/bwc';
 import { ConfigProvider } from '../config/config';
@@ -14,16 +16,22 @@ export class TxFormatProvider {
 
   // TODO: implement configService
   public pendingTxProposalsCountForUs: number
+  public polis_to_btc : number;
 
   constructor(
     private bwcProvider: BwcProvider,
     private rate: RateProvider,
     private configProvider: ConfigProvider,
     private filter: FilterProvider,
-    private logger: Logger
+    private logger: Logger,
+    private http:Http
   ) {
     this.logger.info('TxFormatProvider initialized.');
     this.bitcoreCash = this.bwcProvider.getBitcoreCash();
+
+    this.http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/')
+      .map(res => res.json())
+      .subscribe(info => this.polis_to_btc = parseFloat(info[0].price_btc));
   }
 
   public toCashAddress(address: string, withPrefix?: boolean): string {
@@ -80,7 +88,7 @@ export class TxFormatProvider {
     let settings = this.configProvider.get().wallet.settings;
 
     let val = (() => {
-      var v1 = parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2));
+      var v1 = parseFloat((parseFloat((this.rate.toFiat(satoshis, settings.alternativeIsoCode, coin)).toFixed(2)) * this.polis_to_btc).toFixed(8));
       v1 = this.filter.formatFiatAmount(v1);
       if (!v1) return null;
 

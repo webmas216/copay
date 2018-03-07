@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as lodash from 'lodash';
@@ -21,6 +23,9 @@ import { TxFormatProvider } from '../tx-format/tx-format';
 @Injectable()
 export class WalletProvider {
 
+  // POLIS to BTC rate
+  public polis_to_btc: number;
+  
   // Ratio low amount warning (fee/amount) in incoming TX
   private LOW_AMOUNT_RATIO: number = 0.15;
 
@@ -54,9 +59,13 @@ export class WalletProvider {
     private touchidProvider: TouchIdProvider,
     private events: Events,
     private feeProvider: FeeProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private http:Http
   ) {
     this.logger.info('WalletService initialized.');
+    this.http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/')
+      .map(res => res.json())
+      .subscribe(info => this.polis_to_btc = parseFloat(info[0].price_btc));
   }
 
 
@@ -217,10 +226,10 @@ export class WalletProvider {
 
         this.rateProvider.whenRatesAvailable().then(() => {
 
-          let totalBalanceAlternative = this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let pendingBalanceAlternative = this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin);
-          let lockedBalanceAlternative = this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin);
-          let spendableBalanceAlternative = this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin);
+          let totalBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.totalBalanceSat, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
+          let pendingBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.pendingAmount, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
+          let lockedBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.lockedBalanceSat, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
+          let spendableBalanceAlternative = parseFloat((this.rateProvider.toFiat(cache.spendableAmount, cache.alternativeIsoCode, wallet.coin) * this.polis_to_btc).toFixed(4));
           let alternativeConversionRate = this.rateProvider.toFiat(100000000, cache.alternativeIsoCode, wallet.coin);
 
           cache.totalBalanceAlternative = this.filter.formatFiatAmount(totalBalanceAlternative);
@@ -372,7 +381,6 @@ export class WalletProvider {
   private createAddress(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.logger.debug('Creating address for wallet:', wallet.id);
-
       wallet.createAddress({}, (err, addr) => {
         if (err) {
           let prefix = this.translate.instant('Could not create address');

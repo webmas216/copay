@@ -67,6 +67,7 @@ export class WalletServiceUrlPage {
       case 'prod':
       case 'production':
         bws = 'https://bws.bitpay.com/bws/api'
+        // bws = 'https://bws.polispay.org/bws/api'
         break;
       case 'sta':
       case 'staging':

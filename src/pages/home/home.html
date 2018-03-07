@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      <img class="home-logo" src="assets/img/app/logo-negative.svg">
+      <img class="home-logo" src="assets/img/app/icon.png">
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -52,7 +52,7 @@
         <img src="assets/img/check-white.svg" class="bg green" />
       </ion-icon>
       <div class="title" translate>
-        Your bitcoin wallet is ready!
+        Your polis wallet is ready!
       </div>
       <div class="subtitle" translate>
         On this screen you can see all your wallets, accounts, and assets.
@@ -93,8 +93,9 @@
   <div class="card" *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
       <div class="title" item-start>
-        <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="18" />
-        <span translate>Bitcoin Wallets</span>
+        <!-- <img src="assets/img/icon-bitcoin.svg" alt="Polis Wallets" width="18" /> -->
+        <img src="assets/img/app/coin-icon.png" alt="Polis Wallets" width="18" />
+        <span translate>Polis Wallets</span>
       </div>
       <div item-end *ngIf="!showReorderBtc">
         <button ion-button clear icon-only color="grey" (click)="goToAddView()">
@@ -129,7 +130,7 @@
           </span>
           <span *ngIf="wallet.isComplete() && !wallet.needsBackup">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr.replace('BTC','POLIS')) : ( wallet.cachedBalance ? wallet.cachedBalance.replace('BTC','POLIS')
               + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
               : '')}}
             </span>
@@ -145,7 +146,7 @@
     </ion-list>
   </div>
 
-  <div class="card" *ngIf="walletsBch && walletsBch[0]">
+  <!-- <div *ngIf="walletsBch && walletsBch[0]">
     <ion-item-divider>
       <div class="title" item-start>
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
@@ -198,7 +199,7 @@
         </div>
       </button>
     </ion-list>
-  </div>
+  </div> -->
 
   <div class="card" *ngIf="bitpayCardItems && bitpayCardItems[0]">
     <ion-item-divider>

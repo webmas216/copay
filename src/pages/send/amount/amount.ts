@@ -1,4 +1,6 @@
 import { Component, HostListener } from '@angular/core';
+import { Http } from '@angular/http';
+
 import { ActionSheetController, NavController, NavParams } from 'ionic-angular';
 import * as _ from 'lodash';
 
@@ -29,6 +31,10 @@ import { ConfirmPage } from '../confirm/confirm';
   templateUrl: 'amount.html',
 })
 export class AmountPage {
+
+  // POLIS to BTC rate
+  public polis_to_btc: number;
+
   private LENGTH_EXPRESSION_LIMIT: number;
   private availableUnits: any[];
   private unit: string;
@@ -76,8 +82,13 @@ export class AmountPage {
     private profileProvider: ProfileProvider,
     private platformProvider: PlatformProvider,
     private rateProvider: RateProvider,
-    private txFormatProvider: TxFormatProvider
+    private txFormatProvider: TxFormatProvider,
+    private http:Http
   ) {
+    this.http.get('https://api.coinmarketcap.com/v1/ticker/POLIS/')
+      .map(res => res.json())
+      .subscribe(info => this.polis_to_btc = parseFloat(info[0].price_btc));
+
     this.config = this.configProvider.get();
     this.recipientType = this.navParams.data.recipientType;
     this.toAddress = this.navParams.data.toAddress;
@@ -156,24 +167,17 @@ export class AmountPage {
     }).length;
 
     if (hasBTCWallets) {
+      // this.availableUnits.push({
+      //   name: 'Bitcoin',
+      //   id: 'btc',
+      //   shortName: 'BTC',
+      // });
       this.availableUnits.push({
         name: 'Bitcoin',
         id: 'btc',
-        shortName: 'BTC',
+        shortName: 'POLIS',
       });
     }
-
-    let hasBCHWallets = this.profileProvider.getWallets({
-      coin: 'bch'
-    }).length;
-
-    if (hasBCHWallets) {
-      this.availableUnits.push({
-        name: 'Bitcoin Cash',
-        id: 'bch',
-        shortName: 'BCH',
-      });
-    };
 
     this.unitIndex = 0;
 
@@ -353,7 +357,7 @@ export class AmountPage {
 
         let a = this.fromFiat(result);
         if (a) {
-          this.alternativeAmount = this.txFormatProvider.formatAmount(a * this.unitToSatoshi, true);
+          this.alternativeAmount = ((this.txFormatProvider.formatAmount(a * this.unitToSatoshi, true)) / this.polis_to_btc).toFixed(4) ;
         } else {
           this.alternativeAmount = result ? 'N/A' : null;
           this.allowSend = false;
@@ -377,7 +381,7 @@ export class AmountPage {
   private toFiat(val: number): number {
     if (!this.rateProvider.getRate(this.fiatCode)) return;
 
-    return parseFloat((this.rateProvider.toFiat(val * this.unitToSatoshi, this.fiatCode, this.availableUnits[this.unitIndex].id)).toFixed(2));
+    return parseFloat((this.rateProvider.toFiat(val * this.unitToSatoshi, this.fiatCode, this.availableUnits[this.unitIndex].id)).toFixed(2)) * this.polis_to_btc;
   }
 
   private format(val: string): string {

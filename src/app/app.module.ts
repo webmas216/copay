@@ -1,5 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { File } from '@ionic-native/file';
@@ -328,6 +330,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     NgLoggerModule.forRoot(Level.LOG),
     MomentModule,
     NgxQRCodeModule,

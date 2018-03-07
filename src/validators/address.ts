@@ -16,6 +16,7 @@ export class AddressValidator {
 
     let URI = b.URI;
     let Address = b.Address;
+
     let URICash = c.URI;
     let AddressCash = c.Address;
 

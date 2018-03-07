@@ -7,17 +7,7 @@
 </ion-header>
 <ion-content no-bounce>
   <div *ngIf="hasBtcWallets || hasBchWallets">
-    <div class="send-header-wrapper">
-      <span class="send-heading" translate>Recipient</span>
-      <div class="search-wrapper" [ngClass]="{'focus': searchFocus}">
-        <ion-icon class="bitcoin-icon" name="search-btc"></ion-icon>
-        <ion-input placeholder="{{'Search or enter bitcoin address' | translate}}" (blur)="searchBlurred()" (focus)="searchInFocus()"
-          [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-input>
-        <ion-icon class="scan-icon" (click)="openScanner()">
-          <img src="assets/img/scan-ico.svg">
-        </ion-icon>
-      </div>
-    </div>
+    <ion-searchbar placeholder="Search or enter polis address" [(ngModel)]="search" (ngModelChange)="findContact(search)"></ion-searchbar>
 
     <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">
       <ion-item-divider>
@@ -38,8 +28,8 @@
 
     <div class="card" *ngIf="walletBtcList && walletBtcList[0]">
       <ion-item-divider class="title">
-        <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
-        <span translate>Transfer to Bitcoin Wallet</span>
+        <img src="assets/img/app/coin-icon.png" alt="Polis Wallets" width="16" />
+        <span translate>Transfer to Polis Wallet</span>
       </ion-item-divider>
 
       <ion-list>
@@ -67,7 +57,7 @@
     <div class="card" *ngIf="walletBchList && walletBchList[0]">
       <ion-item-divider class="title">
         <img src="assets/img/bitcoin-cash-logo.svg" alt="Bitcoin Cash Wallets" width="22" />
-        <span translate>Transfer to Bitcoin Cash Wallet</span>
+        <span translate>Transfer to Polis Cash Wallet</span>
       </ion-item-divider>
 
       <ion-list>
@@ -94,6 +84,6 @@
     <ion-item-divider></ion-item-divider>
   </div>
   <div *ngIf="!hasBtcWallets && !hasBchWallets" class="no-wallet-message">
-    <span translate>To get started, you'll need to create a bitcoin wallet and get some bitcoin.</span>
+    <span translate>To get started, you'll need to create a polis wallet and get some polis.</span>
   </div>
 </ion-content>
