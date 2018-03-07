@@ -127,7 +127,7 @@
           </span>
           <span *ngIf="wallet.isComplete()">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr.replace('BTC','POLIS')) : ( wallet.cachedBalance ? wallet.cachedBalance.replace('BTC','POLIS')
               + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
               : '')}}
             </span>

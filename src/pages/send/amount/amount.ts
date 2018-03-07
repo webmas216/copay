@@ -442,7 +442,8 @@ export class AmountPage {
   };
 
   private updateUnitUI(): void {
-    this.unit = this.availableUnits[this.unitIndex].shortName;
+    // this.unit = this.availableUnits[this.unitIndex].shortName;
+    this.unit = 'POLIS'
     this.alternativeUnit = this.availableUnits[this.altUnitIndex].shortName;
 
     this.processAmount();

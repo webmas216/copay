@@ -9,8 +9,8 @@
   <div *ngIf="walletsBtc && walletsBtc[0]">
     <ion-item-divider>
       <div class="title">
-        <img src="assets/img/icon-bitcoin.svg" alt="Bitcoin Wallets" width="16" />
-        <span translate>Bitcoin Wallets</span>
+        <img src="assets/img/app/coin-icon.png" alt="Polis Wallets" width="16" />
+        <span translate>Polis Wallets</span>
       </div>
     </ion-item-divider>
 
@@ -32,7 +32,7 @@
           </span>
           <span *ngIf="wallet.isComplete()">
             <span *ngIf="!wallet.balanceHidden && !wallet.scanning">
-              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr) : ( wallet.cachedBalance ? wallet.cachedBalance
+              {{wallet.status && wallet.status.totalBalanceStr ? (wallet.status.totalBalanceStr.replace('BTC','POLIS')) : ( wallet.cachedBalance ? wallet.cachedBalance.replace('BTC','POLIS')
               + (wallet.cachedBalanceUpdatedOn ? ' &middot; ' + ( wallet.cachedBalanceUpdatedOn * 1000 | amTimeAgo) : '')
               : '')}}
             </span>

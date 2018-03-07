@@ -202,7 +202,8 @@ const configDefault: Config = {
   },
 
   blockExplorerUrl: {
-    btc: 'insight.bitpay.com',
+    // btc: 'insight.bitpay.com',
+    btc: 'insight.polispay.org',
     bch: 'bch-insight.bitpay.com'
   }
 };
