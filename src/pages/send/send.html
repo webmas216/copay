@@ -11,7 +11,7 @@
 
     <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">
       <ion-item-divider>
-        <span translate>Transfer to Contact</span>
+        <span class="title" translate>Transfer to Contact</span>
       </ion-item-divider>
       <ion-list>
         <button ion-item *ngFor="let item of filteredContactsList" (click)="goToAmount(item)">
@@ -81,7 +81,6 @@
         </button>
       </ion-list>
     </div>
-    <ion-item-divider></ion-item-divider>
   </div>
   <div *ngIf="!hasBtcWallets && !hasBchWallets" class="no-wallet-message">
     <span translate>To get started, you'll need to create a polis wallet and get some polis.</span>
