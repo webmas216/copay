@@ -17,16 +17,35 @@ page-backup-warning {
 
   @extend %onboarding;
   & > ion-content {
-    background: $onboarding-welcome-bg;
+    background-image: $onboarding-background-image !important;
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat;
   }
 
+  .scroll-content {
+    overflow-y: hidden !important;
+  }
+
+  .img-container {
+    height: 100%;
+    img {
+      max-height: 100%;
+      padding-bottom: 22rem;
+      min-height: 25rem;
+    }
+  }
+
   .description {
     font-size: 16px;
-    padding-top: 10px;
     color: rgba(255, 255, 255, 0.5);
+    &.bottom {
+      padding: 1rem;
+      position: absolute;
+      bottom: 2rem;
+      text-align: center;
+      width: 100%;
+    }
   }
 }
 
