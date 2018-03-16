@@ -2,9 +2,9 @@
   <ion-navbar hideBackButton="true"></ion-navbar>
 </ion-header>
 <ion-content no-bounce>
-  <h1 *ngIf="resume" translate>Quick review!</h1>
-  <h1 *ngIf="!resume" translate>Almost done! Let's review.</h1>
-  <p translate>Polis is different &ndash; it cannot be safely held with a bank or web service.</p>
+  <h3 *ngIf="resume" translate>Quick review!</h3>
+  <h3 *ngIf="!resume" translate>Almost done! Let's review.</h3>
+  <p translate class="description">Polis is different &ndash; it cannot be safely held with a bank or web service.</p>
   <ion-list class="checkbox-list" no-lines text-wrap>
     <ion-item>
       <ion-label>I understand that my funds are held securely on this device, not by a company.</ion-label>
@@ -16,8 +16,8 @@
       <ion-checkbox [(ngModel)]="accepted.second"></ion-checkbox>
     </ion-item>
   </ion-list>
-  <div class="bottom-absolute checkbox-list" *ngIf="accepted.first && accepted.second">
-    <div class="agree-to-terms">
+  <div class="bottom-absolute checkbox-list">
+    <div class="agree-to-terms" *ngIf="accepted.first && accepted.second">
       <ion-item no-lines text-wrap>
         <ion-checkbox class="check" [(ngModel)]="terms.accepted"></ion-checkbox>
       </ion-item>
@@ -28,10 +28,7 @@
         </p>
       </div>
     </div>
+    <button ion-button class="button-standard" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()"
+    translate>Confirm &amp; Finish</button>
   </div>
 </ion-content>
-
-<ion-footer>
-  <button ion-button class="button-footer" [disabled]="!accepted.first || !accepted.second || !terms.accepted" (click)="confirm()"
-    translate>Confirm &amp; Finish</button>
-</ion-footer>

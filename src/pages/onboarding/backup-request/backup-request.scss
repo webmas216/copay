@@ -22,4 +22,16 @@ page-backup-request {
     margin-right: 10px;
     margin-left: 10px;
   }
+  .description{
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.4rem;
+  }
+  .arrow-down {
+    font-size: 8rem;
+    color: color($colors, primary);
+  }
+  .alert-icon {
+    margin: 20px auto 5px;
+    height: 10vh;
+  }
 }
