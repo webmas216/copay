@@ -13,7 +13,8 @@
     <a (click)="showInfo = !showInfo" *ngIf="!showInfo" translate>Why?</a>
 
     <div *ngIf="showInfo">
-      <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your polises secure against
+      <br>
+      <span translate>It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your polis secure against
         hypothetical attacks by quantum computers.</span>
       <a (click)="showInfo = !showInfo" translate>Hide</a>
     </div>
@@ -66,11 +67,7 @@
 
       <ion-item *ngFor="let w of latestWithBalance" copy-to-clipboard="{{w.address}}">
         <h3>{{w.address}}</h3>
-<<<<<<< HEAD
-        <p class="amount">{{(w.amount | satToUnit: wallet.coin).replace('BTC','POLIS')}}</p>
-=======
-        <p class="info">{{w.amount | satToUnit: wallet.coin}}</p>
->>>>>>> upstream/master
+        <p class="info">{{(w.amount | satToUnit: wallet.coin).replace('BTC','POLIS')}}</p>
       </ion-item>
     </div>
 
@@ -79,30 +76,17 @@
 
       <ion-item>
         <span translate>Total wallet inputs</span>
-<<<<<<< HEAD
-        <div>{{allUtxosNb}} [{{ allUtxosSum.replace('BTC','POLIS') }}]</div>
-=======
-        <p class="info">{{allUtxosNb}} [{{allUtxosSum}}]</p>
->>>>>>> upstream/master
+        <p class="info">{{allUtxosNb}} [{{ allUtxosSum.replace('BTC','POLIS') }}]</p>
       </ion-item>
 
       <ion-item>
         <span translate> Low amount inputs </span>
-<<<<<<< HEAD
-        <div>{{lowUtxosNb}} [{{ lowUtxosSum.replace('BTC','POLIS') }}]</div>
-      </ion-item>
-
-      <ion-item>
-        <span translate> Approximate Polis network fee to transfer wallet's balance (with normal priority) </span>
-        <div>{{minFeePer}} [{{ minFee.replace('BTC','POLIS') }}]</div>
-=======
-        <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum }}]</p>
+        <p class="info">{{lowUtxosNb}} [{{ lowUtxosSum.replace('BTC','POLIS') }}]</p>
       </ion-item>
 
       <ion-item text-wrap>
-        <span translate> Approximate Bitcoin network fee to transfer wallet's balance (with normal priority) </span>
-        <p class="info">{{minFeePer}} [{{minFee}}]</p>
->>>>>>> upstream/master
+        <span translate> Approximate Polis network fee to transfer wallet's balance (with normal priority) </span>
+        <p class="info">{{minFeePer}} [{{ minFee.replace('BTC','POLIS') }}]</p>
       </ion-item>
     </div>
   </ion-list>

@@ -4,13 +4,15 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <h3 translate>Notifications by email</h3>
-  <div *ngIf="!showConfirmForm">
-    <img src='assets/img/app/onboarding/push-notifications.svg' width="200" />
+  <div class="fixed">
+    <h3 class="title" translate>Notifications by email</h3>
+    <div *ngIf="!showConfirmForm">
+      <img src='assets/img/app/onboarding/push-notifications.svg' width="200" />
+    </div>
   </div>
 </ion-content>
 
-<ion-footer>
+<ion-footer no-border>
   <div class="email-form" *ngIf="!showConfirmForm">
     <p class="description" translate>Where would you like to receive email notifications about payments?</p>
     <form [formGroup]="emailForm" (ngSubmit)="showConfirm()">
@@ -24,7 +26,7 @@
       </ion-item>
       <button ion-button class="button-standard" type="submit" [disabled]="!emailForm.valid">Continue</button>
     </form>
-    <button ion-button clear color="blank" class="button-standard btn-transparent" (click)="skip()">Skip</button>
+    <button ion-button clear class="button-standard btn-transparent primary-color" (click)="skip()">Skip</button>
   </div>
 
   <div class="email-form" *ngIf="showConfirmForm">
@@ -32,15 +34,7 @@
       <p translate>Is this email address correct?</p>
       <p>{{ emailForm.value.email }}</p>
     </div>
-    <div class="buttons">
-      <div class="row">
-        <div class="col col-50">
-          <button block ion-button class="button-standard" (click)="showConfirm()" translate>Edit</button>
-        </div>
-        <div class="col col-50">
-          <button block ion-button class="button-standard" (click)="save()" translate>Confirm</button>
-        </div>
-      </div>
-    </div>
+    <button ion-button class="button-standard" (click)="save()" translate>Confirm</button>
+    <button ion-button class="button-standard btn-transparent primary-color" (click)="showConfirm()" translate>Edit</button>
   </div>
 </ion-footer>

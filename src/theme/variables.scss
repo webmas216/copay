@@ -28,11 +28,12 @@ $colors: (
   secondary: $color-secondary,
   warning: #eba133,
   danger: #ef473a,
-  success: #7bc94d,
+  success: #09C286,
   light: #f4f4f4,
-  blank: #fafafa,
+  blank: #fff,
   dark: #424242,
-  grey: #667
+  grey: #667,
+  light-grey: #9b9bab
 );
 
 // App background color
@@ -72,7 +73,6 @@ $onboarding-background-image: linear-gradient(
   $onboarding-gradient-top-color 0%,
   $onboarding-gradient-bottom-color 100%
 );
-$onboarding-color: #fff;
 
 // App iOS Variables
 // --------------------------------------------------
@@ -84,7 +84,7 @@ $tabs-ios-border-color: rgba(0, 0, 0, .1);
 $item-ios-body-text-font-size: 1.4rem;
 
 $item-ios-divider-background: $background-color;
-$item-ios-divider-color: color($colors, dark);
+$item-ios-divider-color: color($colors, grey);
 $item-ios-padding-top: 16px;
 $item-ios-padding-bottom: 16px;
 $label-ios-margin-top: 14px;
@@ -100,7 +100,7 @@ $searchbar-ios-background-color: color($colors, blank);
 $searchbar-ios-padding-vertical: 16px;
 $searchbar-ios-padding-horizontal: 8px;
 
-$note-ios-color: color($colors, grey);
+$note-ios-color: color($colors, light-grey);
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -110,7 +110,7 @@ $item-md-body-text-font-size: 1.4rem;
 $item-md-font-size: 1.6rem;
 
 $item-md-divider-background: $background-color;
-$item-md-divider-color: color($colors, dark);
+$item-md-divider-color: color($colors, grey);
 $item-md-padding-top: 16px;
 $item-md-padding-bottom: 16px;
 $label-md-margin-top: 14px;
@@ -126,7 +126,7 @@ $list-md-header-margin-bottom: 0;
 $list-md-margin-bottom: 0;
 $list-md-header-color: color($colors, dark);
 
-$note-md-color: color($colors, grey);
+$note-md-color: color($colors, light-grey);
 
 // App Windows Variables
 // --------------------------------------------------
