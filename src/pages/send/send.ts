@@ -31,7 +31,6 @@ export class SendPage {
   public hasBchWallets: boolean;
   public hasContacts: boolean;
   public contactsShowMore: boolean;
-  public searchFocus: boolean;
   private CONTACTS_SHOW_LIMIT: number = 10;
   private currentContactsPage: number = 0;
 
@@ -78,6 +77,8 @@ export class SendPage {
         network: v.network,
         m: v.credentials.m,
         n: v.credentials.n,
+        isComplete: v.isComplete(),
+        needsBackup: v.needsBackup,
         getAddress: (): Promise<any> => {
           return new Promise((resolve, reject) => {
             this.walletProvider.getAddress(v, false).then((addr) => {
@@ -105,6 +106,8 @@ export class SendPage {
         network: v.network,
         m: v.credentials.m,
         n: v.credentials.n,
+        isComplete: v.isComplete(),
+        needsBackup: v.needsBackup,
         getAddress: (): Promise<any> => {
           return new Promise((resolve, reject) => {
             this.walletProvider.getAddress(v, false).then((addr) => {
@@ -151,14 +154,8 @@ export class SendPage {
     this.updateContactsList();
   }
 
-  public searchInFocus(): void {
-    this.searchFocus = true;
-  }
-
-  public searchBlurred(): void {
-    if (this.search == null || this.search.length == 0) {
-      this.searchFocus = false;
-    }
+  public openScanner(): void {
+    this.navCtrl.parent.select(2);
   }
 
   public findContact(search: string): void {

@@ -3,8 +3,8 @@
   <ion-navbar>
     <ion-title>{{'Custom Amount' | translate}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()" translate>
-        <ion-icon name="share"></ion-icon>
+      <button *ngIf="showShareButton" ion-button icon-only (click)="shareAddress()">
+        <ion-icon ios="ios-share-outline" md="md-share"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -16,7 +16,7 @@
   </div>
   <ion-list>
     <ion-item>
-      <ion-label translate>Address</ion-label>
+      <ion-label>{{'Address' | translate}}</ion-label>
       <ion-note class="address-note" item-end>
         {{address}}
       </ion-note>
@@ -24,7 +24,7 @@
     <ion-item>
       <span translate>Amount</span>
       <ion-note item-end>
-        {{amountUnitStr.replace('BTC','POLIS')}} - {{altAmountStr}}
+          {{amountUnitStr.replace('BTC','POLIS')}} - {{altAmountStr}}
       </ion-note>
     </ion-item>
     <ion-item ion-item>

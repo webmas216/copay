@@ -62,6 +62,7 @@ export class HomePage {
   public updateText: string;
   public homeIntegrations: any[];
   public bitpayCardItems: any;
+  public showBitPayCard: boolean = false;
 
   public showRateCard: boolean;
   public homeTip: boolean;
@@ -98,6 +99,7 @@ export class HomePage {
     private incomingDataProvider: IncomingDataProvider
   ) {
     this.updatingWalletId = {};
+    this.addressbook = {};
     this.cachedBalanceUpdateOn = '';
     this.isNW = this.platformProvider.isNW;
     this.showReorderBtc = false;
@@ -107,14 +109,12 @@ export class HomePage {
 
   ionViewWillEnter() {
     this.config = this.configProvider.get();
-    this.pushNotificationsProvider.init();
-    this.homeIntegrations = this.homeIntegrationsProvider.get();
-    this.showIntegration = this.config.showIntegration;
-    this.homeIntegrations.forEach((integration: any) => {
-      integration.show = this.showIntegration[integration.name];
-    });
-    this.homeIntegrations = _.filter(this.homeIntegrations, (homeIntegrations) => {
-      return homeIntegrations.show == true;
+    this.pushNotificationsProvider.init(); 
+    
+    this.addressBookProvider.list().then((ab: any) => {
+      this.addressbook = ab || {};
+    }).catch((err) => {
+      this.logger.error(err);
     });
 
     // Update Tx Notifications
@@ -131,33 +131,43 @@ export class HomePage {
 
     // Create, Join, Import and Delete -> Get Wallets -> Update Status for All Wallets
     this.events.subscribe('status:updated', () => {
+      this.updateTxps();
       this.setWallets();
     });
 
     // Hide stars to rate
     this.events.subscribe('feedback:hide', () => {
       this.showRateCard = false;
-    });
-
-    this.bitPayCardProvider.get({}, (err, cards) => {
-      this.bitpayCardItems = cards;
-    });
+    }); 
   }
 
   ionViewDidEnter() {
     if (this.isNW) this.checkUpdate();
     this.checkHomeTip();
-    this.checkFeedbackInfo();
-
-    this.addressBookProvider.list().then((ab: any) => {
-      this.addressbook = ab || {};
-    }).catch((err) => {
-      this.logger.error(err);
-    });
+    this.checkFeedbackInfo(); 
 
     if (this.platformProvider.isCordova) {
       this.handleDeepLinks();
     }
+
+    // Show integrations
+    let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
+
+    // Hide BitPay if linked
+    setTimeout(() => {
+      this.homeIntegrations = _.remove(_.clone(integrations), (x) => {
+        if (x.name == 'debitcard' && x.linked) return;
+        else return x;
+      });
+    }, 200);
+
+    // Only BitPay Wallet
+    this.bitPayCardProvider.get({}, (err, cards) => {
+      this.zone.run(() => {
+        this.showBitPayCard = this.app.info._enabledExtensions.debitcard ? true : false;
+        this.bitpayCardItems = cards;
+      });
+    });
   }
 
   ionViewWillLeave() {

@@ -18,6 +18,7 @@ import { ConfigProvider } from '../../../../providers/config/config';
 import { EmailNotificationsProvider } from '../../../../providers/email-notifications/email-notifications';
 import { ExternalLinkProvider } from '../../../../providers/external-link/external-link';
 import { OnGoingProcessProvider } from "../../../../providers/on-going-process/on-going-process";
+import { PayproProvider } from '../../../../providers/paypro/paypro';
 import { PopupProvider } from '../../../../providers/popup/popup';
 import { ProfileProvider } from '../../../../providers/profile/profile';
 import { TxFormatProvider } from '../../../../providers/tx-format/tx-format';
@@ -68,7 +69,8 @@ export class BuyAmazonPage {
     private profileProvider: ProfileProvider,
     private txFormatProvider: TxFormatProvider,
     private walletProvider: WalletProvider,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private payproProvider: PayproProvider
   ) {
     this.FEE_TOO_HIGH_LIMIT_PER = 15;
     this.configWallet = this.configProvider.get().wallet;
@@ -246,39 +248,51 @@ export class BuyAmazonPage {
       }
 
       let outputs = [];
-      let toAddress = invoice.addresses[COIN];
-      let amountSat = invoice.paymentTotals[COIN];
 
-      outputs.push({
-        'toAddress': toAddress,
-        'amount': amountSat,
-        'message': message
-      });
+      this.payproProvider.getPayProDetails(payProUrl, wallet.coin).then((details: any) => {
+        let txp: any = {
+          amount: details.amount,
+          toAddress: details.toAddress,
+          outputs: [{
+            'toAddress': details.toAddress,
+            'amount': details.amount,
+            'message': message
+          }],
+          message,
+          customData: {
+            'service': 'amazon'
+          },
+          payProUrl,
+          excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
+        };
 
-      let txp = {
-        toAddress,
-        amount: amountSat,
-        outputs,
-        message,
-        payProUrl,
-        excludeUnconfirmedUtxos: this.configWallet.spendUnconfirmed ? false : true,
-        feeLevel: this.configWallet.settings.feeLevel ? this.configWallet.settings.feeLevel : 'normal'
-      };
+        if (details.requiredFeeRate) {
+          txp.feePerKb = Math.ceil(details.requiredFeeRate * 1024);
+          this.logger.debug('Using merchant fee rate (for amazon gc):' + txp.feePerKb);
+        } else {
+          txp.feeLevel = this.configWallet.settings.feeLevel || 'normal';
+        }
 
-      txp['origToAddress'] = txp.toAddress;
+        txp['origToAddress'] = txp.toAddress;
 
-      if (wallet.coin && wallet.coin == 'bch') {
-        // Use legacy address
-        txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
-        txp.outputs[0].toAddress = txp.toAddress;
-      }
+        if (wallet.coin && wallet.coin == 'bch') {
+          // Use legacy address
+          txp.toAddress = this.bitcoreCash.Address(txp.toAddress).toString();
+          txp.outputs[0].toAddress = txp.toAddress;
+        }
 
-      this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
-        return resolve(ctxp);
+        this.walletProvider.createTx(wallet, txp).then((ctxp: any) => {
+          return resolve(ctxp);
+        }).catch((err: any) => {
+          return reject({
+            title: this.translate.instant('Could not create transaction'),
+            message: this.bwcErrorProvider.msg(err)
+          });
+        });
       }).catch((err: any) => {
         return reject({
-          title: this.translate.instant('Could not create transaction'),
-          message: this.bwcErrorProvider.msg(err)
+          title: this.translate.instant('Error in Payment Protocol'),
+          message: this.translate.instant('Invalid URL')
         });
       });
     });
@@ -363,7 +377,7 @@ export class BuyAmazonPage {
       invoice['minerFees'][COIN]['totalFee'] = invoice.minerFees[COIN].totalFee || 0;
       let invoiceFeeSat = invoice.minerFees[COIN].totalFee;
 
-      this.message = this.amountUnitStr + " for Amazon.com Gift Card"; // TODO: translate
+      this.message = this.amountUnitStr + ' Gift Card'; // TODO: translate
 
       this.createTx(wallet, invoice, this.message).then((ctxp: any) => {
         this.onGoingProcessProvider.clear();

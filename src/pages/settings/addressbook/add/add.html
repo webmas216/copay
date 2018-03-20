@@ -32,4 +32,6 @@
     <button ion-button block (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt">{{ 'Save' | translate }}</button>
   </form>
 
+  <button ion-button class="button-standard" (click)="save()" [disabled]="addressBookAdd.invalid || submitAttempt" translate>Save</button>
+
 </ion-content>

@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import { TranslateService } from '@ngx-translate/core';
 import { Events } from 'ionic-angular';
 import * as lodash from 'lodash';
+import encoding from 'text-encoding';
 import { Logger } from '../../providers/logger/logger';
 
 // Providers
@@ -356,7 +357,11 @@ export class WalletProvider {
         if (!forceNew && addr) return resolve(addr);
 
         if (!wallet.isComplete())
-          return reject('WALLET_NOT_COMPLETE');
+          return reject(this.bwcErrorProvider.msg('WALLET_NOT_COMPLETE'));
+
+        if (wallet.needsBackup) {
+          return reject(this.bwcErrorProvider.msg('WALLET_NEEDS_BACKUP'));
+        }
 
         this.createAddress(wallet).then((_addr) => {
           this.persistenceProvider.storeLastAddress(wallet.id, _addr).then(() => {
@@ -872,12 +877,12 @@ export class WalletProvider {
 
       try {
         wallet.signTxProposal(txp, password, (err: any, signedTxp: any) => {
-          this.logger.debug('Transaction signed err:' + err);
+          this.logger.warn('Transaction signed err:' + err);
           if (err) return reject(err);
           return resolve(signedTxp);
         });
       } catch (e) {
-        this.logger.warn('Error at signTxProposal:', e);
+        this.logger.error('Error at signTxProposal:', e);
         return reject(e);
       };
     });
@@ -892,8 +897,16 @@ export class WalletProvider {
         return reject('TX_NOT_ACCEPTED');
 
       wallet.broadcastTxProposal(txp, (err: any, broadcastedTxp: any, memo: any) => {
-        if (err)
-          return reject(err);
+        if (err) {
+          if (lodash.isArrayBuffer(err)) {
+            const enc = new encoding.TextDecoder();
+            err = enc.decode(err);
+            this.removeTx(wallet, txp);
+            return reject(err);
+          } else {
+            return reject(err);
+          }
+        }
 
         this.logger.debug('Transaction broadcasted');
         if (memo) this.logger.info(memo);
@@ -1079,21 +1092,14 @@ export class WalletProvider {
     });
   }
 
-  public isReady(wallet: any): string {
-    if (!wallet.isComplete())
-      return 'WALLET_NOT_COMPLETE';
-    if (wallet.needsBackup)
-      return 'WALLET_NEEDS_BACKUP';
-    return null;
-  }
-
   // An alert dialog
-  private askPassword(name: string, title: string): Promise<any> {
+  private askPassword(warnMsg: string, title: string): Promise<any> {
     return new Promise((resolve, reject) => {
       let opts = {
-        type: 'password'
+        type: 'password',
+        useDanger: true
       }
-      this.popupProvider.ionicPrompt(title, name, opts).then((res: any) => {
+      this.popupProvider.ionicPrompt(title, warnMsg, opts).then((res: any) => {
         return resolve(res);
       });
     });
@@ -1137,7 +1143,7 @@ export class WalletProvider {
   public handleEncryptedWallet(wallet: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.isEncrypted(wallet)) return resolve();
-      this.askPassword(wallet.name, this.translate.instant('Enter Spending Password')).then((password: string) => {
+      this.askPassword(null, this.translate.instant('Enter Spending Password')).then((password: string) => {
         if (!password) return reject(this.translate.instant('No password'));
         if (!wallet.checkPassword(password)) return reject(this.translate.instant('Wrong password'));
         return resolve(password);
@@ -1202,8 +1208,8 @@ export class WalletProvider {
           return resolve(signedTxp);
         };
       }).catch((err) => {
-        this.logger.warn('sign error:' + err);
         let msg = err && err.message ? err.message : this.translate.instant('The payment was created but could not be completed. Please try again from home screen');
+        this.logger.debug('Sign error: ' + msg);
         this.events.publish('Local/TxAction', wallet.id);
         return reject(msg);
       });

@@ -64,8 +64,9 @@ export class WalletSettingsPage {
     this.config = this.configProvider.get();
     this.touchIdEnabled = this.config.touchIdFor ? this.config.touchIdFor[this.wallet.credentials.walletId] : null;
     this.touchIdPrevValue = this.touchIdEnabled;
-    if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic)
+    if (this.wallet.credentials && !this.wallet.credentials.mnemonicEncrypted && !this.wallet.credentials.mnemonic) {
       this.deleted = true;
+    }
   }
 
   public hiddenBalanceChange(): void {
@@ -96,11 +97,11 @@ export class WalletSettingsPage {
     }
   }
 
-  public openWikiSpendingPassword(): void {
-    let url = 'https://github.com/bitpay/copay/wiki/COPAY---FAQ#what-the-spending-password-does';
+  public openSupportSpendingPassword(): void {
+    let url = 'https://support.bitpay.com/hc/en-us/articles/360000244506-What-Does-a-Spending-Password-Do-';
     let optIn = true;
     let title = null;
-    let message = this.translate.instant('Read more in our Wiki');
+    let message = this.translate.instant('Read more in our support page');
     let okText = this.translate.instant('Open');
     let cancelText = this.translate.instant('Go Back');
     this.externalLinkProvider.open(url, optIn, title, message, okText, cancelText);

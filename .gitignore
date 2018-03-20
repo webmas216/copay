@@ -12,6 +12,9 @@ log.txt
 npm-debug.log*
 sftp-config.json
 
+# Ignore package-lock for now
+package-lock.json
+
 # Firebase
 /GoogleService-Info.plist
 /google-services.json
