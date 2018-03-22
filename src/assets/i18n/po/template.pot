@@ -85,12 +85,12 @@ msgid "All addresses"
 msgstr ""
 
 msgid ""
-"All of your polis wallet balance may not be available for immediate "
+"All of your bitcoin wallet balance may not be available for immediate "
 "spending."
 msgstr ""
 
 msgid ""
-"All signing devices must be added to this multisig wallet before polis "
+"All signing devices must be added to this multisig wallet before bitcoin "
 "addresses can be created."
 msgstr ""
 
@@ -120,7 +120,7 @@ msgid ""
 "latest version."
 msgstr ""
 
-msgid "Anyone with your backup phrase can access or spend your polis."
+msgid "Anyone with your backup phrase can access or spend your bitcoin."
 msgstr ""
 
 msgid "Apply changes"
@@ -186,7 +186,7 @@ msgstr ""
 
 msgid ""
 "Bitcoin (BTC) miner fees are high due to record demand for limited space on "
-"the Bitcoin network. BitPay does not receive and does not control polis "
+"the Bitcoin network. BitPay does not receive and does not control bitcoin "
 "miner fees."
 msgstr ""
 
@@ -468,7 +468,7 @@ msgstr ""
 msgid "Create a new wallet"
 msgstr ""
 
-msgid "Create polis wallet"
+msgid "Create bitcoin wallet"
 msgstr ""
 
 msgid "Create personal wallet"
@@ -567,7 +567,7 @@ msgid "Duplicating wallet..."
 msgstr ""
 
 msgid ""
-"Each polis wallet can generate billions of addresses from your 12-word "
+"Each bitcoin wallet can generate billions of addresses from your 12-word "
 "backup. A new address is automatically generated and shown each time you "
 "receive a payment."
 msgstr ""
@@ -839,7 +839,7 @@ msgstr ""
 
 msgid ""
 "I understand that if this app is moved to another device or deleted, my "
-"polis can only be recovered with the backup phrase"
+"bitcoin can only be recovered with the backup phrase"
 msgstr ""
 
 msgid ""
@@ -932,7 +932,7 @@ msgstr ""
 
 msgid ""
 "It's a good idea to avoid reusing addresses - this both protects your "
-"privacy and keeps your poliss secure against hypothetical attacks by "
+"privacy and keeps your bitcoins secure against hypothetical attacks by "
 "quantum computers."
 msgstr ""
 
@@ -1078,7 +1078,7 @@ msgstr ""
 msgid "No access key defined"
 msgstr ""
 
-msgid "No backup, no polis."
+msgid "No backup, no bitcoin."
 msgstr ""
 
 msgid "No contacts yet"
@@ -1238,7 +1238,7 @@ msgstr ""
 msgid "Paste the backup plain text code"
 msgstr ""
 
-msgid "Pay 0% fees to turn polis into dollars."
+msgid "Pay 0% fees to turn bitcoin into dollars."
 msgstr ""
 
 msgid "Pay To"
@@ -1506,7 +1506,7 @@ msgstr ""
 msgid "Search a contact"
 msgstr ""
 
-msgid "Search or enter polis address"
+msgid "Search or enter bitcoin address"
 msgstr ""
 
 msgid "Search your currency"
@@ -1687,7 +1687,7 @@ msgstr ""
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr ""
 
-msgid "Take control of your money, get started with polis."
+msgid "Take control of your money, get started with bitcoin."
 msgstr ""
 
 msgid "Tap and hold to show"
@@ -1719,18 +1719,18 @@ msgstr ""
 msgid "The Wallet Service URL"
 msgstr ""
 
-msgid "The amount of polis immediately spendable from this wallet."
+msgid "The amount of bitcoin immediately spendable from this wallet."
 msgstr ""
 
 msgid ""
-"The amount of polis stored in this wallet that is allocated as inputs to "
+"The amount of bitcoin stored in this wallet that is allocated as inputs to "
 "your pending transaction proposals. The amount is determined using unspent "
 "transaction outputs associated with this wallet and may be more than the "
 "actual amounts associated with your pending transaction proposals."
 msgstr ""
 
 msgid ""
-"The amount of polis stored in this wallet with less than 1 blockchain "
+"The amount of bitcoin stored in this wallet with less than 1 blockchain "
 "confirmation."
 msgstr ""
 
@@ -1775,7 +1775,7 @@ msgstr ""
 msgid "The spend proposal is not pending"
 msgstr ""
 
-msgid "The total amount of polis stored in this wallet."
+msgid "The total amount of bitcoin stored in this wallet."
 msgstr ""
 
 msgid ""
@@ -1794,10 +1794,10 @@ msgstr ""
 msgid "This app is fantastic!"
 msgstr ""
 
-msgid "This app stores your polis with cutting-edge security."
+msgid "This app stores your bitcoin with cutting-edge security."
 msgstr ""
 
-msgid "This polis payment request has expired."
+msgid "This bitcoin payment request has expired."
 msgstr ""
 
 msgid ""
@@ -1832,7 +1832,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-msgid "To get started, you'll need to create a polis wallet and get some polis."
+msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
 msgstr ""
 
 msgid "Top up in progress..."
@@ -1897,7 +1897,7 @@ msgstr ""
 msgid "Try again in {{expires}}"
 msgstr ""
 
-msgid "Turn polis into dollars, swipe anywhere Visa&reg; is accepted."
+msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
 msgstr ""
 
 msgid "Type the recovery phrase (usually 12 words)"
@@ -2146,7 +2146,7 @@ msgid ""
 "translation website. We’re looking forward to hearing from you!"
 msgstr ""
 
-msgid "You can scan polis addresses, payment requests, paper wallets, and more."
+msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
 msgstr ""
 
 msgid ""
@@ -2154,7 +2154,7 @@ msgid ""
 "by visiting our project on GitHub."
 msgstr ""
 
-msgid "You can spend polis at millions of websites and stores worldwide."
+msgid "You can spend bitcoin at millions of websites and stores worldwide."
 msgstr ""
 
 msgid "You can still export it from Advanced &gt; Export."
@@ -2163,7 +2163,7 @@ msgstr ""
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr ""
 
-msgid "You control your polis."
+msgid "You control your bitcoin."
 msgstr ""
 
 msgid "You could sign the transaction later in your wallet details"
@@ -2185,14 +2185,14 @@ msgstr ""
 msgid "Your Gift Cards"
 msgstr ""
 
-msgid "Your polis wallet is backed up!"
+msgid "Your bitcoin wallet is backed up!"
 msgstr ""
 
-msgid "Your polis wallet is ready!"
+msgid "Your bitcoin wallet is ready!"
 msgstr ""
 
 msgid ""
-"Your extended private keys are all that is needed to access your polis "
+"Your extended private keys are all that is needed to access your bitcoin "
 "funds. Be sure to protect your private keys and store them only on secure "
 "devices. BitPay does not have access to your private keys, so you alone are "
 "responsible for your keys. If you share key access with external services, "

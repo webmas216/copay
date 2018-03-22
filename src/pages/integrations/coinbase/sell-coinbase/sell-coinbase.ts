@@ -273,7 +273,7 @@ export class SellCoinbasePage {
     let configWallet = config.wallet;
     let walletSettings = configWallet.settings;
 
-    let message = 'Selling polis for ' + this.amount + ' ' + this.currency;
+    let message = 'Selling bitcoin for ' + this.amount + ' ' + this.currency;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: any) => {
@@ -301,7 +301,7 @@ export class SellCoinbasePage {
           let outputs = [];
           let toAddress = data.data.address;
           let amountSat = parseInt((this.sellRequestInfo.amount.amount * 100000000).toFixed(0), 10);
-          let comment = 'Sell polis (Coinbase)';
+          let comment = 'Sell bitcoin (Coinbase)';
 
           outputs.push({
             'toAddress': toAddress,
@@ -360,7 +360,7 @@ export class SellCoinbasePage {
 
   private openFinishModal(): void {
     let finishText = 'Funds sent to Coinbase Account';
-    let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The polis sale will be completed automatically once it is confirmed by Coinbase';
+    let finishComment = 'The transaction is not yet confirmed, and will show as "Pending" in your Activity. The bitcoin sale will be completed automatically once it is confirmed by Coinbase';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {

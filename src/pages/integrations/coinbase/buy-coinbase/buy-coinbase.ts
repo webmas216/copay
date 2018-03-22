@@ -172,7 +172,7 @@ export class BuyCoinbasePage {
   }
 
   public buyConfirm() {
-    let message = 'Buy polis for ' + this.amountUnitStr;
+    let message = 'Buy bitcoin for ' + this.amountUnitStr;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok: boolean) => {

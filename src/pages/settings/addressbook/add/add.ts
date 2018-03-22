@@ -48,7 +48,7 @@ export class AddressbookAddPage {
       this.addressBookAdd.controls['address'].setValue(this.navParams.data.addressbookEntry);
     }
     this.events.subscribe('update:address', (data) => {
-      let address = data.value.replace(/^polis(cash)?:/, '');
+      let address = data.value.replace(/^bitcoin(cash)?:/, '');
       this.addressBookAdd.controls['address'].setValue(address);
     });
   }

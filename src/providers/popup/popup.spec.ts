@@ -1,4 +1,3 @@
-/* tslint:disable */
 import { TestBed, inject, async } from '@angular/core/testing';
 import {
   AlertController,
@@ -6,6 +5,7 @@ import {
   Config,
   Platform
 } from 'ionic-angular';
+import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
 import { Logger } from '../../providers/logger/logger';
 import {
   TranslateModule,
@@ -19,6 +19,7 @@ describe('PopupProvider', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
+        NgLoggerModule.forRoot(Level.LOG),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })

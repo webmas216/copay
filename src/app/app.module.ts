@@ -22,6 +22,7 @@ import { TouchID } from '@ionic-native/touch-id';
 /* Modules */
 import { TranslatePoHttpLoader } from '@biesbjerg/ngx-translate-po-http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import { MomentModule } from 'angular2-moment';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 
@@ -211,7 +212,6 @@ import { CopyToClipboard } from '../directives/copy-to-clipboard/copy-to-clipboa
 import { LongPress } from '../directives/long-press/long-press';
 import { NoLowFee } from '../directives/no-low-fee/no-low-fee'
 
-/* Read translation files */
 export function createTranslateLoader(http: HttpClient) {
   return new TranslatePoHttpLoader(http, 'assets/i18n/po', '.po');
 }
@@ -337,6 +337,8 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     BrowserModule,
     HttpClientModule,
+    HttpModule,
+    NgLoggerModule.forRoot(Level.LOG),
     MomentModule,
     NgxQRCodeModule,
     TranslateModule.forRoot({

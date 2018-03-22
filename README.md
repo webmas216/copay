@@ -16,11 +16,11 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Multiple wallet creation and management in-app
 - Intuitive, multisignature security for personal or shared wallets
 - Easy spending proposal flow for shared wallets and group payments
-- [BIP32](https://github.com/polis/bips/blob/master/bip-0032.mediawiki) Hierarchical deterministic (HD) address generation and wallet backups
+- [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) Hierarchical deterministic (HD) address generation and wallet backups
 - Device-based security: all private keys are stored locally, not in the cloud
 - Support for Bitcoin testnet wallets
 - Synchronous access across all major mobile and desktop platforms
-- Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiable, secure polis payments
+- Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiable, secure bitcoin payments
 - Support for over 150 currency pricing options and unit denomination in BTC or bits
 - Mnemonic (BIP39) support for wallet backups
 - Paper wallet sweep support (BIP38)
@@ -28,7 +28,7 @@ For a list of frequently asked questions please visit the [Copay FAQ](https://gi
 - Push notifications (only available for ios and android versions)
 - Customizable wallet naming and background colors
 - Multiple languages supported
-- Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](https://www.microsoft.com/en-us/store/p/copay-secure-polis-wallet/9nm8z2b0387b),
+- Available for [iOS](https://itunes.apple.com/us/app/copay/id951330296), [Android](https://play.google.com/store/apps/details?id=com.bitpay.copay&hl=en), [Windows Phone](https://www.microsoft.com/en-us/store/p/copay-secure-bitcoin-wallet/9nm8z2b0387b),
  [Chrome App](https://chrome.google.com/webstore/detail/copay/cnidaodnidkbaplmghlelgikaiejfhja?hl=en), [Linux](https://github.com/bitpay/copay/releases/latest), [Windows](https://github.com/bitpay/copay/releases/latest) and [OS X](https://github.com/bitpay/copay/releases/latest) devices
 
 ## Testing in a Browser
@@ -145,13 +145,13 @@ BITPAY_EXTERNAL_SERVICES_CONFIG_LOCATION="~/.bitpay/externalServices.json" npm r
 
 ### General
 
-Copay implements a multisig wallet using [p2sh](https://en.polis.it/wiki/Pay_to_script_hash) addresses.  It supports multiple wallets, each with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants, Copay requires the extended public keys of all the wallet participants.  Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet.  Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
+Copay implements a multisig wallet using [p2sh](https://en.bitcoin.it/wiki/Pay_to_script_hash) addresses.  It supports multiple wallets, each with its own configuration, such as 3-of-5 (3 required signatures from 5 participant peers) or 2-of-3.  To create a multisig wallet shared between multiple participants, Copay requires the extended public keys of all the wallet participants.  Those public keys are then incorporated into the wallet configuration and combined to generate a payment address where funds can be sent into the wallet.  Conversely, each participant manages their own private key and that private key is never transmitted anywhere.
 
 To unlock a payment and spend the wallet's funds, a quorum of participant signatures must be collected and assembled in the transaction.  The funds cannot be spent without at least the minimum number of signatures required by the wallet configuration (2-of-3, 3-of-5, 6-of-6, etc.).  Once a transaction proposal is created, the proposal is distributed among the wallet participants for each to sign the transaction locally.  Finally, when the transaction is signed, the last signing participant will broadcast the transaction to the Bitcoin network.
 
-Copay also implements [BIP32](https://github.com/polis/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers.  The public key that each participant contributes to the wallet is a BIP32 extended public key.  As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys.  Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
+Copay also implements [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) to generate new addresses for peers.  The public key that each participant contributes to the wallet is a BIP32 extended public key.  As additional public keys are needed for wallet operations (to produce new addresses to receive payments into the wallet, for example) new public keys can be derived from the participants' original extended public keys.  Once again, it's important to stress that each participant keeps their own private keys locally - private keys are not shared - and are used to sign transaction proposals to make payments from the shared wallet.
 
-For more information regarding how addresses are generated using this procedure, see: [Structure for Deterministic P2SH Multisignature Wallets](https://github.com/polis/bips/blob/master/bip-0045.mediawiki).
+For more information regarding how addresses are generated using this procedure, see: [Structure for Deterministic P2SH Multisignature Wallets](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki).
 
 ## Copay Backups and Recovery
 
@@ -170,7 +170,7 @@ Copay encrypts the backup with the [Stanford JS Crypto Library](http://bitwisesh
 
 The backup also contains the key `publicKeyRing` that holds the extended public keys of the Copayers.
 Depending on the key `derivationStrategy`, addresses are derived using
-[BIP44](https://github.com/polis/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/polis/bips/blob/master/bip-0045.mediawiki). Wallets created in Copay v1.2 and forward always use BIP44, all previous wallets use BIP45. Also note that since Copay version v1.2, non-multisig wallets use address types Pay-to-PublicKeyHash (P2PKH) while multisig wallets still use Pay-to-ScriptHash (P2SH) (key `addressType` at the backup):
+[BIP44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) or [BIP45](https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki). Wallets created in Copay v1.2 and forward always use BIP44, all previous wallets use BIP45. Also note that since Copay version v1.2, non-multisig wallets use address types Pay-to-PublicKeyHash (P2PKH) while multisig wallets still use Pay-to-ScriptHash (P2SH) (key `addressType` at the backup):
 
 | Copay Version | Wallet Type               | Derivation Strategy | Address Type |
 |---------------|---------------------------|---------------------|--------------|

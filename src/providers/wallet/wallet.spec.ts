@@ -9,6 +9,7 @@ import {
   TranslateModule,
   TranslateService
 } from '@ngx-translate/core';
+import { Level, NgLoggerModule } from '@nsalaun/ng-logger';
 import {
   AlertController,
   App,
@@ -69,6 +70,7 @@ describe('Provider: Wallet Provider', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientModule,
+        NgLoggerModule.forRoot(Level.LOG),
         TranslateModule.forRoot({
           loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
         })
@@ -161,16 +163,16 @@ describe('Provider: Wallet Provider', () => {
   });
 
   describe('Function: Get Protocol Handler Function', () => {
-    it('should return poliscash if coin is bch', () => {
+    it('should return bitcoincash if coin is bch', () => {
       let coin = 'bch';
       let protocol = walletProvider.getProtocolHandler(coin);
-      expect(protocol).toEqual('poliscash');
+      expect(protocol).toEqual('bitcoincash');
     });
 
-    it('should return polis if coin is btc', () => {
+    it('should return bitcoin if coin is btc', () => {
       let coin = 'btc';
       let protocol = walletProvider.getProtocolHandler(coin);
-      expect(protocol).toEqual('polis');
+      expect(protocol).toEqual('bitcoin');
     });
   });
 });

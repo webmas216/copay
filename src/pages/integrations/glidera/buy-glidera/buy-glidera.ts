@@ -134,7 +134,7 @@ export class BuyGlideraPage {
   }
 
   public buyConfirm(): void {
-    let message = 'Buy polis for ' + this.amount + ' ' + this.currency;
+    let message = 'Buy bitcoin for ' + this.amount + ' ' + this.currency;
     let okText = 'Confirm';
     let cancelText = 'Cancel';
     this.popupProvider.ionicConfirm(null, message, okText, cancelText).then((ok) => {
@@ -200,7 +200,7 @@ export class BuyGlideraPage {
 
   private openFinishModal(): void {
     let finishText = 'Bought';
-    let finishComment = 'A transfer has been initiated from your bank account. Your poliss should arrive to your wallet in 2-4 business day';
+    let finishComment = 'A transfer has been initiated from your bank account. Your bitcoins should arrive to your wallet in 2-4 business day';
     let modal = this.modalCtrl.create(FinishModalPage, { finishText, finishComment }, { showBackdrop: true, enableBackdropDismiss: false });
     modal.present();
     modal.onDidDismiss(() => {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Logger } from '../logger/logger';
+import { Logger } from '@nsalaun/ng-logger';
 
 // native 
 import { Device } from '@ionic-native/device';

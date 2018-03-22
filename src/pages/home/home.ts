@@ -1,6 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Events, ModalController, NavController, Platform } from 'ionic-angular';
+import { Events, ModalController, NavController } from 'ionic-angular';
 import { Logger } from '../../providers/logger/logger';
 
 // Pages
@@ -75,7 +75,6 @@ export class HomePage {
   private zone: any;
 
   constructor(
-    private plt: Platform,
     private navCtrl: NavController,
     private profileProvider: ProfileProvider,
     private releaseProvider: ReleaseProvider,
@@ -122,12 +121,6 @@ export class HomePage {
     this.recentTransactionsEnabled = this.config.recentTransactions.enabled;
     if (this.recentTransactionsEnabled) this.getNotifications();
 
-    // Update Tx Proposals
-    this.updateTxps();
-
-    // Update list of wallets and status
-    this.setWallets();
-
     // BWS Events: Update Status per Wallet
     // NewBlock, NewCopayer, NewAddress, NewTxProposal, TxProposalAcceptedBy, TxProposalRejectedBy, txProposalFinallyRejected,
     // txProposalFinallyAccepted, TxProposalRemoved, NewIncomingTx, NewOutgoingTx
@@ -155,7 +148,7 @@ export class HomePage {
 
     if (this.platformProvider.isCordova) {
       this.handleDeepLinks();
-    } 
+    }
 
     // Show integrations
     let integrations = _.filter(this.homeIntegrationsProvider.get(), { 'show': true });
@@ -183,11 +176,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.logger.info('ionViewDidLoad HomePage');
-
-    this.plt.resume.subscribe(e => {
-      this.updateTxps();
-      this.setWallets();
-    });
+    this.setWallets();
   }
 
   private handleDeepLinks() {
@@ -304,7 +293,7 @@ export class HomePage {
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }, 2000, {
+  }, 5000, {
       'leading': true
     });
 
@@ -317,7 +306,7 @@ export class HomePage {
     }).catch((err: any) => {
       this.logger.error(err);
     });
-  }, 2000, {
+  }, 5000, {
       'leading': true
     });
 

@@ -23,7 +23,7 @@ angular.module('copayApp.directives')
 
             // Bip21 uri
             var uri, isAddressValidLivenet, isAddressValidTestnet;
-            if (/^polis:/.test(value)) {
+            if (/^bitcoin:/.test(value)) {
               var isUriValid = URI.isValid(value);
               if (isUriValid) {
                 uri = new URI(value);
@@ -32,7 +32,7 @@ angular.module('copayApp.directives')
               }
               ctrl.$setValidity('validAddress', isUriValid && (isAddressValidLivenet || isAddressValidTestnet));
               return value;
-            } else if (/^poliscash:/.test(value)) {
+            } else if (/^bitcoincash:/.test(value)) {
               var isUriValid = URICash.isValid(value);
               if (isUriValid) {
                 uri = new URICash(value);

@@ -1305,9 +1305,9 @@ angular.module('copayApp.services').service('walletService', function($log, $tim
   root.getProtocolHandler = function(wallet) {
 
     if (wallet.coin== 'bch') {
-      return 'poliscash';
+      return 'bitcoincash';
     } else {
-      // return 'polis';
+      // return 'bitcoin';
       return 'polis';
     }
   }

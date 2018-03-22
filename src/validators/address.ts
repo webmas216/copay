@@ -27,7 +27,7 @@ export class AddressValidator {
 
     // Bip21 uri
     let uri, isAddressValidLivenet, isAddressValidTestnet;
-    if (/^polis:/.test(control.value)) {
+    if (/^bitcoin:/.test(control.value)) {
       let isUriValid = URI.isValid(control.value);
       if (isUriValid) {
         uri = new URI(control.value);
@@ -37,7 +37,7 @@ export class AddressValidator {
       if (isUriValid && (isAddressValidLivenet || isAddressValidTestnet)) {
         return null;
       }
-    } else if (/^poliscash:/.test(control.value)) {
+    } else if (/^bitcoincash:/.test(control.value)) {
       let isUriValid = URICash.isValid(control.value);
       if (isUriValid) {
         uri = new URICash(control.value);
