@@ -57,7 +57,7 @@
         {{'Fee:' | translate}}
       </div>
       <div>
-        <span class="fee-amount">{{btx.feeStr}}</span>
+        <span class="fee-amount">{{btx.feeStr.replace('BTC', 'POLIS')}}</span>
         <div class="fee-details">
           {{btx.feeFiatStr}} &middot;
           <span *ngIf="btx.feeRateStr">{{btx.feeRateStr}} of the total amount</span>
