@@ -5,6 +5,7 @@
   </ion-navbar>
 
 </ion-header>
+
 <ion-content no-bounce>
   <div *ngIf="hasBtcWallets || hasBchWallets">
     <div class="send-header-wrapper">
@@ -15,7 +16,7 @@
         <ion-icon class="scan-icon" (click)="openScanner()">
           <img src="assets/img/scan-ico.svg">
         </ion-icon>
-      </ion-item>
+      </div>
     </div>
 
     <div class="card" *ngIf="filteredContactsList && filteredContactsList[0]">
