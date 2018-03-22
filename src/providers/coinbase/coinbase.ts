@@ -183,7 +183,7 @@ export class CoinbaseProvider {
     this._getNetAmount(amount, (err, reducedAmount) => {
       if (err) return cb(err);
 
-      // Check if transaction has enough funds to transfer bitcoin from Coinbase to Copay
+      // Check if transaction has enough funds to transfer polis from Coinbase to Copay
       if (reducedAmount < 0) {
         return cb('Not enough funds for fee');
       }

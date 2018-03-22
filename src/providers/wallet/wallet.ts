@@ -1336,9 +1336,9 @@ export class WalletProvider {
 
   public getProtocolHandler(coin: string): string {
     if (coin == 'bch') {
-      return 'bitcoincash';
+      return 'poliscash';
     } else {
-      // return 'bitcoin';
+      // return 'polis';
       return 'polis';
     }
   }

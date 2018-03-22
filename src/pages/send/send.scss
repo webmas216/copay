@@ -50,7 +50,7 @@ page-send {
       margin: 1rem;
       z-index: 999;
     }
-    .bitcoin-icon {
+    .polis-icon {
       margin-right: 1rem;
       margin-top: 1rem;
       margin-bottom: 1rem;
@@ -58,7 +58,7 @@ page-send {
       height: 1rem;
       // custom icons
       &[class*="search-btc"] {
-          mask-image: url(../assets/img/icon-bitcoin-symbol.svg);
+          mask-image: url(../assets/img/icon-polis-symbol.svg);
           mask-size: 16px;
           mask-position: 50% 50%;
           mask-repeat: no-repeat;

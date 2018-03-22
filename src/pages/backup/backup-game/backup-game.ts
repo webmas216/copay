@@ -220,7 +220,7 @@ export class BackupGamePage {
     this.onGoingProcessProvider.set('validatingWords');
     this.confirm().then(() => {
       this.onGoingProcessProvider.clear();
-      let title = this.translate.instant('Your bitcoin wallet is backed up!');
+      let title = this.translate.instant('Your polis wallet is backed up!');
       let message = this.translate.instant("Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it.");
       let okText = this.translate.instant("Got it");
       this.popupProvider.ionicAlert(title, message, okText).then(() => {

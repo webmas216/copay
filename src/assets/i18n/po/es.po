@@ -86,11 +86,11 @@ msgstr "Avanzado"
 msgid "All addresses"
 msgstr "Todas las direcciones"
 
-msgid "All of your bitcoin wallet balance may not be available for immediate spending."
+msgid "All of your polis wallet balance may not be available for immediate spending."
 msgstr "Todo el balance de tu billetera puede que no esté disponible para su uso inmediato."
 
-msgid "All signing devices must be added to this multisig wallet before bitcoin addresses can be created."
-msgstr "Todos los dispositivos de los firmantes deben ser agregados a esta billetera compartido antes de que se puedan crear direcciones bitcoin."
+msgid "All signing devices must be added to this multisig wallet before polis addresses can be created."
+msgstr "Todos los dispositivos de los firmantes deben ser agregados a esta billetera compartido antes de que se puedan crear direcciones polis."
 
 msgid "Allow camera access"
 msgstr "Permitir el acceso a la cámara"
@@ -116,8 +116,8 @@ msgstr "Monto demasiado grande"
 msgid "An update to this app is available. For your security, please update to the latest version."
 msgstr "Actualización disponible. Por seguridad, actualiza a la versión más reciente."
 
-msgid "Anyone with your backup phrase can access or spend your bitcoin."
-msgstr "Cualquier persona con tu copia de seguridad puede gastar tus bitcoins."
+msgid "Anyone with your backup phrase can access or spend your polis."
+msgstr "Cualquier persona con tu copia de seguridad puede gastar tus poliss."
 
 msgid "Apply changes"
 msgstr "Aplicar los cambios"
@@ -176,8 +176,8 @@ msgstr "Balance Oculto"
 msgid "Be sure to store your recovery phrase in a secure place. If this app is deleted, your money cannot be recovered without it."
 msgstr "Asegúrate de guardar la frase de recuperación en un lugar seguro. Si se elimina esta aplicación, no se podrá recuperar el dinero."
 
-msgid "Bitcoin (BTC) miner fees are high due to record demand for limited space on the Bitcoin network. BitPay does not receive and does not control bitcoin miner fees."
-msgstr "La comisión de los mineros bitcoin (BTC) son altos debido a la demanda récord de espacio limitado de la red Bitcoin. BitPay no recibe y no controla esta comisión de los mineros bitcoin."
+msgid "Bitcoin (BTC) miner fees are high due to record demand for limited space on the Bitcoin network. BitPay does not receive and does not control polis miner fees."
+msgstr "La comisión de los mineros polis (BTC) son altos debido a la demanda récord de espacio limitado de la red Bitcoin. BitPay no recibe y no controla esta comisión de los mineros polis."
 
 msgid "Bitcoin Address"
 msgstr "Dirección Bitcoin"
@@ -204,16 +204,16 @@ msgid "Bitcoin is secure, digital money."
 msgstr "Bitcoin es seguro, dinero digital."
 
 msgid "Bitcoin miner fee"
-msgstr "Comisión de minero bitcoin"
+msgstr "Comisión de minero polis"
 
 msgid "Bitcoin miner fees unusually high"
-msgstr "Comisión de minero bitcoin extraordinariamente alta"
+msgstr "Comisión de minero polis extraordinariamente alta"
 
 msgid "Bitcoin network fee policy"
-msgstr "Política de comisión de la red bitcoin"
+msgstr "Política de comisión de la red polis"
 
 msgid "Bitcoin transactions include a fee collected by miners on the network."
-msgstr "Las transacciones de bitcoins incluyen una comisión recogida por los mineros de la red."
+msgstr "Las transacciones de poliss incluyen una comisión recogida por los mineros de la red."
 
 msgid "Broadcast Payment"
 msgstr "Enviar Pago"
@@ -455,7 +455,7 @@ msgstr "No se pudo actualizar la billetera"
 msgid "Create a new wallet"
 msgstr "Crear una nueva billetera"
 
-msgid "Create bitcoin wallet"
+msgid "Create polis wallet"
 msgstr "Crear billetera"
 
 msgid "Create personal wallet"
@@ -551,7 +551,7 @@ msgstr "Duplicar"
 msgid "Duplicating wallet..."
 msgstr "Duplicando billetera..."
 
-msgid "Each bitcoin wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
+msgid "Each polis wallet can generate billions of addresses from your 12-word backup. A new address is automatically generated and shown each time you receive a payment."
 msgstr "Cada billetera puede generar billones de direcciones desde sus 12 palabras. Se genera una nueva dirección automáticamente cada vez que se recibe un pago."
 
 msgid "Economy"
@@ -809,7 +809,7 @@ msgstr "Creo que esta aplicación es terrible"
 msgid "I understand"
 msgstr "Entiendo"
 
-msgid "I understand that if this app is moved to another device or deleted, my bitcoin can only be recovered with the backup phrase"
+msgid "I understand that if this app is moved to another device or deleted, my polis can only be recovered with the backup phrase"
 msgstr "Entiendo que si esta aplicación es borrada, mis fondos pueden recuperarse únicamente con la copia de seguridad"
 
 msgid "I understand that my funds are held securely on this device, not by a company"
@@ -887,7 +887,7 @@ msgstr "¿Es correcto?"
 msgid "Is this email address correct?"
 msgstr "¿Es correcta esta dirección de correo electrónico?"
 
-msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your bitcoins secure against hypothetical attacks by quantum computers."
+msgid "It's a good idea to avoid reusing addresses - this both protects your privacy and keeps your poliss secure against hypothetical attacks by quantum computers."
 msgstr "Es una buena idea evitar el reuso de las direcciones. Esto protege tu privacidad y mantiene tus fondos seguros contra hipotéticos ataques de ordenadores cuánticos."
 
 msgid "It's important that you write your backup phrase down correctly. If something happens to your wallet, you'll need this backup to recover your money. Please review your backup and try again."
@@ -1025,8 +1025,8 @@ msgstr "No"
 msgid "No access key defined"
 msgstr "No se ha definido la llave de acceso"
 
-msgid "No backup, no bitcoin."
-msgstr "Sin copia de seguridad, no hay bitcoins."
+msgid "No backup, no polis."
+msgstr "Sin copia de seguridad, no hay poliss."
 
 msgid "No contacts yet"
 msgstr "Aun no hay contactos"
@@ -1181,8 +1181,8 @@ msgstr "Las contraseñas no coinciden"
 msgid "Paste the backup plain text code"
 msgstr "Pegar el código de respaldo en texto plano"
 
-msgid "Pay 0% fees to turn bitcoin into dollars."
-msgstr "Paga 0% de comisión para transformar tus bitcoin en dólares."
+msgid "Pay 0% fees to turn polis into dollars."
+msgstr "Paga 0% de comisión para transformar tus polis en dólares."
 
 msgid "Pay To"
 msgstr "Pagar A"
@@ -1445,8 +1445,8 @@ msgstr "Buscando fondos"
 msgid "Search a contact"
 msgstr "Buscar un contacto"
 
-msgid "Search or enter bitcoin address"
-msgstr "Buscar o introducir dirección bitcoin"
+msgid "Search or enter polis address"
+msgstr "Buscar o introducir dirección polis"
 
 msgid "Search your currency"
 msgstr "Busca tu moneda"
@@ -1622,8 +1622,8 @@ msgstr "Leyendo la Billetera..."
 msgid "THIS ACTION CANNOT BE REVERSED"
 msgstr "ESTA ACCIÓN NO SE PUEDE REVERTIR"
 
-msgid "Take control of your money, get started with bitcoin."
-msgstr "Toma control de tu dinero, comienza a utilizar bitcoin."
+msgid "Take control of your money, get started with polis."
+msgstr "Toma control de tu dinero, comienza a utilizar polis."
 
 msgid "Tap and hold to show"
 msgstr "Tocar y mantener para mostrar"
@@ -1652,14 +1652,14 @@ msgstr "La Casa de Cambio más segura y rápida de la tierra"
 msgid "The Wallet Service URL"
 msgstr "Dirección URL de Wallet Service"
 
-msgid "The amount of bitcoin immediately spendable from this wallet."
-msgstr "Total de bitcoins disponibles en esta billetera para su uso inmediato."
+msgid "The amount of polis immediately spendable from this wallet."
+msgstr "Total de poliss disponibles en esta billetera para su uso inmediato."
 
-msgid "The amount of bitcoin stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
-msgstr "La cantidad de bitcoins almacenados en esta billetera que se utilizan como \"inputs\" en la transacción pendiente. Esa cantidad se determina en base a los \"unspent transaction outputs\" asociados con la billetera, estos pueden que sean mayor al monto enviado en la transacción en cuestión."
+msgid "The amount of polis stored in this wallet that is allocated as inputs to your pending transaction proposals. The amount is determined using unspent transaction outputs associated with this wallet and may be more than the actual amounts associated with your pending transaction proposals."
+msgstr "La cantidad de poliss almacenados en esta billetera que se utilizan como \"inputs\" en la transacción pendiente. Esa cantidad se determina en base a los \"unspent transaction outputs\" asociados con la billetera, estos pueden que sean mayor al monto enviado en la transacción en cuestión."
 
-msgid "The amount of bitcoin stored in this wallet with less than 1 blockchain confirmation."
-msgstr "La cantidad de bitcoins almacenados en esta billetera que poseen menos de 1 confirmación en \"Blockchain\"."
+msgid "The amount of polis stored in this wallet with less than 1 blockchain confirmation."
+msgstr "La cantidad de poliss almacenados en esta billetera que poseen menos de 1 confirmación en \"Blockchain\"."
 
 msgid "The derivation path"
 msgstr "La ruta de derivación"
@@ -1691,8 +1691,8 @@ msgstr "El proceso generación de nuevas direcciones se detendrá cuando se gene
 msgid "The spend proposal is not pending"
 msgstr "La propuesta de gasto no esta pendiente"
 
-msgid "The total amount of bitcoin stored in this wallet."
-msgstr "El total de bitcoins almacenados en esta billetera."
+msgid "The total amount of polis stored in this wallet."
+msgstr "El total de poliss almacenados en esta billetera."
 
 msgid "The transaction history and every new incoming transaction are cached in the app. This feature clean this up and synchronizes again from the server"
 msgstr "El historial de transacciones y cada nueva transacción entrantes se almacenan en caché en la aplicación. Esta característica limpia y sincroniza otra vez desde el servidor"
@@ -1706,10 +1706,10 @@ msgstr "Obviamente hay algo que estamos haciendo mal. ¿Cómo podríamos mejorar
 msgid "This app is fantastic!"
 msgstr "¡Esta aplicación es fantástica!"
 
-msgid "This app stores your bitcoin with cutting-edge security."
-msgstr "Esta aplicación almacena tus bitcoins con seguridad avanzada."
+msgid "This app stores your polis with cutting-edge security."
+msgstr "Esta aplicación almacena tus poliss con seguridad avanzada."
 
-msgid "This bitcoin payment request has expired."
+msgid "This polis payment request has expired."
 msgstr "Esta solicitud de pago ha caducado."
 
 msgid "This password is only for this device, and it cannot be recovered. To avoid losing funds, write your password down."
@@ -1733,8 +1733,8 @@ msgstr "Línea de tiempo"
 msgid "To"
 msgstr "Para"
 
-msgid "To get started, you'll need to create a bitcoin wallet and get some bitcoin."
-msgstr "Para empezar, necesitarás crear una billetera y obtener bitcoins."
+msgid "To get started, you'll need to create a polis wallet and get some polis."
+msgstr "Para empezar, necesitarás crear una billetera y obtener poliss."
 
 msgid "Top up in progress..."
 msgstr "Recarda en progreso..."
@@ -1796,7 +1796,7 @@ msgstr "Transferir a Contacto"
 msgid "Try again in {{expires}}"
 msgstr "Intenta de nuevo en {{expires}}"
 
-msgid "Turn bitcoin into dollars, swipe anywhere Visa&reg; is accepted."
+msgid "Turn polis into dollars, swipe anywhere Visa&reg; is accepted."
 msgstr "Convierta Bitcoin en Dólares, use en cualquier lugar que acepte Visa&reg;."
 
 msgid "Type the recovery phrase (usually 12 words)"
@@ -2024,14 +2024,14 @@ msgstr "Si"
 msgid "You can make contributions by signing up on our Crowdin community translation website. We’re looking forward to hearing from you!"
 msgstr "Se pueden hacer contribuciones al registrarse en nuestro proyecto de traducciones en Crowdin. ¡Esperamos tener noticias tuyas!"
 
-msgid "You can scan bitcoin addresses, payment requests, paper wallets, and more."
-msgstr "Puedes escanear direcciones bitcoin, solicitudes de pago, billeteras de papel y más."
+msgid "You can scan polis addresses, payment requests, paper wallets, and more."
+msgstr "Puedes escanear direcciones polis, solicitudes de pago, billeteras de papel y más."
 
 msgid "You can see the latest developments and contribute to this open source app by visiting our project on GitHub."
 msgstr "Puede ver las últimas novedades y contribuir a nuestra aplicación de código abierto visitando nuestro proyecto en GitHub."
 
-msgid "You can spend bitcoin at millions of websites and stores worldwide."
-msgstr "Puedes utilizar bitcoin en millones de páginas web y tiendas en todo el mundo."
+msgid "You can spend polis at millions of websites and stores worldwide."
+msgstr "Puedes utilizar polis en millones de páginas web y tiendas en todo el mundo."
 
 msgid "You can still export it from Advanced &gt; Export."
 msgstr "Todavía puede exportar en Avanzados &gt; Exportar."
@@ -2039,8 +2039,8 @@ msgstr "Todavía puede exportar en Avanzados &gt; Exportar."
 msgid "You can trade it for other currencies like US Dollars, Euros, or Pounds."
 msgstr "Puedes cambiarlo por otras monedas como Dólares, Euros o Libras."
 
-msgid "You control your bitcoin."
-msgstr "Controlas tus bitcoins."
+msgid "You control your polis."
+msgstr "Controlas tus poliss."
 
 msgid "You could sign the transaction later in your wallet details"
 msgstr "Podría firmar la transacción más tarde en los detalles de la Billetera"
@@ -2057,14 +2057,14 @@ msgstr "Tu Tarjeta BitPay ya esta lista. Agrega fondos para comenzar a utilizarl
 msgid "Your Gift Cards"
 msgstr "Tus Tarjetas de Regalo"
 
-msgid "Your bitcoin wallet is backed up!"
-msgstr "¡Su billetera bitcoin está resguardada!"
+msgid "Your polis wallet is backed up!"
+msgstr "¡Su billetera polis está resguardada!"
 
-msgid "Your bitcoin wallet is ready!"
-msgstr "¡Su billetera bitcoin está lista!"
+msgid "Your polis wallet is ready!"
+msgstr "¡Su billetera polis está lista!"
 
-msgid "Your extended private keys are all that is needed to access your bitcoin funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
-msgstr "Sus claves privadas extendidas son todo lo que se necesita para acceder a sus fondos de bitcoin. No olvide proteger sus claves privadas y almacenarlas en dispositivos seguros. BitPay no tiene acceso a sus claves privadas, por lo que solo usted es responsable de sus claves. Si comparte la clave acceso con servicios externos, usted asume la responsabilidad por el riesgo de robo o violación. Sólo los usuarios avanzados deberían manipular las claves privadas extendidas directamente."
+msgid "Your extended private keys are all that is needed to access your polis funds. Be sure to protect your private keys and store them only on secure devices. BitPay does not have access to your private keys, so you alone are responsible for your keys. If you share key access with external services, you take responsibility for the risk of theft or breach. Only advanced users should handle extended private keys directly."
+msgstr "Sus claves privadas extendidas son todo lo que se necesita para acceder a sus fondos de polis. No olvide proteger sus claves privadas y almacenarlas en dispositivos seguros. BitPay no tiene acceso a sus claves privadas, por lo que solo usted es responsable de sus claves. Si comparte la clave acceso con servicios externos, usted asume la responsabilidad por el riesgo de robo o violación. Sólo los usuarios avanzados deberían manipular las claves privadas extendidas directamente."
 
 msgid "Your fee is lower than recommended."
 msgstr "Tu comisión es inferior a la recomendada."

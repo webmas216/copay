@@ -32,12 +32,12 @@
     </button>
   </ion-list>
 
-  <ion-list *ngIf="type === 'bitcoinAddress'">
+  <ion-list *ngIf="type === 'polisAddress'">
     <ion-item-divider>{{'Bitcoin Address' | translate}}</ion-item-divider>
     <ion-item>
       {{data}}
       <ion-icon item-start>
-        <img src="assets/img/icon-bitcoin-small.svg">
+        <img src="assets/img/icon-polis-small.svg">
       </ion-icon>
     </ion-item>
     <button ion-item (click)="close('AddressBookPage', data)">

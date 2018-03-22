@@ -462,7 +462,7 @@ export class ConfirmPage {
 
   private showSendMaxWarning(wallet: any, sendMaxInfo: any): void {
     let fee = (sendMaxInfo.fee / 1e8);
-    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
+    let msg = fee + " " + this.tx.coin.toUpperCase() + " will be deducted for polis networking fees."; // TODO: translate
     let warningMsg = this.verifyExcludedUtxos(wallet, sendMaxInfo);
 
     if (!_.isEmpty(warningMsg))
@@ -577,7 +577,7 @@ export class ConfirmPage {
     if (!tx || !wallet) return;
 
     if (this.paymentExpired) {
-      this.popupProvider.ionicAlert(null, this.translate.instant('This bitcoin payment request has expired.'));
+      this.popupProvider.ionicAlert(null, this.translate.instant('This polis payment request has expired.'));
       return;
     }
 

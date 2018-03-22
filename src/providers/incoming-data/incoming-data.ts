@@ -45,11 +45,11 @@ export class IncomingDataProvider {
     this.navCtrl = this.app.getActiveNav();
 
     // data extensions for Payment Protocol with non-backwards-compatible request
-    if ((/^bitcoin(cash)?:\?r=[\w+]/).exec(data)) {
+    if ((/^polis(cash)?:\?r=[\w+]/).exec(data)) {
       let coin = 'btc';
-      if (data.indexOf('bitcoincash') === 0) coin = 'bch';
+      if (data.indexOf('poliscash') === 0) coin = 'bch';
 
-      data = decodeURIComponent(data.replace(/bitcoin(cash)?:\?r=/, ''));
+      data = decodeURIComponent(data.replace(/polis(cash)?:\?r=/, ''));
 
       this.payproProvider.getPayProDetails(data, coin).then((details) => {
         this.handlePayPro(details, coin);
@@ -117,11 +117,11 @@ export class IncomingDataProvider {
       }
       return true;
 
-      // Cash URI with bitcoin core address version number?
-    } else if (this.bwcProvider.getBitcore().URI.isValid(data.replace(/^bitcoincash:/, 'bitcoin:'))) {
-      this.logger.debug('Handling bitcoincash URI with legacy address');
+      // Cash URI with polis core address version number?
+    } else if (this.bwcProvider.getBitcore().URI.isValid(data.replace(/^poliscash:/, 'polis:'))) {
+      this.logger.debug('Handling poliscash URI with legacy address');
       coin = 'bch';
-      parsed = this.bwcProvider.getBitcore().URI(data.replace(/^bitcoincash:/, 'bitcoin:'));
+      parsed = this.bwcProvider.getBitcore().URI(data.replace(/^poliscash:/, 'polis:'));
 
       let oldAddr = parsed.address ? parsed.address.toString() : '';
       if (!oldAddr) return false;
@@ -178,7 +178,7 @@ export class IncomingDataProvider {
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
           data,
-          type: 'bitcoinAddress',
+          type: 'polisAddress',
           coin: 'btc'
         });
       } else {
@@ -190,7 +190,7 @@ export class IncomingDataProvider {
       if (this.navCtrl.getActive().name === 'ScanPage') {
         this.showMenu({
           data,
-          type: 'bitcoinAddress',
+          type: 'polisAddress',
           coin: 'bch',
         });
       } else {

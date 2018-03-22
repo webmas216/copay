@@ -4,7 +4,7 @@
   "author": "BitPay",
   "version": "*VERSION*",
   "keywords": [
-    "bitcoin",
+    "polis",
     "wallet",
     "bitpay",
     "copay",
@@ -219,9 +219,9 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-custom-config": {},
       "cordova-plugin-customurlscheme": {
-        "URL_SCHEME": "bitcoin",
+        "URL_SCHEME": "polis",
         "SECOND_URL_SCHEME": "*PACKAGENAME*",
-        "THIRD_URL_SCHEME": "bitcoincash",
+        "THIRD_URL_SCHEME": "poliscash",
         "ANDROID_SCHEME": " ",
         "ANDROID_HOST": " ",
         "ANDROID_PATHPREFIX": "/"

@@ -149,12 +149,12 @@ export class ScanPage {
     this.externalLinkProvider.open(url);
   }
 
-  private sendPaymentToAddress(bitcoinAddress: string, coin: string): void {
-    this.navCtrl.push(AmountPage, { toAddress: bitcoinAddress, coin });
+  private sendPaymentToAddress(polisAddress: string, coin: string): void {
+    this.navCtrl.push(AmountPage, { toAddress: polisAddress, coin });
   }
 
-  private addToAddressBook(bitcoinAddress: string): void {
-    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: bitcoinAddress });
+  private addToAddressBook(polisAddress: string): void {
+    this.navCtrl.push(AddressbookAddPage, { addressbookEntry: polisAddress });
   }
 
   private scanPaperWallet(privateKey: string) {

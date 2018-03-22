@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
     $scope.hasWallets = lodash.isEmpty($scope.wallets) ? false : true;
   };
 
-  // THIS is ONLY to show the 'buy bitcoins' message
+  // THIS is ONLY to show the 'buy poliss' message
   // does not has any other function.
 
   var updateHasFunds = function() {
@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('tabSendController', function(
         if (err && !status) {
           $log.error(err);
           // error updating the wallet. Probably a network error, do not show
-          // the 'buy bitcoins' message.
+          // the 'buy poliss' message.
 
           $scope.hasFunds = true;
         } else if (status.availableBalanceSat > 0) {

@@ -140,7 +140,7 @@ angular.module('copayApp.controllers').controller('buyMercadoLibreController', f
     }
 
     var outputs = [];
-    var toAddress = invoice.bitcoinAddress;
+    var toAddress = invoice.polisAddress;
     var amountSat = parseInt((invoice.btcDue * 100000000).toFixed(0)); // BTC to Satoshi
 
     outputs.push({

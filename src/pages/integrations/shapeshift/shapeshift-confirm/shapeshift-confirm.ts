@@ -320,7 +320,7 @@ export class ShapeshiftConfirmPage {
   private showSendMaxWarning(): Promise<any> {
     return new Promise((resolve, reject) => {
       let fee = (this.sendMaxInfo.fee / 1e8);
-      let msg = fee + " " + this.fromWallet.coin.toUpperCase() + " will be deducted for bitcoin networking fees."; // TODO: translate
+      let msg = fee + " " + this.fromWallet.coin.toUpperCase() + " will be deducted for polis networking fees."; // TODO: translate
       let warningMsg = this.verifyExcludedUtxos();
 
       if (!_.isEmpty(warningMsg))
